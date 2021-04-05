@@ -104,6 +104,25 @@ from ..permissions import AllowOnlyAdminPKM,
 ```
 Silakan dicek aja di file permissions.py, disitu udh ada beberapa custom permission yang siap dipakai.
 * Terus gimana kalo misal ada kasus: kalo user role mahasiswa boleh GET tapi kalo user Admin PKM bisa GET, POST, DELETE, PUT? nah itu bisa juga di custom, kalo ada yg punya kebetuhan seperti itu boleh sampein aja ke gue, nanti bisa dibantu.
+* Untuk import-import an yang bakal sering dipake
+```python
+
+from django.shortcuts import render, HttpResponse
+from django.contrib.auth import authenticate
+
+from ..models.profile import Profile
+from django.contrib.auth.models import User
+
+from rest_framework import status, permissions
+from rest_framework.parsers import JSONParser 
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.authtoken.models import Token
+
+
+```
 
 4. Setelah bikin fungsi views seperti diatas, sekarang kita bikin url nya atau endpointnya. Buka file urls.py di dalam folder main.
 Disana kurang lebih kodingannya akan seperti ini:
