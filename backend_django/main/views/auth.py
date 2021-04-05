@@ -14,7 +14,7 @@ from rest_framework.authtoken.models import Token
 
 
 @api_view(['POST',])
-@permission_classes((permissions.AllowAny,))
+@permission_classes([permissions.AllowAny,])
 def login(request):
     
     login_data = JSONParser().parse(request)

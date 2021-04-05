@@ -73,7 +73,54 @@ Perhatikan bahwa saat jalanin git add itu diakhiri dengan titik yang artinya nge
 git add directory/to/the/file
 ```
 
-##
+## Tentang Python, Django, dan REST API
 
+1. Silakan buka-buka dulu folder ```main/```.
+Disana ada folder models, views, dan file urls.py. Mostly kita akan banyak ngoding disitu untuk keperluan REST API. Cek-cek aja dulu, hehe
+2. Untuk membuat endpoint API, buat terlebih dahulu file python (.py) di dalam folder views.
+Beri nama yang sesuai dan representatif, misal untuk kebutuhan izin kegiatan bisa beri nama views_izin_kegiatan.py
+3. Lalu, bentuk kodingan di views nanti kurang lebih akan sebagai berikut:
+```python
 
-link referensi API : https://bezkoder.com/django-rest-api/
+@api_view(['GET', 'POST', 'DELETE'])
+@permission_classes([permissions.AllowAny,])
+def izin_kegiatan_api(request):
+    if request.method == 'GET':
+        #do something untuk request GET. misal nge return list kegiatan atau apa
+    elif request.method == 'POST':
+        #do something untuk request POST, misal bikin izin kegiatan baru
+    elif request.method == 'DELETE':
+        #do something untuk request DELETE, misal hapus izin kegiatan yang sudah ada
+```
+
+Penjelasan:
+* Perlu diperhatikan bahwa di baris pertama ada decorator @api_view([list yang isinya task apa aja yang boleh]). Jadi disini teman-teman definisiin dulu yang boleh tuh apa aja, kalo cuma get doang yang boleh yaudah isi dengan 'GET'.
+* Di baris kedua ada decorator @permission_classes([list permission apa aja yang boleh]). Pada dasarnya, setiap API yang gaada decorator seperti ini di-set akan selalu bisa menerima task asalkan user telah login, gak peduli rolenya apa. Tapi, untuk kasus diatas itu kan dia listnya berisi permissions.AllowAny. Kalo seperti itu, artinya endpoint api tersebut bisa di akses oleh siapapun tanpa harus terotentikasi. Ini contoh penggunaannya buat endpoint login, login kan bisa diakses siapapun hehe. 
+* Lalu, gue juga udh bikin beberapa custom permission, contohnya misal suatu endpoint API cuma bisa diakses oleh role ADMIN PKM doang. Nah itu tinggal pake custom permission yang udh dibuat. tinggal import:
+```python
+from ..permissions import AllowOnlyAdminPKM,
+```
+Silakan dicek aja di file permissions.py, disitu udh ada beberapa custom permission yang siap dipakai.
+* Terus gimana kalo misal ada kasus: kalo user role mahasiswa boleh GET tapi kalo user Admin PKM bisa GET, POST, DELETE, PUT? nah itu bisa juga di custom, kalo ada yg punya kebetuhan seperti itu boleh sampein aja ke gue, nanti bisa dibantu.
+
+4. Setelah bikin fungsi views seperti diatas, sekarang kita bikin url nya atau endpointnya. Buka file urls.py di dalam folder main.
+Disana kurang lebih kodingannya akan seperti ini:
+
+```python
+from django.urls import path
+from .views.auth import login, test_api_unrestricted
+from .views.auth_sso import login_with_sso
+urlpatterns = [
+    path('login/', login),
+    path('test-api/', test_api_unrestricted),
+    path('login-sso/', login_with_sso)
+]
+
+```
+Nah temen-temen tinggal import views yang telah teman-teman buat dan tambahkan kodingan berikut didalam list urlpatterns:
+```python
+    path('link-nya-mau-kemana/', nama_function_dari_views)
+```
+5. Selesai deh, API seharusnya sudah bisa berjalan.
+
+In case teman-teman butuh tutorial yang lebih komprehensif : https://bezkoder.com/django-rest-api/
