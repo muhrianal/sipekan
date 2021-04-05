@@ -73,7 +73,7 @@ Perhatikan bahwa saat jalanin git add itu diakhiri dengan titik yang artinya nge
 git add directory/to/the/file
 ```
 
-** Note: jangan pernah ngepush ke master!**
+**####Note: jangan pernah ngepush ke master!**
 
 ## Tentang Python, Django, dan REST API
 
