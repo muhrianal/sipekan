@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 from .izin_kegiatan import IzinKegiatan
 
+from django.utils import timezone
+
 class PermintaanProtokoler(models.Model):
     izin_kegiatan = models.OneToOneField(
         IzinKegiatan,
@@ -9,6 +11,13 @@ class PermintaanProtokoler(models.Model):
     )
 
     deskripsi_kebutuhan = models.CharField(max_length=500)
+
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(default=timezone.now)
+    
+
+    class Meta:
+        app_label = 'main'
 
 class PerizinanPublikasi(models.Model):
     izin_kegiatan = models.OneToOneField(
@@ -30,6 +39,13 @@ class PerizinanPublikasi(models.Model):
     file_materi_kegiatan = models.FileField(upload_to='file_materi_kegiatan')
     file_flyer_pengumuman = models.FileField(upload_to='file_flyer_pengumuman')
 
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(default=timezone.now)
+    
+    class Meta:
+        app_label = 'main'
+
+
 class JenisPublikasi(models.Model):
     perizinan_publikasi = models.ForeignKey(
         PerizinanPublikasi,
@@ -37,6 +53,10 @@ class JenisPublikasi(models.Model):
     )
 
     deskripsi_publikasi = models.CharField(max_length=500)
+
+    class Meta:
+        app_label = 'main'
+
 
 class Souvenir(models.Model):
     nama_souvenir = models.CharField(max_length=255)
@@ -62,6 +82,10 @@ class Souvenir(models.Model):
     
     stok = models.IntegerField()
 
+    class Meta:
+        app_label = 'main'
+
+
 class PermintaanSouvenir(models.Model):
     izin_kegiatan = models.ForeignKey(
         IzinKegiatan,
@@ -83,4 +107,12 @@ class PermintaanSouvenir(models.Model):
     )
     nama_penerima_souvenir = models.CharField(max_length=255)
     jabatan_penerima_souvenir = models.CharField(max_length=255)
+
+
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(default=timezone.now)
+    
+    class Meta:
+        app_label = 'main'
+
     
