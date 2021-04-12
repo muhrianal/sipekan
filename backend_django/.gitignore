@@ -162,3 +162,8 @@ migrations/
 
 
 # End of https://www.toptal.com/developers/gitignore/api/django
+
+# files uploaded
+file_kegiatan/
+file_materi_kegiatan/
+file_flyer_pengumuman/
