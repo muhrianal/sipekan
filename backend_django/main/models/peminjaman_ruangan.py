@@ -1,11 +1,24 @@
 from django.db import models
 from django.contrib.auth.models import User
-from .izin_kegiatan import IzinKegiatan
+from ..models.izin_kegiatan import IzinKegiatan
+from django.utils import timezone
+
+class Ruangan(models.Model):
+    nama = models.CharField(max_length=255)
+    kapasitas = models.IntegerField()
+    lokasi = models.CharField(max_length=255)
+    waktu_available_mulai = models.DateTimeField()
+    waktu_available_akhir = models.DateTimeField()
+    informasi_tambahan = models.CharField(max_length=255, default=None, blank=True, null=True)
+
+    class Meta:
+        app_label = 'main'
+
 
 class PeminjamanRuangan(models.Model):
     judul_peminjaman = models.CharField(max_length=255)
     izin_kegiatan = models.ForeignKey(
-        IzinKegiatan,
+        IzinKegiatan, related_name='peminjaman_ruangan',
         on_delete=models.CASCADE
     )
 
@@ -23,16 +36,14 @@ class PeminjamanRuangan(models.Model):
     )
     waktu_mulai = models.DateTimeField()
     waktu_akhir = models.DateTimeField()
-    catatan = models.CharField(max_length=500)
-    
+    catatan = models.CharField(max_length=500, default=None, blank=True, null=True)
 
-class Ruangan(models.Model):
-    nama = models.CharField(max_length=255)
-    kapasitas = models.IntegerField()
-    lokasi = models.CharField(max_length=255)
-    waktu_available_mulai = models.DateTimeField()
-    waktu_available_akhir = models.DateTimeField()
-    informasi_tambahan = models.CharField(max_length=255, default=None, blank=True, null=True)
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(default=timezone.now)
+    
+    class Meta:
+        app_label = 'main'
+
 
 class Perulangan(models.Model):
     peminjaman_ruangan = models.OneToOneField(PeminjamanRuangan, on_delete=models.CASCADE)
@@ -47,3 +58,10 @@ class Perulangan(models.Model):
     jenjang = models.PositiveSmallIntegerField(choices=JENJANG_CHOICES)
     tanggal_mulai = models.DateField()
     tanggal_akhir = models.DateField()
+
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(default=timezone.now)
+    
+
+    class Meta:
+        app_label = 'main'
