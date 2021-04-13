@@ -20,6 +20,7 @@ from ..models.peminjaman_ruangan import PeminjamanRuangan
 from ..models.peminjaman_ruangan import Ruangan
 
 from ..serializers.peminjaman_ruangan_serializer import PeminjamanRuanganSerializer
+from ..serializers.kalender_serializer import KalenderSerializer
 
 from django.http.response import JsonResponse
 
@@ -31,6 +32,21 @@ def list_peminjaman_ruangan(request):
         list_peminjaman_ruangan = PeminjamanRuangan.objects.all()
         peminjaman_ruangan_serialized = PeminjamanRuanganSerializer(list_peminjaman_ruangan, many=True)
         return JsonResponse(peminjaman_ruangan_serialized.data, safe=False)
+    
+    #case for else
+    data = {
+        'message' : 'invalid API call'
+    }
+    return Response(data=data, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+@permission_classes([permissions.AllowAny,])
+def list_jadwal(request):
+
+    if request.method == 'GET':
+        list_jadwal = PeminjamanRuangan.objects.all()
+        list_jadwal_serialized = KalenderSerializer(list_jadwal, many=True)
+        return JsonResponse(list_jadwal_serialized.data, safe=False)
     
     #case for else
     data = {

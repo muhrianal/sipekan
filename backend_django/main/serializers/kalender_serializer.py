@@ -1,9 +1,9 @@
 from rest_framework import serializers 
 
-from ..models.izin_kegiatan import DetailKegiatan
+from ..models.peminjaman_ruangan import PeminjamanRuangan
 
 class KalenderSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = DetailKegiatan
+        model = PeminjamanRuangan
         fields = '__all__'
