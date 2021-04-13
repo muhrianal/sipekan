@@ -5,6 +5,7 @@ from .views.auth_sso import login_with_sso
 
 from .views.views_peminjaman_ruangan import list_peminjaman_ruangan
 from .views.views_peminjaman_ruangan import list_jadwal
+from .views.views_ruangan import list_ruangan
 
 urlpatterns = [
     path('login/', login),
