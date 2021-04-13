@@ -15,34 +15,10 @@ from ..models.profile import Profile
 from ..models.peminjaman_ruangan import PeminjamanRuangan
 from ..models.peminjaman_ruangan import Ruangan
 from ..models.izin_kegiatan import IzinKegiatan
-from ..serializers.peminjaman_ruangan_serializer import PeminjamanRuanganSerializer, IzinKegiatanUnitKerjaSerializer
+from ..serializers.peminjaman_ruangan_serializer import PeminjamanRuanganUnitKerjaSerializer, IzinKegiatanUnitKerjaSerializer
 from django.http.response import JsonResponse
 
-@api_view(['GET'])
-@permission_classes([permissions.AllowAny,])
-def list_peminjaman_ruangan(request):
 
-    if request.method == 'GET':
-        list_peminjaman_ruangan = PeminjamanRuangan.objects.all()
-        peminjaman_ruangan_serialized = PeminjamanRuanganSerializer(list_peminjaman_ruangan, many=True)
-        return JsonResponse(peminjaman_ruangan_serialized.data, safe=False)
-    
-    #case for else
-    return JsonResponse({'message' : 'invalid API method'}, status=status.HTTP_405_METHOD_NOT_ALLOWED) 
- 
-
-@api_view(['GET'])
-@permission_classes([permissions.AllowAny,]) #nanti diganti jadi admin fastur only
-def list_peminjaman_ruangan_by_id_kegiatan(request, id_kegiatan):
-
-    if request.method =='GET':
-        list_peminjaman = PeminjamanRuangan.objects.filter(izin_kegiatan__pk=id_kegiatan)
-        peminjaman_ruangan_serialized = PeminjamanRuanganSerializer(list_peminjaman, many=True)
-        return JsonResponse(peminjaman_ruangan_serialized.data, safe=False)
-
-    #case for else
-    return JsonResponse({'message' : 'invalid API method'}, status=status.HTTP_405_METHOD_NOT_ALLOWED) 
- 
 @api_view(['PUT',])
 @permission_classes([permissions.AllowAny,]) #nanti diganti jadi admin fastur dan peminjam
 def update_peminjaman_ruangan_by_id_peminjaman_ruangan(request, id_peminjaman):
@@ -54,7 +30,7 @@ def update_peminjaman_ruangan_by_id_peminjaman_ruangan(request, id_peminjaman):
     if request.method == 'PUT':
 
         peminjaman_data = JSONParser().parse(request) 
-        peminjaman_ruangan_serialized = PeminjamanRuanganSerializer(peminjaman_ruangan, data=peminjaman_data)
+        peminjaman_ruangan_serialized = PeminjamanRuanganUnitKerjaSerializer(peminjaman_ruangan, data=peminjaman_data)
         
         if peminjaman_ruangan_serialized.is_valid():
             peminjaman_ruangan_serialized.save()
@@ -67,7 +43,7 @@ def update_peminjaman_ruangan_by_id_peminjaman_ruangan(request, id_peminjaman):
  
 @api_view(['POST','GET'])
 @permission_classes([permissions.AllowAny,]) #nanti diganti jadi unit kerja
-def create_peminjaman_ruangan_unit_kerja(request):
+def get_post_peminjaman_ruangan_unit_kerja(request):
     if request.method == 'POST':
         peminjaman_data = JSONParser().parse(request)
         peminjaman_data_serialized = IzinKegiatanUnitKerjaSerializer(data=peminjaman_data)
@@ -80,8 +56,6 @@ def create_peminjaman_ruangan_unit_kerja(request):
         list_izin_kegiatan = IzinKegiatan.objects.all()
         list_izin_kegiatan_serialized = IzinKegiatanUnitKerjaSerializer(list_izin_kegiatan, many=True)
         return JsonResponse(list_izin_kegiatan_serialized.data, safe=False)
-        
-
 
     #case for else
     return JsonResponse({'message' : 'invalid API method'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)

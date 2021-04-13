@@ -3,19 +3,23 @@ from rest_framework import serializers
 from ..models.peminjaman_ruangan import PeminjamanRuangan
 from ..models.izin_kegiatan import IzinKegiatan
 
-class PeminjamanRuanganSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = PeminjamanRuangan
-        fields = '__all__'
-
-
 
 class PeminjamanRuanganUnitKerjaSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = PeminjamanRuangan
-        fields = ('judul_peminjaman', 'status_peminjaman_ruangan', 'waktu_mulai', 'waktu_akhir', 'catatan', 'ruangan')
+        fields = (
+            'id', 
+            'created_at', 
+            'updated_at', 
+            'alasan_penolakan',
+            'judul_peminjaman', 
+            'status_peminjaman_ruangan', 
+            'waktu_mulai', 
+            'waktu_akhir', 
+            'catatan', 
+            'ruangan'
+        )
 
 
 class IzinKegiatanUnitKerjaSerializer(serializers.ModelSerializer):
@@ -23,7 +27,7 @@ class IzinKegiatanUnitKerjaSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = IzinKegiatan
-        fields = ('nama_kegiatan', 'organisasi', 'user', 'status_perizinan_kegiatan', 'subkegiatan')
+        fields = ('id', 'nama_kegiatan', 'organisasi', 'user', 'status_perizinan_kegiatan', 'subkegiatan')
 
     def create(self, validated_data):
         subkegiatan_data = validated_data.pop('subkegiatan')
