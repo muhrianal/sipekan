@@ -71,7 +71,7 @@ def detail_ruangan(request,pk):
 
     if request.method == 'GET':
         ruangan_serialized = RuanganSerializer(ruangan)
-        return JsonResponse(ruangan_serialized.data,)
+        return JsonResponse(ruangan_serialized.data, safe=False)
 #     data = {
 #             'message' : 'invalid API call'
 #         }

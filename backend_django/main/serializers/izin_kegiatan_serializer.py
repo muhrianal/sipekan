@@ -33,33 +33,14 @@ class PermintaanSouvenirSerializer(serializers.ModelSerializer):
 
 class IzinKegiatanSerializer(serializers.ModelSerializer):
 
-    peminjaman_ruangan = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
-    permintaan_protokoler = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
-    perizinan_publikasi = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
-    permintaan_souvenir = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
-
+    peminjaman_ruangan = PeminjamanRuanganSerializer(many=True, read_only=True)
+    permintaan_protokoler = PermintaanProtokolerSerializer(read_only=True)
+    perizinan_publikasi = PerizinanPublikasiSerializer(read_only=True)
+    permintaan_souvenir = PermintaanSouvenirSerializer(many=True, read_only=True)
 
     class Meta:
         model = IzinKegiatan
         fields = '__all__'
-
-
-
-# class TestSerializer(serializers.Serializer):
-#     nested1 = IzinKegiatanSerializer(source='*')
-#     nested2 = PeminjamanRuanganSerializer(source='*')
-#
-# data = {
-#     'nested1': {IzinKegiatan},
-#     'nested2': {PeminjamanRuangan}
-#     }
-# serializer = TestSerializer(data=data)
-# assert serializer.is_valid()
-
-# assert.serializer.validated_data == {
-#
-#
-# }
 
 class DetailKegiatanSerializer(serializers.ModelSerializer):
 

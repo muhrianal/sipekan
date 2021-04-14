@@ -12,11 +12,6 @@ class IzinKegiatan(models.Model):
         on_delete=models.CASCADE
     )
 
-#     peminjaman_ruangan = models.ForeignKey('PeminjamanRuangan', blank=True)
-#     permintaan_protokoler = models.ForeignKey('PermintaanProtokoler', blank=True)
-#     perizinan_publikasi = models.ForeignKey('PerizinanPublikasi', blank=True)
-#     permintaan_souvenir = models.ForeignKey('PermintaanSouvenir', blank=True)
-
     STATUS_CHOICES = (
       (1, 'Menunggu Persetujuan'),
       (2, 'Disetujui'),

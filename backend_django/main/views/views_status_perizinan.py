@@ -28,7 +28,7 @@ from django.http.response import JsonResponse
 
 @api_view(['GET'])
 @permission_classes([permissions.AllowAny,])
-def list_status(request):
+def list_perizinan(request):
     if request.method == 'GET':
         list_izin_kegiatan = IzinKegiatan.objects.all()
         izin_kegiatan_serialized = IzinKegiatanSerializer(list_izin_kegiatan, many=True)
@@ -38,6 +38,20 @@ def list_status(request):
     data = {
         'message' : 'invalid API call'
     }
+    return Response(data=data, status=status.HTTP_400_BAD_REQUEST)
+
+def detail_perizinan(request,pk):
+    try:
+        perizinan = IzinKegiatan.objects.get(pk=pk)
+    except IzinKegiatan.DoesNotExist:
+        return JsonResponse({'message': 'Izin kegiatan tidak ada'}, status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        perizinan_serialized = IzinKegiatanSerializer(perizinan)
+        return JsonResponse(perizinan_serialized.data, safe=False)
+    data = {
+            'message' : 'invalid API call'
+        }
     return Response(data=data, status=status.HTTP_400_BAD_REQUEST)
 
 # @api_view(['GET', 'POST'])
