@@ -18,6 +18,8 @@ from ..models.izin_kegiatan import IzinKegiatan
 from ..serializers.peminjaman_ruangan_serializer import PeminjamanRuanganUnitKerjaSerializer, IzinKegiatanUnitKerjaSerializer
 from django.http.response import JsonResponse
 
+from ..serializers.peminjaman_ruangan_serializer import PeminjamanRuanganSerializer
+from ..serializers.kalender_serializer import KalenderSerializer
 from ..serializers.peminjaman_ruangan_serializer import PeminjamanRuanganSerializer, RuanganSerializer
 
 
@@ -39,6 +41,22 @@ def update_peminjaman_ruangan_by_id_peminjaman_ruangan(request, id_peminjaman):
             return JsonResponse(peminjaman_ruangan_serialized.data)
 
         return JsonResponse(peminjaman_ruangan_serialized.errors, status=status.HTTP_400_BAD_REQUEST) 
+    
+    #case for else
+    data = {
+        'message' : 'invalid API call'
+    }
+    return Response(data=data, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET'])
+@permission_classes([permissions.AllowAny,])
+def list_jadwal(request):
+
+    if request.method == 'GET':
+        list_jadwal = PeminjamanRuangan.objects.all()
+        list_jadwal_serialized = KalenderSerializer(list_jadwal, many=True)
+        return JsonResponse(list_jadwal_serialized.data, safe=False)
     
     #case for else
     data = {
@@ -115,3 +133,4 @@ def get_post_peminjaman_ruangan_unit_kerja(request):
 
     #case for else
     return JsonResponse({'message' : 'invalid API method'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
