@@ -20,6 +20,7 @@ class PeminjamanRuangan(models.Model):
     izin_kegiatan = models.ForeignKey(
         IzinKegiatan, related_name='peminjaman_ruangan',
         on_delete=models.CASCADE
+
     )
 
     STATUS_CHOICES = (

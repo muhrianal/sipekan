@@ -7,6 +7,7 @@ from .views.views_peminjaman_ruangan import list_peminjaman_ruangan
 from .views.views_peminjaman_ruangan import list_ruangan
 from .views.views_peminjaman_ruangan import detail_ruangan
 from .views.views_status_perizinan import list_perizinan, detail_perizinan
+from .views.views_peminjaman_ruangan import update_peminjaman_ruangan_by_id_peminjaman_ruangan, get_post_peminjaman_ruangan_unit_kerja
 
 urlpatterns = [
     path('login/', login),
@@ -17,4 +18,6 @@ urlpatterns = [
     path('api/ruangan/<int:pk>/', detail_ruangan),
     path('api/list-perizinan/', list_perizinan),
     path('api/perizinan/<int:pk>', detail_perizinan)
+    path('peminjaman-ruangan/update/<int:id_peminjaman>/', update_peminjaman_ruangan_by_id_peminjaman_ruangan),
+    path('peminjaman-ruangan/unit-kerja/', get_post_peminjaman_ruangan_unit_kerja)
 ]
