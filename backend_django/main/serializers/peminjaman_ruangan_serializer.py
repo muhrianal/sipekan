@@ -2,6 +2,7 @@ from rest_framework import serializers
 
 from ..models.peminjaman_ruangan import PeminjamanRuangan
 from ..models.peminjaman_ruangan import Ruangan
+
 class PeminjamanRuanganSerializer(serializers.ModelSerializer):
 from ..models.izin_kegiatan import IzinKegiatan
 
