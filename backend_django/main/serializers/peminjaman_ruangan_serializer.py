@@ -35,3 +35,17 @@ class IzinKegiatanUnitKerjaSerializer(serializers.ModelSerializer):
         for subkegiatan in subkegiatan_data:
             PeminjamanRuangan.objects.create(izin_kegiatan=izin_kegiatan, **subkegiatan)
         return izin_kegiatan
+
+    # def create(self, validated_data):
+    #     id_izin_kegiatan = validated_data.pop('id_izin_kegiatain')
+
+    #     izin_kegiatan = IzinKegiatan.objects.get(pk=id_izin_kegiatan)
+
+    #     permintaan_protokoler = validated_data.pop('permintaan_protokoler')
+    #     permintaan_souvenir = validated_data.pop('permintaan_souvenir')
+    #     perizininan_publikasi  = validated_data.pop('perizinan_publikasi')
+        
+    #     for minta_protokoler in permintaan_protokoler:
+    #         PermintaanProtokoler.objects.create(izin_kegiatan=izin_kegiatan, **minta_protokoler)
+
+    #     #do the same thing (with loop) buat permintaan souvenir dan perizinan publikasi
