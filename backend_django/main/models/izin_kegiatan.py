@@ -1,5 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
+# from ..models.peminjaman_ruangan import PeminjamanRuangan
+# from ..models.humas import PermintaanProtokoler, PerizinanPublikasi, PermintaanSouvenir
+
 from django.utils import timezone
 class IzinKegiatan(models.Model):
     nama_kegiatan = models.CharField(max_length=255)
