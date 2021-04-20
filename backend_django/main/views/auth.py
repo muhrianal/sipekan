@@ -26,15 +26,22 @@ def login(request):
     
     if user is not None:
         token, _ = Token.objects.get_or_create(user=user)
-        profile = Profile.objects.get(user=user)
+        
 
         return_data = {
             'username' : username,
-            'role': profile.role,
-            'name' : profile.nama,
-            'token' : str(token)
+            'token' : str(token),
+            'id_user' : user.pk
         }
+        try:
+            profile = Profile.objects.get(user=user)
 
+            if profile is not None:
+                return_data['role'] = profile.role
+                return_data['name'] = profile.nama 
+        except:
+            return Response(data=return_data, status=status.HTTP_200_OK)
+    
         return Response(data=return_data, status=status.HTTP_200_OK)
     
     data = {'message': 'login gagal'}
