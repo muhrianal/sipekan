@@ -17,7 +17,7 @@ from ..permissions import AllowOnlyAdminFASTUR, AllowOnlyAdminHUMAS, AllowOnlyAd
 
 from ..models.izin_kegiatan import DetailKegiatan, IzinKegiatan
 
-from ..serializers.izin_kegiatan_serializer import IzinKegiatanSerializer
+from ..serializers.izin_kegiatan_serializer import IzinKegiatanSerializerSimplified
 
 
 from django.http.response import JsonResponse
@@ -34,7 +34,7 @@ def update_izin_kegiatan_by_id_perizinan(request, id_perizinan):
     if request.method == 'PUT':
 
         izin_data = JSONParser().parse(request) 
-        izin_kegiatan_serialized = IzinKegiatanSerializer(izin_kegiatan, data=izin_data)
+        izin_kegiatan_serialized = IzinKegiatanSerializerSimplified(izin_kegiatan, data=izin_data)
         
         if izin_kegiatan_serialized.is_valid():
             izin_kegiatan_serialized.save()
@@ -51,7 +51,7 @@ def list_izin_kegiatan(request):
 
     if request.method == 'POST':
         izin_data = JSONParser().parse(request)
-        izin_kegiatan_serialized = IzinKegiatanSerializer(data=izin_data)
+        izin_kegiatan_serialized = IzinKegiatanSerializerSimplified(data=izin_data)
         if peminjaman_data_serialized.is_valid():
             izin_kegiatan_serialized.save()
             return JsonResponse( izin_kegiatan_serialized.data, status=status.HTTP_201_CREATED) 
