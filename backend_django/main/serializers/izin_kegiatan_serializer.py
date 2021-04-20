@@ -1,9 +1,21 @@
+
+from rest_framework import serializers 
+
+from ..models.izin_kegiatan import IzinKegiatan
+
 from rest_framework import serializers
 
 from ..models.izin_kegiatan import IzinKegiatan
 from ..models.izin_kegiatan import DetailKegiatan
 from ..models.peminjaman_ruangan import PeminjamanRuangan
 from ..models.humas import PermintaanProtokoler, PerizinanPublikasi, PermintaanSouvenir
+
+#Nama kelas dibawah ini di rename, yang terkati dengan kelas ini harus diperbarui
+class IzinKegiatanSerializerSimplified(serializers.ModelSerializer):
+
+    class Meta:
+        model = IzinKegiatan
+        fields = '__all__'
 
 class PeminjamanRuanganSerializer(serializers.ModelSerializer):
 

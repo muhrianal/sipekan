@@ -60,6 +60,7 @@ REST_FRAMEWORK = {
 }
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -67,7 +68,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
+    
 ]
 
 ROOT_URLCONF = 'backend_django.urls'
@@ -141,8 +142,9 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 CORS_ALLOW_ALL_ORIGINS = False
-# CORS_EXPOSE_HEADERS = ["Content-Disposition", "Access-Control-Allow-Origin"]
+CORS_EXPOSE_HEADERS = ["Content-Disposition", "Access-Control-Allow-Origin"]
 
 CORS_ALLOWED_ORIGINS = [
+    "http://localhost:8081",
     "http://localhost:8080",
 ]
