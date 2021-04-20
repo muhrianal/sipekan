@@ -20,11 +20,11 @@ urlpatterns = [
     path('list-peminjaman-ruangan/', list_peminjaman_ruangan),
     path('izin-kegiatan/update/<int:id_perizinan>/', update_izin_kegiatan_by_id_perizinan),
     path('izin-kegiatan/', list_izin_kegiatan),
-    path('jadwal-tersedia/', list_jadwal )
+    path('jadwal-tersedia/', list_jadwal),
     path('api/ruangan/', list_ruangan),
     path('api/ruangan/<int:pk>/', detail_ruangan),
     path('api/list-perizinan/', list_perizinan),
-    path('api/perizinan/<int:pk>', detail_perizinan)
+    path('api/perizinan/<int:pk>', detail_perizinan),
     path('peminjaman-ruangan/update/<int:id_peminjaman>/', update_peminjaman_ruangan_by_id_peminjaman_ruangan),
     path('peminjaman-ruangan/unit-kerja/', get_post_peminjaman_ruangan_unit_kerja)
 ]
