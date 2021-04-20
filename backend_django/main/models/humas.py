@@ -6,7 +6,7 @@ from django.utils import timezone
 
 class PermintaanProtokoler(models.Model):
     izin_kegiatan = models.OneToOneField(
-        IzinKegiatan,
+        IzinKegiatan, related_name='permintaan_protokoler',
         on_delete=models.CASCADE
     )
 
@@ -21,7 +21,7 @@ class PermintaanProtokoler(models.Model):
 
 class PerizinanPublikasi(models.Model):
     izin_kegiatan = models.OneToOneField(
-        IzinKegiatan,
+        IzinKegiatan, related_name='perizinan_publikasi',
         on_delete=models.CASCADE
     )
     tanggal_mulai = models.DateField()
@@ -88,7 +88,7 @@ class Souvenir(models.Model):
 
 class PermintaanSouvenir(models.Model):
     izin_kegiatan = models.ForeignKey(
-        IzinKegiatan,
+        IzinKegiatan,  related_name='permintaan_souvenir',
         on_delete=models.CASCADE
     )
     alasan_penolakan = models.CharField(max_length=500, default=None, blank=True, null=True)

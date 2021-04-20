@@ -1,25 +1,24 @@
 from rest_framework import serializers 
 
 from ..models.peminjaman_ruangan import PeminjamanRuangan
+from ..models.peminjaman_ruangan import Ruangan
+class PeminjamanRuanganSerializer(serializers.ModelSerializer):
 from ..models.izin_kegiatan import IzinKegiatan
-
 
 class PeminjamanRuanganUnitKerjaSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = PeminjamanRuangan
-        fields = (
-            'id', 
-            'created_at', 
-            'updated_at', 
-            'alasan_penolakan',
-            'judul_peminjaman', 
-            'status_peminjaman_ruangan', 
-            'waktu_mulai', 
-            'waktu_akhir', 
-            'catatan', 
-            'ruangan'
-        )
+
+        fields = '__all__'
+
+
+class RuanganSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Ruangan
+        fields = '__all__'
+
 
 
 class IzinKegiatanUnitKerjaSerializer(serializers.ModelSerializer):
