@@ -1,25 +1,24 @@
 from rest_framework import serializers 
 
 from ..models.peminjaman_ruangan import PeminjamanRuangan
+from ..models.peminjaman_ruangan import Ruangan
+class PeminjamanRuanganSerializer(serializers.ModelSerializer):
 from ..models.izin_kegiatan import IzinKegiatan
-
 
 class PeminjamanRuanganUnitKerjaSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = PeminjamanRuangan
-        fields = (
-            'id', 
-            'created_at', 
-            'updated_at', 
-            'alasan_penolakan',
-            'judul_peminjaman', 
-            'status_peminjaman_ruangan', 
-            'waktu_mulai', 
-            'waktu_akhir', 
-            'catatan', 
-            'ruangan'
-        )
+
+        fields = '__all__'
+
+
+class RuanganSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Ruangan
+        fields = '__all__'
+
 
 
 class IzinKegiatanUnitKerjaSerializer(serializers.ModelSerializer):
@@ -35,17 +34,3 @@ class IzinKegiatanUnitKerjaSerializer(serializers.ModelSerializer):
         for subkegiatan in subkegiatan_data:
             PeminjamanRuangan.objects.create(izin_kegiatan=izin_kegiatan, **subkegiatan)
         return izin_kegiatan
-
-    # def create(self, validated_data):
-    #     id_izin_kegiatan = validated_data.pop('id_izin_kegiatain')
-
-    #     izin_kegiatan = IzinKegiatan.objects.get(pk=id_izin_kegiatan)
-
-    #     permintaan_protokoler = validated_data.pop('permintaan_protokoler')
-    #     permintaan_souvenir = validated_data.pop('permintaan_souvenir')
-    #     perizininan_publikasi  = validated_data.pop('perizinan_publikasi')
-        
-    #     for minta_protokoler in permintaan_protokoler:
-    #         PermintaanProtokoler.objects.create(izin_kegiatan=izin_kegiatan, **minta_protokoler)
-
-    #     #do the same thing (with loop) buat permintaan souvenir dan perizinan publikasi
