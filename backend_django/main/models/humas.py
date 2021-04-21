@@ -7,6 +7,7 @@ from django.utils import timezone
 class PermintaanProtokoler(models.Model):
     izin_kegiatan = models.OneToOneField(
         IzinKegiatan,
+        related_name = 'permintaan_protokoler',
         on_delete=models.CASCADE
     )
 
@@ -19,13 +20,26 @@ class PermintaanProtokoler(models.Model):
     class Meta:
         app_label = 'main'
 
+class JenisPublikasi(models.Model):
+    luar_ruangan =  models.BooleanField()
+    deskripsi_publikasi = models.CharField(max_length=500)
+
+    class Meta:
+        app_label = 'main'
+
 class PerizinanPublikasi(models.Model):
     izin_kegiatan = models.OneToOneField(
         IzinKegiatan,
+        related_name = 'perizinan_publikasi',
+        
         on_delete=models.CASCADE
     )
     tanggal_mulai = models.DateField()
     tanggal_akhir = models.DateField()
+
+    jenis_publikasi = models.ManyToManyField(
+        JenisPublikasi
+    )
     
     STATUS_CHOICES = (
       (1, 'Menunggu Persetujuan'),
@@ -36,26 +50,15 @@ class PerizinanPublikasi(models.Model):
     status_perizinan_publikasi = models.PositiveSmallIntegerField(choices=STATUS_CHOICES)
     alasan_penolakan = models.CharField(max_length=500, default=None, blank=True, null=True)
     keterangan = models.CharField(max_length=500, default=None, blank=True, null=True)
-    file_materi_kegiatan = models.FileField(upload_to='file_materi_kegiatan')
-    file_flyer_pengumuman = models.FileField(upload_to='file_flyer_pengumuman')
+    file_materi_kegiatan = models.FileField(upload_to='file_materi_kegiatan', blank=True)
+    file_flyer_pengumuman = models.FileField(upload_to='file_flyer_pengumuman',blank=True)
 
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(default=timezone.now)
     
     class Meta:
         app_label = 'main'
-
-
-class JenisPublikasi(models.Model):
-    perizinan_publikasi = models.ForeignKey(
-        PerizinanPublikasi,
-        on_delete=models.CASCADE
-    )
-
-    deskripsi_publikasi = models.CharField(max_length=500)
-
-    class Meta:
-        app_label = 'main'
+    
 
 
 class Souvenir(models.Model):
@@ -89,6 +92,7 @@ class Souvenir(models.Model):
 class PermintaanSouvenir(models.Model):
     izin_kegiatan = models.ForeignKey(
         IzinKegiatan,
+        related_name = 'permintaan_souvenir',
         on_delete=models.CASCADE
     )
     alasan_penolakan = models.CharField(max_length=500, default=None, blank=True, null=True)

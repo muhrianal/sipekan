@@ -19,7 +19,8 @@ class PeminjamanRuangan(models.Model):
     judul_peminjaman = models.CharField(max_length=255)
     izin_kegiatan = models.ForeignKey(
         IzinKegiatan,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name="subkegiatan"
     )
 
     STATUS_CHOICES = (
