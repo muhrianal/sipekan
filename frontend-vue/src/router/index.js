@@ -3,7 +3,7 @@ import {createRouter, createWebHistory} from 'vue-router';
 import Login from '../pages/Login.vue';
 import Home from '../pages/Home.vue'; 
 import Profile from '../pages/Profile.vue';
- 
+import PeminjamanRuanganUnitKerja from '../pages/UnitKerja/PeminjamanRuanganUnitKerja';
 
 
 const routes = [
@@ -22,6 +22,11 @@ const routes = [
     name: "Profile",
     component: Profile
   },
+  {
+    path: "/buat-perizinan/form-ruangan/",
+    name: "Form Peminjaman Ruangan Unit Kerja",
+    component: PeminjamanRuanganUnitKerja,
+  }
 ];
 
 
@@ -36,6 +41,7 @@ router.beforeEach((to, from, next) =>{
   const publicPages = [
     '/login',
     '/',
+    '/buat-perizinan/form-ruangan/',
   ];
 
   const authRequired = !publicPages.includes(to.path);
