@@ -12,5 +12,6 @@ export default {
 #button-simpan {
     width: 107px;
     height:42px;
+    border-radius: 10px !important;
 }
 </style>

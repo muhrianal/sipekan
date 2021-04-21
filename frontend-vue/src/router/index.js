@@ -4,7 +4,10 @@ import Login from '../pages/Login.vue';
 import Home from '../pages/Home.vue'; 
 import Profile from '../pages/Profile.vue';
 import Ruangan from '../pages/Ruangan';
- 
+import AddRuangan from '../pages/AddRuangan';
+import DetailRuangan from '../pages/DetailRuangan';
+import UbahRuangan from '../pages/UbahRuangan';
+
 
 
 const routes = [
@@ -28,6 +31,21 @@ const routes = [
     name: "Ruangan",
     component: Ruangan
   },
+  {
+    path: "/ruangan/add",
+    name: "AddRuangan",
+    component: AddRuangan
+  },
+  {
+    path: "/ruangan/detail",
+    name: "DetailRuangan",
+    component: DetailRuangan
+  },
+  {
+    path: "/ruangan/ubah",
+    name: "UbahRuangan",
+    component: UbahRuangan
+  },
 ];
 
 
@@ -43,6 +61,9 @@ router.beforeEach((to, from, next) =>{
     '/login',
     '/',
     '/ruangan',
+    '/ruangan/add',
+    '/ruangan/detail',
+    '/ruangan/ubah',
   ];
 
   const authRequired = !publicPages.includes(to.path);
