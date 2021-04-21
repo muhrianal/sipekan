@@ -3,6 +3,7 @@ import {createRouter, createWebHistory} from 'vue-router';
 import Login from '../pages/Login.vue';
 import Home from '../pages/Home.vue'; 
 import Profile from '../pages/Profile.vue';
+import Ruangan from '../pages/Ruangan';
  
 
 
@@ -22,6 +23,11 @@ const routes = [
     name: "Profile",
     component: Profile
   },
+  {
+    path: "/ruangan",
+    name: "Ruangan",
+    component: Ruangan
+  },
 ];
 
 
@@ -36,6 +42,7 @@ router.beforeEach((to, from, next) =>{
   const publicPages = [
     '/login',
     '/',
+    '/ruangan',
   ];
 
   const authRequired = !publicPages.includes(to.path);

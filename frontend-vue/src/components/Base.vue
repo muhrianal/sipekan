@@ -32,7 +32,7 @@
                     <a class="sidebar-child" href="/">Jadwal Tersedia</a>
                 </li>
                 <li v-bind:class="{active : isInHomePage}" >
-                    <a class="sidebar-child" href="/">Daftar Ruangan</a>
+                    <a class="sidebar-child" href="/ruangan">Daftar Ruangan</a>
                 </li>
 
                 <li v-bind:class="{active : isInLoginPage}" >
