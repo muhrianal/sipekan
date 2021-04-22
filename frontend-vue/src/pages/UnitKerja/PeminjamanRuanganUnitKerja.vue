@@ -22,43 +22,84 @@
                 <div class="form-row">
                     <div class="col-12 col-md-6">
                         <label for="inputNamaKegiatan">Nama Subkegiatan*:</label>
-                        <input type="text" class="form-control" placeholder="e.g. Kelas Administrasi Bisnis">
+                        <input type="text" class="form-control" placeholder="e.g. Administrasi Bisnis - B">
                     </div>
                     <div class="col-12 col-md-6">
-                        <label for="inputOrganisasi">Organisasi/Divisi*:</label>
-                        <input type="number" class="form-control" placeholder="e.g. Akademik FEB UI">
+                        <label for="inputOrganisasi">Jumlah Peserta*:</label>
+                        <input type="number" class="form-control" placeholder="e.g. 120">
                     </div>  
                 </div>
                 <div class="form-row">
                     <div class="col-12 col-md-6">
                         <label for="exampleFormControlSelect1">Waktu mulai*:</label>
-                        <select class="form-control" id="exampleFormControlSelect1">
-                            <template v-for="n in 23" v-bind:key="n">
+                        <select class="form-control" id="exampleFormControlSelect1" v-model="waktu_mulai">
+                            <option selected disabled value="">Pilih...</option>
+                            <template v-for="n in 24" v-bind:key="n">
                                 <template v-for="m in 2" v-bind:key="m">
-                                    <template v-if="n < 10">
-                                        <option v-if="m == 1">0{{n}}:00</option>
-                                        <option v-if="m == 2">0{{n}}:30</option>
+                                    <template v-if="n < 11">
+                                        <option v-if="m == 1">0{{n-1}}:00</option>
+                                        <option v-if="m == 2">0{{n-1}}:30</option>
                                     </template>
                                     <template v-else>
-                                        <option v-if="m == 1">{{n}}:00</option>
-                                        <option v-if="m == 2">{{n}}:30</option>
+                                        <option v-if="m == 1">{{n-1}}:00</option>
+                                        <option v-if="m == 2">{{n-1}}:30</option>
                                     </template>
                                 </template>
                             </template>
-                            
-
                         </select>
                     </div>
                     <div class="col-12 col-md-6">
                         <label for="exampleFormControlSelect1">Waktu akhir*:</label>
-                            <select class="form-control" id="exampleFormControlSelect1">
-                            <option>1</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option>5</option>
+                        <select class="form-control" id="exampleFormControlSelect1" v-model="waktu_akhir">
+                            <option selected disabled value="">Pilih...</option>
+                            <template v-for="n in 24" v-bind:key="n">
+                                <template v-for="m in 2" v-bind:key="m">
+                                    <template v-if="n < 11">
+                                        <option v-if="m == 1">0{{n-1}}:00</option>
+                                        <option v-if="m == 2">0{{n-1}}:30</option>
+                                    </template>
+                                    <template v-else>
+                                        <option v-if="m == 1">{{n-1}}:00</option>
+                                        <option v-if="m == 2">{{n-1}}:30</option>
+                                    </template>
+                                </template>
+                            </template>
+                        </select>
+                    </div>  
+                </div>
+                <div class="form-row">
+                    <div class="col-12 col-md-6">
+                        <label for="exampleFormControlSelect1">Ruangan*:</label>
+                        <select class="form-control" id="exampleFormControlSelect1" v-model="ruangan">
+                            <option selected disabled value="">Pilih...</option>
+                            <option>Ruangan A</option>
+                        </select>
+                        <p class="note-ruangan note-form text-right">Lihat daftar ruangan disini</p>
+                        <label for="exampleFormControlSelect1">Perulangan*:</label>
+                        <select class="form-control" id="exampleFormControlSelect1" v-model="perulangan">
+                            <option selected disabled value="">Pilih...</option>
+                            <option>Sekali Pakai</option>
+                            <option>Harian</option>
+                            <option>Mingguan</option>
+                            <option>Bulanan</option>
                         </select>
 
+                    </div>
+
+                    <div class="col-12 col-md-6">
+                        <label for="exampleFormControlTextarea1">Keterangan:</label>
+                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="4" v-model="keterangan" placeholder="e.g. Fasilitas yang akan digunakan"></textarea>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-12 col-md-6">
+                        <label for="inputNamaKegiatan">Tanggal Mulai Pelaksanaan*:</label>
+                        <input type="date" class="form-control">
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <label for="inputOrganisasi">Tanggal Akhir Pelaksanaan*:</label>
+                        <input type="date" class="form-control">
+                        <p class="note-form">isi dengan tanggal yang sama dengan tanggal mulai pelaksanaan jika memilih "sekali pakai"</p>
                     </div>  
                 </div>
             </form>
@@ -72,26 +113,15 @@ export default {
     name: 'PeminjamanRuanganUnitKerja',
     data() {
         return {
-            selectHours : [
-                '00:00',
-                '00:30',
-                '01:00',
-                '01:30',
-                '02:00',
-                '02:30',
-                '03:00',
-                '03:30',
-                '04:00',
-                '04:30',
-                '05:00',
-                '05:30',
-                '06:00',
-                '06:30',
-                '07:00',
-                '07:30',
-            ]
+            waktu_mulai : '',
+            waktu_akhir : '',
+            ruangan : '',
+            perulangan : '',
+            keterangan : '',
+
         } 
-    }
+    },
+    
 }
 </script>
 
@@ -118,5 +148,13 @@ label {
 
 .line-header {
     background-color: #BDBDBD ;
+}
+
+.note-form{
+    font-size: 12px;
+}
+
+.note-ruangan{
+    margin-bottom: -16px;
 }
 </style>
