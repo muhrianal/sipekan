@@ -12,5 +12,6 @@ export default {
 #button-setuju {
     width: 107px;
     height:42px;
+    border-radius: 10px !important;
 }
 </style>
