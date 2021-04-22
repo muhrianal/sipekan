@@ -42,8 +42,8 @@
                     <div class="col-12 col-md-6 px-4 py-2">
                         <label>Status:</label>
                         <select class="form-control" id="exampleFormControlSelect1">
-                            <option>Aktif</option>
-                            <option>Nonaktif</option>
+                            <option value="1">Aktif</option>
+                            <option value="2">Nonaktif</option>
                         </select>
                     </div>
                 </div>

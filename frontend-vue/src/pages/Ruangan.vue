@@ -22,30 +22,18 @@
         </tr>
       </thead>
       <tbody id="app">
-        <tr>
-          <th scope="row" class="text-center" >1.</th>
-          <td>Auditorium</td>
-          <td>Ruang Pertemuan</td>
-          <td>Gedung Dekanat Lantai 1</td>
-          <td class="text-center">350</td>
-          <td><a href="/ruangan/detail">Detail</a></td>
+        <tr v-for="(ruang, index) in ruangan" v-bind:key="ruang.id">
+            <th scope="row" class="text-center" >{{ index+1+"." }} </th>
+            <td>{{ ruang.nama }}</td>
+            <td v-if="ruang.jenis_ruang==1">Ruang Pertemuan</td>
+            <td v-if="ruang.jenis_ruang==2">Ruang Kelas</td>
+            <td v-if="ruang.jenis_ruang==3">Ruang Rapat</td>
+            <td v-if="ruang.jenis_ruang==4">Ruang Selasar</td>
+            <td>{{ ruang.lokasi }}</td>
+            <td class="text-center">{{ ruang.kapasitas }}</td>
+            <td><a :href="'/ruangan/'+ruang.id">Detail</a></td>
         </tr>
-        <tr>
-            <th scope="row" class="text-center">2.</th>
-            <td>Aula Student Center</td>
-            <td>Ruang Pertemuan</td>
-            <td>Gedung Student Center Lantai 2</td>
-            <td class="text-center">170</td>
-            <td><a href="/">Detail</a></td>
-        </tr>
-        <tr>
-            <th scope="row" class="text-center">3.</th>
-            <td>B. 301</td>
-            <td>Ruang Kelas</td>
-            <td>Gedung Soenaryo Kolopaking Lantai 1</td>
-            <td class="text-center">40</td>
-            <td><a href="/">Detail</a></td>
-        </tr>
+
       </tbody>
     </table>
     </div>
@@ -53,24 +41,53 @@
 
 
 <script>
-import axios from 'axios';
-    export default {
-        name: 'Ruangans',
-        data() {
-            ruangans: []
-        },
-        mounted: function(){
-            axios.get('http://127.0.0.1:8000/api/ruangan')
-                .then(response => {
-                    this.ruangans = response.data;
-                    console.log(response);
-                })
-                .catch(error => {
-                    console.log(error)
-                });
+import UserService from '../services/user.service';
+export default {
+    name: 'Test',
+    data() {
+        return {
+            ruangan: [],
         }
-    }
+    },
+    created(){
+        console.log("masuk created daftar")
+        UserService.getAllRuangan().then(
+            response => {
+                this.ruangan = response.data;
+            },
+            error => {
+                this.error_message = (error.response && error.response.data) || error.message || error.toString();
+            }
+        )
+    },
+    mounted(){
+        console.log(this.ruangan);
+        console.log(this.error_message);
+    },
+    methods: {
+        postCreateRuangan() {
+            const detail_kegiatan_data =
+            [
+                            {
+                waktu_tanggal_mulai : "XXX"
+            }
+            ]
+            const header_kegiatan = {
+                nama_kegiatan : "Pameran",
+                detail_kegiatan : detail_kegiatan_data
 
+            };
+            UserService.postRuangan(header_kegiatan).then(
+                response => {
+                    console.log(response.data);
+                },
+                error => {
+                    console.log(error.message);
+                }
+            );
+        },
+    }
+}
 </script>
 
 

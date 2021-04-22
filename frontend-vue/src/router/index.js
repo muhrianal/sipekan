@@ -10,6 +10,7 @@ import UbahRuangan from '../pages/UbahRuangan';
 
 
 
+
 const routes = [
   {
     path: "/",
@@ -37,7 +38,7 @@ const routes = [
     component: AddRuangan
   },
   {
-    path: "/ruangan/detail",
+    path: "/ruangan/:id",
     name: "DetailRuangan",
     component: DetailRuangan
   },
@@ -62,7 +63,7 @@ router.beforeEach((to, from, next) =>{
     '/',
     '/ruangan',
     '/ruangan/add',
-    '/ruangan/detail',
+    '/ruangan/5',
     '/ruangan/ubah',
   ];
 

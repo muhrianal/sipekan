@@ -10,13 +10,21 @@ class Ruangan(models.Model):
       (3, 'Ruang Rapat'),
       (4, 'Selasar'),
     )
+
     jenis_ruang = models.PositiveSmallIntegerField(choices=JENIS_RUANG_CHOICES)
     nama = models.CharField(max_length=255)
     kapasitas = models.IntegerField()
     lokasi = models.CharField(max_length=255)
+    fasilitas = models.CharField(max_length=255, default=None, blank=True, null=True)
     waktu_available_mulai = models.DateTimeField()
     waktu_available_akhir = models.DateTimeField()
     informasi_tambahan = models.CharField(max_length=255, default=None, blank=True, null=True)
+    STATUS_RUANG_CHOICES = (
+       (1, 'Aktif'),
+       (2, 'Nonaktif'),
+    )
+    status = models.PositiveSmallIntegerField(default=1, choices=STATUS_RUANG_CHOICES)
+
 
     class Meta:
         app_label = 'main'
