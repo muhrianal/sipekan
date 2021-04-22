@@ -4,6 +4,13 @@ from ..models.izin_kegiatan import IzinKegiatan
 from django.utils import timezone
 
 class Ruangan(models.Model):
+    JENIS_RUANG_CHOICES = (
+      (1, 'Ruang Pertemuan'),
+      (2, 'Ruang Kelas'),
+      (3, 'Ruang Rapat'),
+      (4, 'Selasar'),
+    )
+    jenis_ruang = models.PositiveSmallIntegerField(choices=JENIS_RUANG_CHOICES)
     nama = models.CharField(max_length=255)
     kapasitas = models.IntegerField()
     lokasi = models.CharField(max_length=255)

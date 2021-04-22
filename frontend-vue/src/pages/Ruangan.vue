@@ -1,5 +1,6 @@
+
 <template>
-    <div class="card">
+    <div class="card" id="app">
     <div class="d-flex">
         <div class="mr-auto p-3">
             <h4 class="judul p-1 align-middle" style="font-weight: 500;">Daftar Ruangan</h4>
@@ -20,7 +21,7 @@
 
         </tr>
       </thead>
-      <tbody>
+      <tbody id="app">
         <tr>
           <th scope="row" class="text-center" >1.</th>
           <td>Auditorium</td>
@@ -52,8 +53,27 @@
 
 
 <script>
+import axios from 'axios';
+    export default {
+        name: 'Ruangans',
+        data() {
+            ruangans: []
+        },
+        mounted: function(){
+            axios.get('http://127.0.0.1:8000/api/ruangan')
+                .then(response => {
+                    this.ruangans = response.data;
+                    console.log(response);
+                })
+                .catch(error => {
+                    console.log(error)
+                });
+        }
+    }
 
 </script>
+
+
 <style>
 
 .judul{
