@@ -1,17 +1,23 @@
 import {createRouter, createWebHistory} from 'vue-router';
 
 import Login from '../pages/Login.vue';
+// import Home from '../pages/Home.vue'; 
+import Profile from '../pages/Profile.vue';
+import PeminjamanRuanganUnitKerja from '../pages/UnitKerja/PeminjamanRuanganUnitKerja';
+import Test from '../pages/Test.vue';
 import Home from '../pages/Home.vue'; 
 import Profile from '../pages/Profile.vue';
 import PerizinanKegiatanMahasiswa from '../pages/Mahasiswa/PerizinanKegiatanMahasiswa.vue';
 import PermohonanHumas from '../pages/Mahasiswa/PermohonanHumas.vue';
 
 
+
 const routes = [
   {
     path: "/",
     name: "Home",
-    component: Home
+    component: Test
+
   },
   {
     path: "/login",
@@ -24,6 +30,7 @@ const routes = [
     component: Profile
   },
   {
+
     path: "/buat-perizinan/form-kegiatan",
     name: "Form Izin Kegiatan Mahasiswa",
     component: PerizinanKegiatanMahasiswa,
@@ -33,6 +40,12 @@ const routes = [
     name: "Form Permohonan Humas Mahasiswa",
     component: PermohonanHumas,
   }
+
+    path: "/buat-perizinan/form-ruangan/",
+    name: "Form Peminjaman Ruangan Unit Kerja",
+    component: PeminjamanRuanganUnitKerja,
+  }
+
 ];
 
 
@@ -48,6 +61,7 @@ router.beforeEach((to, from, next) =>{
     '/login',
     '/',
     '/buat-perizinan'
+    '/buat-perizinan/form-ruangan/',
   ];
 
   const authRequired = !publicPages.includes(to.path);

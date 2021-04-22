@@ -17,6 +17,7 @@
 
                 <li v-bind:class="{active : isInHomePage}" >
                     <a class="sidebar-child" href="/buat-perizinan/form-kegiatan">Buat Perizinan</a>
+
                 </li>
 
 
@@ -235,7 +236,8 @@ ul.CTAs a {
 } */
 a.article,
 a.article:hover {
-    background: yellow !important;
+    background: #FFD505 !important;
+
     color: #fff !important;
 }
 /* ---------------------------------------------------
