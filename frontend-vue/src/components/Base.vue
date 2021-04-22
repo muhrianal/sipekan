@@ -16,7 +16,7 @@
                 </li>
 
                 <li v-bind:class="{active : isInHomePage}" >
-                    <a class="sidebar-child" href="/">Buat Perizinan</a>
+                    <a class="sidebar-child" href="/buat-perizinan/form-kegiatan">Buat Perizinan</a>
                 </li>
 
 
@@ -32,7 +32,7 @@
                     <a class="sidebar-child" href="/">Jadwal Tersedia</a>
                 </li>
                 <li v-bind:class="{active : isInHomePage}" >
-                    <a class="sidebar-child" href="/">Daftar Ruangan</a>
+                    <a class="sidebar-child" href="/ruangan">Daftar Ruangan</a>
                 </li>
 
                 <li v-bind:class="{active : isInLoginPage}" >
@@ -77,9 +77,7 @@
 </template>
 <script>
 import Navbar from './Navbar'
-
 import Logout from './auth/Logout'
-
 export default {
     name: 'Base',
     components:{
@@ -101,9 +99,6 @@ export default {
             this.sidebarClosed = !this.sidebarClosed;
             console.log(this.$router.currentRoute._value.href)
         },
-
-
-
         // getting a var from child to get to know that it is the active one
         isInLoginPageFunc(value){
             this.isInLoginPage = value;
@@ -121,13 +116,11 @@ export default {
 /*
     DEMO STYLE
 */
-
 @import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
 body {
     font-family: 'Poppins', sans-serif;
     background: #fafafa;
 }
-
 p {
     font-family: 'Poppins', sans-serif;
     font-size: 1.1em;
@@ -135,7 +128,6 @@ p {
     line-height: 1.7em;
     color: #999;
 }
-
 a,
 a:hover,
 a:focus {
@@ -143,7 +135,6 @@ a:focus {
     text-decoration: none;
     transition: all 0.3s;
 }
-
 .navbar {
     padding: 15px 10px;
     background: #fff;
@@ -152,29 +143,24 @@ a:focus {
     margin-bottom: 40px;
     box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
 }
-
 .navbar-btn {
     box-shadow: none;
     outline: none !important;
     border: none;
 }
-
 .line {
     width: 100%;
     height: 1px;
     border-bottom: 1px dashed #ddd;
     margin: 40px 0;
 }
-
 /* ---------------------------------------------------
     SIDEBAR STYLE
 ----------------------------------------------------- */
-
 .wrapper {
     display: flex;
     width: 100%;
 }
-
 #sidebar {
     width: 250px;
     position: fixed;
@@ -186,53 +172,41 @@ a:focus {
     color:green;
     transition: all 0.3s;
 }
-
 #sidebar.active {
     margin-left: -250px;
 }
-
-
 #sidebar .sidebar-header {
     padding: 20px;
     background: #FFFFFF;
 }
-
 #sidebar ul.components {
     padding: 20px 0;
     border-bottom: 1px solid blanchedalmond;
 }
-
 #sidebar ul p {
     color: #fff;
     padding: 10px;
 }
-
 #sidebar ul li a {
     padding: 10px;
     font-size: 1.1em;
     display: block;
 }
-
 #sidebar ul li a:hover {
     color: black;
     background: #FFD505;
 }
-
 #sidebar ul li.active>a,
 a[aria-expanded="true"] {
     color: black;
     background: #FFD505;
 }
-
 .sidebar-child {
     color: #828282;
 }
-
-
 a[data-toggle="collapse"] {
     position: relative;
 }
-
 .dropdown-toggle::after {
     display: block;
     position: absolute;
@@ -240,17 +214,14 @@ a[data-toggle="collapse"] {
     right: 20px;
     transform: translateY(-50%);
 }
-
 ul ul a {
     font-size: 0.9em !important;
     padding-left: 30px !important;
     background: #6d7fcc;
 }
-
 ul.CTAs {
     padding: 20px;
 }
-
 ul.CTAs a {
     text-align: center;
     font-size: 0.9em !important;
@@ -258,22 +229,18 @@ ul.CTAs a {
     border-radius: 5px;
     margin-bottom: 5px;
 }
-
 /* a.download {
     background: #fff;
     color: #7386D5;
 } */
-
 a.article,
 a.article:hover {
     background: yellow !important;
     color: #fff !important;
 }
-
 /* ---------------------------------------------------
     CONTENT STYLE
 ----------------------------------------------------- */
-
 #content {
     width: calc(100% - 250px);
     padding: 45px;
@@ -284,15 +251,12 @@ a.article:hover {
     right: 0;
     background: #F2F2F2;
 }
-
 #content.active {
     width: 100%;
 }
-
 /* ---------------------------------------------------
     MEDIAQUERIES
 ----------------------------------------------------- */
-
 @media (max-width: 768px) {
     #sidebar {
         margin-left: -250px;
@@ -311,3 +275,16 @@ a.article:hover {
     }
 }
 </style>
+© 2021 GitHub, Inc.
+Terms
+Privacy
+Security
+Status
+Docs
+Contact GitHub
+Pricing
+API
+Training
+Blog
+About
+Loading complete
