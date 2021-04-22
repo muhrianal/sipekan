@@ -1,5 +1,5 @@
 <template>
-    
+<div>
    <Navbar></Navbar>
     <div class="wrapper">
         <!-- Sidebar  -->
@@ -25,7 +25,7 @@
                 </li>
 
                 <li v-bind:class="{active : isInHomePage}" >
-                    <a class="sidebar-child" href="/">Daftar Perizinan</a>
+                    <a class="sidebar-child" href="/izin-kegiatan">Daftar Perizinan</a>
                 </li>
 
                 <li v-bind:class="{active : isInHomePage}" >
@@ -71,9 +71,9 @@
             <!-- <i class="far fa-caret-square-left fa-2x" v-else v-on:click="toggleSidebar"></i> -->
             
             <router-view @inLoginPage="isInLoginPageFunc" @inHomePage="isInHomePageFunc"/>
-            
         </div>
     </div>
+</div>
 </template>
 <script>
 import Navbar from './Navbar'

@@ -3,6 +3,8 @@ import {createRouter, createWebHistory} from 'vue-router';
 import Login from '../pages/Login.vue';
 import Home from '../pages/Home.vue'; 
 import Profile from '../pages/Profile.vue';
+import IzinKegiatan from '../pages/IzinKegiatan.vue';
+import IzinKegiatanVerifikasi from '../pages/IzinKegiatanVerifikasi.vue';
  
 
 
@@ -22,6 +24,16 @@ const routes = [
     name: "Profile",
     component: Profile
   },
+  {
+    path: "/izin-kegiatan",
+    name: "Izin Kegiatan",
+    component: IzinKegiatan
+  },
+  {
+    path: "/izin-kegiatan/detail",
+    name: "Verifikasi Izin Kegiatan",
+    component: IzinKegiatanVerifikasi
+  },
 ];
 
 
@@ -36,6 +48,8 @@ router.beforeEach((to, from, next) =>{
   const publicPages = [
     '/login',
     '/',
+    '/izin-kegiatan',
+    '/izin-kegiatan/detail'
   ];
 
   const authRequired = !publicPages.includes(to.path);
