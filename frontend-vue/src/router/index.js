@@ -1,12 +1,10 @@
 import {createRouter, createWebHistory} from 'vue-router';
 
 import Login from '../pages/Login.vue';
-// import Home from '../pages/Home.vue'; 
 import Profile from '../pages/Profile.vue';
 import PeminjamanRuanganUnitKerja from '../pages/UnitKerja/PeminjamanRuanganUnitKerja';
 import Test from '../pages/Test.vue';
-import Home from '../pages/Home.vue'; 
-import Profile from '../pages/Profile.vue';
+// import Home from '../pages/Home.vue'; 
 
 
 const routes = [
