@@ -5,7 +5,14 @@ const API_URL = 'http://localhost:8080/';
 
 class UserService {
     getPublicContent() {
-        return axios.get(API_URL + 'peminjaman-ruangan/unit-kerja/');
+        return axios.get(API_URL + 'peminjaman-ruangan/unit-kerja/', {headers : authHeader()});
+    }
+    // postTestApi(data){
+    //     return axios.post(API_URL + 'test/', data)
+    // }
+
+    getPhotos(){
+        return axios.get("https://jsonplaceholder.typicode.com/posts");
     }
 }
 
