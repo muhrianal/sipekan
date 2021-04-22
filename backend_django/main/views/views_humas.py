@@ -15,17 +15,11 @@ from rest_framework.authtoken.models import Token
 
 from ..permissions import AllowOnlyAdminFASTUR, AllowOnlyAdminHUMAS, AllowOnlyAdminPKM
 
-# from ..models.peminjaman_ruangan import PeminjamanRuangan
-
-# from ..models.peminjaman_ruangan import Ruangan
-
-from ..models.humas import PerizinanPublikasi, PermintaanProtokoler, PermintaanSouvenir
+from ..models.humas import PerizinanPublikasi, PermintaanProtokoler, PermintaanSouvenir, JenisPublikasi
 
 from ..models.izin_kegiatan import IzinKegiatan
 
-# from ..serializers.peminjaman_ruangan_serializer import PeminjamanRuanganSerializer
-
-from ..serializers.humas_serializer import PermintaanSouvenirSeriliazer,PerizinanPublikasiSerializer,PermintaanProtokolerSerializer, PerizinanKegiatanSerializer
+from ..serializers.humas_serializer import PermintaanSouvenirSeriliazer,PerizinanPublikasiSerializer,PermintaanProtokolerSerializer, PerizinanKegiatanSerializer, JenisPublikasiSerializer
 
 from django.http.response import JsonResponse
 
@@ -68,7 +62,19 @@ def get_post_perizinan_humas(request,id_izin_kegiatan):
     #case for else
     return JsonResponse({'message' : 'invalid API method'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
-# @api_view(['PUT'])
+
+@api_view(['GET'])
+@permission_classes([permissions.AllowAny,]) #nanti diganti jadi mahasiswa
+def get_jenis_publikasi(request):
+    if request.method == 'GET':
+        list_jenis_publikasi = JenisPublikasi.objects.all()
+        list_jenis_publikasi_serialized = JenisPublikasiSerializer(list_jenis_publikasi, many=True)
+        return JsonResponse(list_jenis_publikasi_serialized.data,safe=False)
+    
+    #case for else
+    return JsonResponse({'message' : 'invalid API method'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+#@api_view(['PUT'])
 # @permission_classes([permissions.AllowAny,])
 # def put_perizinan_humas(request,id_izin_kegiatan):
 #     try: 

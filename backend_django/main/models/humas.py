@@ -111,7 +111,21 @@ class PermintaanSouvenir(models.Model):
     )
     nama_penerima_souvenir = models.CharField(max_length=255)
     jabatan_penerima_souvenir = models.CharField(max_length=255)
+    
+    KELAS_CHOICES = (
+        (1, 'Kelas 1'),
+        (2, 'Kelas 2'),
+        (3, 'Kelas 3'),
+    )
+    
+    kelas_penerima_souvenir = models.PositiveSmallIntegerField(choices=KELAS_CHOICES)
 
+    REGION_CHOICES = (
+        (1, 'Dalam Negeri'),
+        (2, 'Luar Negeri'),
+        (3, 'Dalam dan Luar Negeri'),
+    )
+    region = models.PositiveSmallIntegerField(choices=KELAS_CHOICES)
 
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(default=timezone.now)

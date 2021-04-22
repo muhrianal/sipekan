@@ -26,14 +26,16 @@ def get_post_izin_kegiatan_mahasiswa(request):
         perizinan_data_serialized = IzinKegiatanMahasiswaSerializer(data=perizinan_data)
         if perizinan_data_serialized.is_valid():
             perizinan_data_serialized.save()
-            return JsonResponse(perizinan_data_serialized.data,status=status.HTTP_201_CREATED)
+            return JsonResponse(perizinan_data_serialized,status=status.HTTP_201_CREATED)
         return JsonResponse(perizinan_data_serialized.errors, status=status.HTTP_400_BAD_REQUEST)
     
     if request.method == 'GET':
         list_izin_kegiatan_mahasiwa = IzinKegiatan.objects.all()
         list_izin_kegiatan_mahasiwa_serialized = IzinKegiatanMahasiswaSerializer(list_izin_kegiatan_mahasiwa, many=True)
         return JsonResponse(list_izin_kegiatan_mahasiwa_serialized.data, safe=False)
-    return JsonResponse({'message' : 'invalid API method'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+    #case for else
+        return JsonResponse({'message' : 'invalid API method'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
         
 
 
