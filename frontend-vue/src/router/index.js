@@ -5,6 +5,8 @@ import Login from '../pages/Login.vue';
 import Profile from '../pages/Profile.vue';
 import PeminjamanRuanganUnitKerja from '../pages/UnitKerja/PeminjamanRuanganUnitKerja';
 import Test from '../pages/Test.vue';
+import Home from '../pages/Home.vue'; 
+import Profile from '../pages/Profile.vue';
 
 
 const routes = [
@@ -12,6 +14,7 @@ const routes = [
     path: "/",
     name: "Home",
     component: Test
+
   },
   {
     path: "/login",
@@ -28,6 +31,7 @@ const routes = [
     name: "Form Peminjaman Ruangan Unit Kerja",
     component: PeminjamanRuanganUnitKerja,
   }
+
 ];
 
 
@@ -43,6 +47,7 @@ router.beforeEach((to, from, next) =>{
     '/login',
     '/',
     '/buat-perizinan/form-ruangan/',
+
   ];
 
   const authRequired = !publicPages.includes(to.path);
