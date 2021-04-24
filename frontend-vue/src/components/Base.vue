@@ -12,7 +12,7 @@
             <ul class="list-unstyled components">
                 <!-- <p>Dummy Heading</p> -->
                 <li v-bind:class="{active : isInHomePage}" >
-                    <a class="sidebar-child" href="/">Status Perizinan</a>
+                    <a class="sidebar-child" href="/perizinan">Status Perizinan</a>
                 </li>
 
                 <li v-bind:class="{active : isInHomePage}" >

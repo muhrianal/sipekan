@@ -24,7 +24,15 @@ class UserService {
     }
 
     putRuangan(id, data) {
-        return axios.put(API_URL + 'api/ruangan/' + id, data)
+        return axios.put(API_URL + 'api/ruangan/' + id +'/', data)
+    }
+
+    deleteRuangan(id){
+        return axios.delete(API_URL + 'api/ruangan/' + id)
+    }
+
+    getAllPerizinan() {
+        return axios.get(API_URL + 'api/list-perizinan/')
     }
 
 }

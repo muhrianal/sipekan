@@ -49,7 +49,7 @@
                 <div class="form-row">
                     <div class="col-12 col-md-6 px-4 py-2">
                         <label>Kapasitas:</label>
-                        <input type="text" class="form-control" placeholder="e.g. Kelas Administrasi Bisnis" readonly>
+                        <input type="text" class="form-control" :placeholder="ruangan.kapasitas" readonly>
                     </div>
                     <div class="col-12 col-md-6 px-4 py-2">
                     </div>
@@ -63,10 +63,10 @@
 
                 </div>
                <div class="p-2">
-                    <a href="/ruangan" class="btn hapus" style="padding:3px 20px;font-size:16px;"> Hapus</a>
+                    <button href="/ruangan" class="btn hapus" v-on:click="hapusRuangan" style="padding:3px 20px;font-size:16px;"> Hapus</button>
                </div>
               <div class="p-2 pr-4">
-              <a href="/ruangan/ubah" class="btn ubah" style="padding:3px 20px;font-size:16px;"> Ubah</a>
+              <a :href="'/ruangan/ubah/'+ ruangan.id" class="btn ubah" style="padding:3px 20px;font-size:16px;"> Ubah</a>
               </div>
             </div>
 
@@ -76,7 +76,7 @@
 <script>
 import UserService from '../services/user.service';
 export default {
-    name: 'Test',
+    name: 'DetailRuangan',
     data() {
         return {
             ruangan: "",
@@ -100,21 +100,11 @@ export default {
         console.log(this.error_message);
     },
     methods: {
-        postCreateRuangan() {
-            const detail_kegiatan_data =
-            [
-                            {
-                waktu_tanggal_mulai : "XXX"
-            }
-            ]
-            const header_kegiatan = {
-                nama_kegiatan : "Pameran",
-                detail_kegiatan : detail_kegiatan_data
-
-            };
-            UserService.postRuangan(header_kegiatan).then(
+        hapusRuangan() {
+            UserService.deleteRuangan(this.$route.params.id).then(
                 response => {
                     console.log(response.data);
+                    console.log("ruangan berhasil dihapus");
                 },
                 error => {
                     console.log(error.message);

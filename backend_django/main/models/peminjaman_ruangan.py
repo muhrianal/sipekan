@@ -16,14 +16,14 @@ class Ruangan(models.Model):
     kapasitas = models.IntegerField()
     lokasi = models.CharField(max_length=255)
     fasilitas = models.CharField(max_length=255, default=None, blank=True, null=True)
-    waktu_available_mulai = models.DateTimeField()
-    waktu_available_akhir = models.DateTimeField()
+    waktu_available_mulai = models.DateTimeField(blank=True, null=True)
+    waktu_available_akhir = models.DateTimeField(blank=True, null=True)
     informasi_tambahan = models.CharField(max_length=255, default=None, blank=True, null=True)
     STATUS_RUANG_CHOICES = (
        (1, 'Aktif'),
        (2, 'Nonaktif'),
     )
-    status = models.PositiveSmallIntegerField(default=1, choices=STATUS_RUANG_CHOICES)
+    status = models.PositiveSmallIntegerField(default=1, choices=STATUS_RUANG_CHOICES, blank=True, null=True )
 
 
     class Meta:

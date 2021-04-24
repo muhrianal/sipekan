@@ -37,13 +37,14 @@
       </tbody>
     </table>
     </div>
+    <p>{{ruangan[0].nama}}</p>
 </template>
 
 
 <script>
 import UserService from '../services/user.service';
 export default {
-    name: 'Test',
+    name: 'Ruangan',
     data() {
         return {
             ruangan: [],
@@ -64,29 +65,6 @@ export default {
         console.log(this.ruangan);
         console.log(this.error_message);
     },
-    methods: {
-        postCreateRuangan() {
-            const detail_kegiatan_data =
-            [
-                            {
-                waktu_tanggal_mulai : "XXX"
-            }
-            ]
-            const header_kegiatan = {
-                nama_kegiatan : "Pameran",
-                detail_kegiatan : detail_kegiatan_data
-
-            };
-            UserService.postRuangan(header_kegiatan).then(
-                response => {
-                    console.log(response.data);
-                },
-                error => {
-                    console.log(error.message);
-                }
-            );
-        },
-    }
 }
 </script>
 

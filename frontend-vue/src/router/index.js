@@ -7,6 +7,7 @@ import Ruangan from '../pages/Ruangan';
 import AddRuangan from '../pages/AddRuangan';
 import DetailRuangan from '../pages/DetailRuangan';
 import UbahRuangan from '../pages/UbahRuangan';
+import StatusPerizinan from '../pages/StatusPerizinan';
 
 
 
@@ -43,9 +44,14 @@ const routes = [
     component: DetailRuangan
   },
   {
-    path: "/ruangan/ubah",
+    path: "/ruangan/ubah/:id",
     name: "UbahRuangan",
     component: UbahRuangan
+  },
+  {
+    path: "/perizinan",
+    name: "StatusPerizinan",
+    component: StatusPerizinan
   },
 ];
 
@@ -63,8 +69,9 @@ router.beforeEach((to, from, next) =>{
     '/',
     '/ruangan',
     '/ruangan/add',
-    '/ruangan/5',
-    '/ruangan/ubah',
+    '/ruangan/15',
+    '/ruangan/ubah/15',
+    '/perizinan',
   ];
 
   const authRequired = !publicPages.includes(to.path);

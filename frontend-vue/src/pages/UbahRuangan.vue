@@ -10,16 +10,16 @@
                 <div class="form-row">
                     <div class="col-12 col-md-6 px-4 py-2">
                         <label>Jenis Ruangan:</label>
-                        <select class="form-control" id="exampleFormControlSelect1">
-                            <option>Ruang Pertemuan</option>
-                            <option>Ruang Kelas</option>
-                            <option>Ruang Rapat</option>
-                            <option>Selasar</option>
+                        <select class="form-control" id="exampleFormControlSelect1" v-model="jenis_ruang">
+                            <option value="1">Ruang Pertemuan</option>
+                            <option value="2">Ruang Kelas</option>
+                            <option value="3">Ruang Rapat</option>
+                            <option value="4">Selasar</option>
                         </select>
                     </div>
                     <div class="col-12 col-md-6 px-4 py-2">
                         <label>Fasilitas:</label>
-                        <input type="text" class="form-control" placeholder="e.g. AC, proyektor, sound system, white board, sofa">
+                        <input type="text" class="form-control" v-model="fasilitas" placeholder="e.g. AC, proyektor, sound system, white board, sofa">
                     </div>
 
                 </div>
@@ -27,21 +27,21 @@
                 <div class="form-row">
                     <div class="col-12 col-md-6 px-4 py-2">
                         <label>Nama Ruangan:</label>
-                        <input type="text" class="form-control" placeholder="e.g. Auditorium">
+                        <input type="text" class="form-control" v-model="nama" placeholder="e.g. Auditorium">
                     </div>
                     <div class="col-12 col-md-6 px-4 py-2">
-                        <label>Keterangan:</label>
-                        <input type="text" class="form-control" placeholder="e.g. Gedung Dekanat Lantai 1">
+                        <label>Informasi Tambahan:</label>
+                        <input type="text" class="form-control" v-model="informasi_tambahan" placeholder="e.g. Gedung Dekanat Lantai 1">
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="col-12 col-md-6 px-4 py-2">
                         <label>Lokasi:</label>
-                        <input type="text" class="form-control" placeholder="e.g. Kelas Administrasi Bisnis">
+                        <input type="text" class="form-control" v-model="lokasi" placeholder="e.g. Kelas Administrasi Bisnis">
                     </div>
                     <div class="col-12 col-md-6 px-4 py-2">
                         <label>Status:</label>
-                        <select class="form-control" id="exampleFormControlSelect1">
+                        <select class="form-control" id="exampleFormControlSelect1" v-model="status">
                             <option value="1">Aktif</option>
                             <option value="2">Nonaktif</option>
                         </select>
@@ -50,7 +50,7 @@
                 <div class="form-row">
                     <div class="col-12 col-md-6 px-4 py-2">
                         <label>Kapasitas:</label>
-                        <input type="text" class="form-control" placeholder="e.g. Kelas Administrasi Bisnis">
+                        <input type="text" class="form-control" v-model="kapasitas" placeholder="e.g. Kelas Administrasi Bisnis">
                     </div>
                     <div class="col-12 col-md-6 px-4 py-2">
                     </div>
@@ -58,25 +58,87 @@
 
 
             </form>
+            <div class="d-flex" style="margin-top:100px">
+                        <div class="mr-auto">
+
+                        </div>
+                        <div class="p-2">
+                            <a href="/ruangan/detail" class="btn batal" style="padding:3px 20px;font-size:16px;"> Batal</a>
+                        </div>
+                        <div class="p-2 pr-4">
+                            <button href="/ruangan" class="btn simpan" v-on:click="putEditRuangan" style="padding:3px 20px;font-size:16px;"> Simpan</button>
+                        </div>
+
+                        </div>
         </div>
-        <div class="d-flex" style="margin-top:100px">
-            <div class="mr-auto">
 
-            </div>
-            <div class="p-2">
-                <a href="/ruangan/detail" class="btn batal" style="padding:3px 20px;font-size:16px;"> Batal</a>
-            </div>
-            <div class="p-2 pr-4">
-                <a href="/ruangan" class="btn simpan" style="padding:3px 20px;font-size:16px;"> Simpan</a>
-            </div>
-
-            </div>
 
     </div>
 </template>
 
 <script>
+import UserService from '../services/user.service';
+export default {
+    name: 'EditRuangan',
+    data() {
+        return {
+            ruangan: [],
+            error_messase: "",
+            jenis_ruang: "",
+            nama: "",
+            kapasitas: "",
+            fasilitas: "",
+            lokasi: "",
+            informasi_tambahan: "",
+            waktu_available_mulai: "",
+            waktu_available_akhir: "",
+            status:"",
+        }
+    },
+    created(){
+        console.log("masuk created daftar")
+        UserService.getAllRuangan().then(
+            response => {
+                this.ruangan = response.data;
+            },
+            error => {
+                this.error_message = (error.response && error.response.data) || error.message || error.toString();
+            }
+        )
+    },
+    mounted(){
+        console.log(this.ruangan);
+        console.log(this.error_message);
+    },
+    methods: {
+        putEditRuangan() {
+            console.log("masuk put ruangan");
+            console.log(this.$route.params.id);
 
+            const data_put = {
+                id: this.$route.params.id,
+                jenis_ruang: this.jenis_ruang,
+                nama: this.nama,
+                kapasitas: this.kapasitas,
+                fasilitas: this.fasilitas,
+                lokasi: this.lokasi,
+                informasi_tambahan: this.informasi_tambahan,
+                waktu_available_mulai: "2021-04-21T21:50:41+07:00",
+                waktu_available_akhir: "2022-04-21T21:50:48+07:00",
+                status: this.status,
+            };
+            console.log(data_put);
+            UserService.putRuangan(this.$route.params.id, data_put).then(
+                response => {
+                    console.log(response.data);
+                },
+                error => {
+                    console.log(error.message);
+                }
+        );
+        }
+    }
+}
 </script>
 
 <style>
