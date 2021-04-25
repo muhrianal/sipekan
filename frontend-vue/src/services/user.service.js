@@ -27,6 +27,19 @@ class UserService {
         return axios.put(API_URL + 'api/ruangan/' + id, data)
     }
     
+
+    //rian's code
+    postPerizinanRuanganUnitKerja(data){
+        return axios.post(API_URL + 'peminjaman-ruangan/unit-kerja/', data)
+    }
+
+    getListPerizinanFastur(){
+        return axios.get(API_URL + 'peminjaman-ruangan/verifikasi-fastur/')
+    }
+
+    getPeminjamanRuanganByIdIzinKegiatan(id){
+        return axios.get(API_URL + 'peminjaman-ruangan/verifikasi-fastur/' + id + '/')
+    }
 }
 
 export default new UserService();

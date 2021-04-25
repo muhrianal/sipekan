@@ -3,16 +3,27 @@ import {createRouter, createWebHistory} from 'vue-router';
 import Login from '../pages/Login.vue';
 import Profile from '../pages/Profile.vue';
 import PeminjamanRuanganUnitKerja from '../pages/UnitKerja/PeminjamanRuanganUnitKerja';
-import Test from '../pages/Test.vue';
-// import Home from '../pages/Home.vue'; 
+import Home from '../pages/Home.vue'; 
+import DaftarPerizinanRuangan from '../pages/AdminFastur/DaftarPerizinanRuangan';
+import DetailPerizinanRuangan from '../pages/AdminFastur/DetailPerizinanRuangan'
 
 
 const routes = [
   {
     path: "/",
     name: "Home",
-    component: Test
+    component: Home
 
+  },
+  {
+    path: "/perizinan-fastur/:id",
+    name: "DetailPerizinanRuangan",
+    component: DetailPerizinanRuangan,
+  },
+  {
+    path:"/perizinan-fastur",
+    name:"DaftarPerizinanRuangan",
+    component: DaftarPerizinanRuangan,
   },
   {
     path: "/login",
@@ -45,6 +56,7 @@ router.beforeEach((to, from, next) =>{
     '/login',
     '/',
     '/buat-perizinan/form-ruangan/',
+    "/perizinan-fastur",
 
   ];
 
