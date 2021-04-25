@@ -5,8 +5,9 @@ import Login from '../pages/Login.vue';
 import Profile from '../pages/Profile.vue';
 import PeminjamanRuanganUnitKerja from '../pages/UnitKerja/PeminjamanRuanganUnitKerja';
 import Test from '../pages/Test.vue';
-import Home from '../pages/Home.vue'; 
-import Profile from '../pages/Profile.vue';
+import JadwalTersedia from '../pages/JadwalTersedia.vue';
+// import Home from '../pages/Home.vue'; 
+// import Profile from '../pages/Profile.vue';
 
 
 const routes = [
@@ -30,6 +31,11 @@ const routes = [
     path: "/buat-perizinan/form-ruangan/",
     name: "Form Peminjaman Ruangan Unit Kerja",
     component: PeminjamanRuanganUnitKerja,
+  },
+  {
+    path: "/jadwal-tersedia/",
+    name: "Jadwal Tersedia",
+    component: JadwalTersedia,
   }
 
 ];
@@ -47,6 +53,7 @@ router.beforeEach((to, from, next) =>{
     '/login',
     '/',
     '/buat-perizinan/form-ruangan/',
+    '/jadwal-tersedia',
 
   ];
 
