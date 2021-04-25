@@ -15,8 +15,13 @@ from ..models.profile import Profile
 from ..models.peminjaman_ruangan import PeminjamanRuangan
 from ..models.peminjaman_ruangan import Ruangan
 from ..models.izin_kegiatan import IzinKegiatan
-from ..serializers.peminjaman_ruangan_serializer import PeminjamanRuanganUnitKerjaSerializer, IzinKegiatanUnitKerjaSerializer, PeminjamanRuanganMahasiswaSerializer
+from ..serializers.peminjaman_ruangan_serializer import PeminjamanRuanganUnitKerjaSerializer, IzinKegiatanUnitKerjaSerializer
 from django.http.response import JsonResponse
+
+from ..serializers.peminjaman_ruangan_serializer import PeminjamanRuanganSerializer
+from ..serializers.kalender_serializer import KalenderSerializer
+from ..serializers.peminjaman_ruangan_serializer import PeminjamanRuanganSerializer, RuanganSerializer
+from ..serializers.peminjaman_ruangan_serializer import PeminjamanRuanganMahasiswaSerializer
 
 
 @api_view(['PUT',])
@@ -39,6 +44,91 @@ def update_peminjaman_ruangan_by_id_peminjaman_ruangan(request, id_peminjaman):
         return JsonResponse(peminjaman_ruangan_serialized.errors, status=status.HTTP_400_BAD_REQUEST) 
     
     #case for else
+    data = {
+        'message' : 'invalid API call'
+    }
+    return Response(data=data, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET'])
+@permission_classes([permissions.AllowAny,])
+def list_jadwal(request):
+
+    if request.method == 'GET':
+        list_jadwal = PeminjamanRuangan.objects.all()
+        list_jadwal_serialized = KalenderSerializer(list_jadwal, many=True)
+        return JsonResponse(list_jadwal_serialized.data, safe=False)
+    
+    #case for else
+    data = {
+        'message' : 'invalid API call'
+    }
+    return Response(data=data, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+@permission_classes([permissions.AllowAny,])
+def list_peminjaman_ruangan(request):
+
+    if request.method == 'GET':
+        list_peminjaman_ruangan = PeminjamanRuangan.objects.all()
+        peminjaman_ruangan_serialized = PeminjamanRuanganSerializer(list_peminjaman_ruangan, many=True)
+        return JsonResponse(peminjaman_ruangan_serialized.data, safe=False)
+
+    #case for else
+    data = {
+        'message' : 'invalid API call'
+    }
+    return Response(data=data, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET', 'POST'])
+@permission_classes([permissions.AllowAny,])
+def list_ruangan(request):
+    if request.method == 'GET':
+        daftar_ruangan = Ruangan.objects.all()
+        ruangans_serialized = RuanganSerializer(daftar_ruangan, many= True)
+        return JsonResponse(ruangans_serialized.data, safe=False)
+#     data = {
+#             'message' : 'invalid API call'
+#         }
+#     return Response(data=data, status=status.HTTP_400_BAD_REQUEST)
+
+    elif request.method == 'POST':
+        ruang_data = JSONParser().parse(request)
+        ruang_serializer = RuanganSerializer(data=ruang_data)
+        if ruang_serializer.is_valid():
+            ruang_serializer.save()
+            return JsonResponse(ruang_serializer.data, status=status.HTTP_201_CREATED)
+        data = {
+                    'message' : 'invalid API call'
+                }
+    return Response(data=data, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET','PUT', 'DELETE'])
+@permission_classes([permissions.AllowAny,])
+def detail_ruangan(request,pk):
+    try:
+        ruangan = Ruangan.objects.get(pk=pk)
+    except Ruangan.DoesNotExist:
+        return JsonResponse({'message': 'Ruangan tidak ada'}, status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        ruangan_serialized = RuanganSerializer(ruangan)
+        return JsonResponse(ruangan_serialized.data, safe=False)
+#     data = {
+#             'message' : 'invalid API call'
+#         }
+#     return Response(data=data, status=status.HTTP_400_BAD_REQUEST)
+    elif request.method == 'PUT':
+            ruangan_data = JSONParser().parse(request)
+            ruangan_serializer = RuanganSerializer(ruangan, data=ruangan_data)
+            if ruangan_serializer.is_valid():
+                ruangan_serializer.save()
+                return JsonResponse(ruangan_serializer.data)
+            return JsonResponse(ruangan_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    elif request.method == 'DELETE':
+        ruangan.delete()
+        return JsonResponse({'messagee': 'Ruangan berhasil dihapus'}, status=status.HTTP_204_NO_CONTENT)
+#         #do something untuk request DELETE, misal hapus izin kegiatan yang sudah ada
     return JsonResponse({'message' : 'invalid API method'}, status=status.HTTP_405_METHOD_NOT_ALLOWED) 
  
 @api_view(['POST','GET'])
@@ -61,7 +151,7 @@ def get_post_peminjaman_ruangan_unit_kerja(request):
     return JsonResponse({'message' : 'invalid API method'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
 @api_view(['POST'])
-@permission_classes([permissions.AllowAny,])
+@permission_classes([permissions.AllowAny,]) #nanti diganti jadi mahasiswa
 def post_peminjaman_ruangan_mahasiswa(request, id_izin_kegiatan):
     try: 
         izin_kegiatan =IzinKegiatan.objects.get(pk=id_izin_kegiatan)
@@ -78,3 +168,4 @@ def post_peminjaman_ruangan_mahasiswa(request, id_izin_kegiatan):
     
     #case for else
     return JsonResponse({'message' : 'invalid API method'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+

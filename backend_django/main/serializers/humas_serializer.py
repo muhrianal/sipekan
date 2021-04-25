@@ -1,6 +1,6 @@
 from rest_framework import serializers 
 
-from ..models.humas import PerizinanPublikasi,PermintaanSouvenir,PermintaanProtokoler, JenisPublikasi
+from ..models.humas import PerizinanPublikasi,PermintaanSouvenir,PermintaanProtokoler, JenisPublikasi, Souvenir
 
 from ..models.izin_kegiatan import IzinKegiatan
 
@@ -58,16 +58,10 @@ class PerizinanKegiatanSerializer(serializers.ModelSerializer):
         
         return izin_kegiatan    
 
-# class HumasSerializer(serializers.ModelSerializer):
-#     perizinan_publikasi = PerizinanPublikasiSerializer(required=False)
-#     permintaan_protokoler = PermintaanProtokolerSerializer(required=False)
-#     permintaan_souvenir = PermintaanSouvenirSeriliazer(many=True, required=False)
+class SouvenirSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Souvenir
+        fields = '__all__'
 
-#     class Meta:
-#         model = PerizinanPublikasi, Perizinan
-#         fields = ('id', 'nama_kegiatan', 'organisasi', 'user', 'status_perizinan_kegiatan', 
-#         'perizinan_publikasi', 'permintaan_souvenir', 'permintaan_protokoler')
-    
-#     def update()
     
 

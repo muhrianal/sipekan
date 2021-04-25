@@ -15,11 +15,11 @@ from rest_framework.authtoken.models import Token
 
 from ..permissions import AllowOnlyAdminFASTUR, AllowOnlyAdminHUMAS, AllowOnlyAdminPKM
 
-from ..models.humas import PerizinanPublikasi, PermintaanProtokoler, PermintaanSouvenir, JenisPublikasi
+from ..models.humas import PerizinanPublikasi, PermintaanProtokoler, PermintaanSouvenir, JenisPublikasi, Souvenir
 
 from ..models.izin_kegiatan import IzinKegiatan
 
-from ..serializers.humas_serializer import PermintaanSouvenirSeriliazer,PerizinanPublikasiSerializer,PermintaanProtokolerSerializer, PerizinanKegiatanSerializer, JenisPublikasiSerializer
+from ..serializers.humas_serializer import PermintaanSouvenirSeriliazer,PerizinanPublikasiSerializer,PermintaanProtokolerSerializer, PerizinanKegiatanSerializer, JenisPublikasiSerializer,SouvenirSerializer
 
 from django.http.response import JsonResponse
 
@@ -52,7 +52,7 @@ def get_post_perizinan_humas(request,id_izin_kegiatan):
         permintaan_humas_serialized = PerizinanKegiatanSerializer(izin_kegiatan, data = permintaan_data)
         if permintaan_humas_serialized.is_valid():
             permintaan_humas_serialized.save()
-            return JsonResponse(permintaan_humas_serialized.data)
+            return JsonResponse(permintaan_humas_serialized.data,safe=False)
         return JsonResponse(permintaan_humas_serialized.errors, status = status.HTTP_400_BAD_REQUEST)
 
     if request.method == 'GET':
@@ -64,15 +64,30 @@ def get_post_perizinan_humas(request,id_izin_kegiatan):
 
 
 @api_view(['GET'])
-@permission_classes([permissions.AllowAny,]) #nanti diganti jadi mahasiswa
+@permission_classes([permissions.AllowAny,]) #nanti diganti jadi mahasiswa dan unit kerja
 def get_jenis_publikasi(request):
     if request.method == 'GET':
         list_jenis_publikasi = JenisPublikasi.objects.all()
         list_jenis_publikasi_serialized = JenisPublikasiSerializer(list_jenis_publikasi, many=True)
+        print(list_jenis_publikasi)
+        print(list_jenis_publikasi_serialized.data)
         return JsonResponse(list_jenis_publikasi_serialized.data,safe=False)
     
     #case for else
     return JsonResponse({'message' : 'invalid API method'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+@api_view(['GET'])
+@permission_classes([permissions.AllowAny,]) #nanti diganti jadi mahasiswa dan unit kerja
+def get_list_souvenir(request):
+    if request.method == 'GET':
+        list_souvenir = Souvenir.objects.all()
+        list_souvenir_serialized = SouvenirSerializer(list_souvenir, many=True)
+        print(list_souvenir)
+        return JsonResponse(list_souvenir_serialized.data,safe=False)
+    
+    #case for else
+    return JsonResponse({'message' : 'invalid API method'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
 
 #@api_view(['PUT'])
 # @permission_classes([permissions.AllowAny,])

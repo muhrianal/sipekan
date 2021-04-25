@@ -15,18 +15,22 @@ from ..models.profile import Profile
 
 from django.http.response import JsonResponse
 from ..models.izin_kegiatan import IzinKegiatan, DetailKegiatan
-from ..serializers.izin_kegiatan_serializer import IzinKegiatanMahasiswaSerializer
+from ..serializers.izin_kegiatan_mahasiswa_serializer import IzinKegiatanMahasiswaSerializer
 from django.http.response import JsonResponse
+# from rest_framework.decorators import parser_classes
+# from rest_framework.parsers import MultiPartParser
 
 @api_view(['POST', 'GET'])
 @permission_classes([permissions.AllowAny,]) #nanti diganti jadi mahasiswa
+# @parser_classes([MultiPartParser])
 def get_post_izin_kegiatan_mahasiswa(request):
     if request.method == 'POST':
+        # perizinan_data = MultiPartParser().parse(request)
         perizinan_data = JSONParser().parse(request)
         perizinan_data_serialized = IzinKegiatanMahasiswaSerializer(data=perizinan_data)
         if perizinan_data_serialized.is_valid():
             perizinan_data_serialized.save()
-            return JsonResponse(perizinan_data_serialized,status=status.HTTP_201_CREATED)
+            return JsonResponse(perizinan_data_serialized.data,status=status.HTTP_201_CREATED,safe=False)
         return JsonResponse(perizinan_data_serialized.errors, status=status.HTTP_400_BAD_REQUEST)
     
     if request.method == 'GET':

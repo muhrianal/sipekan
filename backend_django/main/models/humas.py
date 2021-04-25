@@ -12,6 +12,14 @@ class PermintaanProtokoler(models.Model):
     )
 
     deskripsi_kebutuhan = models.CharField(max_length=500)
+    alasan_penolakan = models.CharField(max_length=500, default=None, blank=True, null=True)
+    STATUS_CHOICES = (
+      (1, 'Menunggu Persetujuan'),
+      (2, 'Disetujui'),
+      (3, 'Ditolak'),
+    )
+    status_permintaan_protokoler = models.PositiveSmallIntegerField(choices=STATUS_CHOICES)
+
 
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(default=timezone.now)
@@ -75,7 +83,7 @@ class Souvenir(models.Model):
     )
 
     kelas = models.PositiveSmallIntegerField(choices=KELAS_CHOICES)
-    
+
     REGION_CHOICES = (
         (1, 'Dalam Negeri'),
         (2, 'Luar Negeri'),
@@ -132,5 +140,3 @@ class PermintaanSouvenir(models.Model):
     
     class Meta:
         app_label = 'main'
-
-    

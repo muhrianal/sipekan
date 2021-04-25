@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from .izin_kegiatan import IzinKegiatan
+from ..models.izin_kegiatan import IzinKegiatan
 from django.utils import timezone
 
 class Ruangan(models.Model):
@@ -18,9 +18,9 @@ class Ruangan(models.Model):
 class PeminjamanRuangan(models.Model):
     judul_peminjaman = models.CharField(max_length=255)
     izin_kegiatan = models.ForeignKey(
-        IzinKegiatan,
-        on_delete=models.CASCADE,
-        related_name="subkegiatan"
+        IzinKegiatan, related_name='peminjaman_ruangan',
+        on_delete=models.CASCADE
+
     )
 
     STATUS_CHOICES = (

@@ -1,25 +1,27 @@
 from rest_framework import serializers 
-
 from ..models.peminjaman_ruangan import PeminjamanRuangan
+from ..models.peminjaman_ruangan import Ruangan
 from ..models.izin_kegiatan import IzinKegiatan
-
 
 class PeminjamanRuanganUnitKerjaSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = PeminjamanRuangan
-        fields = (
-            'id', 
-            'created_at', 
-            'updated_at', 
-            'alasan_penolakan',
-            'judul_peminjaman', 
-            'status_peminjaman_ruangan', 
-            'waktu_mulai', 
-            'waktu_akhir', 
-            'catatan', 
-            'ruangan'
-        )
+
+        fields = '__all__'
+
+class PeminjamanRuanganSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = PeminjamanRuangan
+        fields = '__all__'
+
+class RuanganSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Ruangan
+        fields = '__all__'
+
 
 
 class IzinKegiatanUnitKerjaSerializer(serializers.ModelSerializer):
@@ -37,16 +39,16 @@ class IzinKegiatanUnitKerjaSerializer(serializers.ModelSerializer):
         return izin_kegiatan
 
 class PeminjamanRuanganMahasiswaSerializer(serializers.ModelSerializer):
-    subkegiatan = PeminjamanRuanganUnitKerjaSerializer(many=True)
+    peminjaman_ruangan = PeminjamanRuanganUnitKerjaSerializer(many=True)
 
     class Meta: 
         model = IzinKegiatan
-        fields = ('id', 'nama_kegiatan', 'organisasi', 'user', 'status_perizinan_kegiatan', 'subkegiatan')
+        fields = ('id', 'nama_kegiatan', 'organisasi', 'user', 'status_perizinan_kegiatan', 'peminjaman_ruangan')
 
     def update(self,izin_kegiatan,validated_data):
-        subkegiatan_data = validated_data.pop('subkegiatan')
-        for subkegiatan in subkegiatan_data:
-            PeminjamanRuangan.objects.create(izin_kegiatan=izin_kegiatan, **subkegiatan)
+        print(izin_kegiatan)
+        subkegiatan_data = validated_data.pop('peminjaman_ruangan')
+        for peminjaman_ruangan in subkegiatan_data:
+            PeminjamanRuangan.objects.create(**peminjaman_ruangan)
         return izin_kegiatan
      
-

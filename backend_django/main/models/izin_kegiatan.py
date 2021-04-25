@@ -1,5 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
+# from ..models.peminjaman_ruangan import PeminjamanRuangan
+# from ..models.humas import PermintaanProtokoler, PerizinanPublikasi, PermintaanSouvenir
+
 from django.utils import timezone
 class IzinKegiatan(models.Model):
     nama_kegiatan = models.CharField(max_length=255)
@@ -22,7 +25,7 @@ class IzinKegiatan(models.Model):
 
 
 class DetailKegiatan(models.Model):
-    izin_kegiatan = models.ForeignKey(
+    izin_kegiatan = models.OneToOneField(
         IzinKegiatan,
         on_delete=models.CASCADE,
         related_name="detail_kegiatan"
@@ -33,6 +36,7 @@ class DetailKegiatan(models.Model):
     email_pic = models.EmailField()
     nama_pic = models.CharField(max_length=255)
     hp_pic = models.CharField(max_length=255)
+    npm_pic = models.CharField(max_length=255)
     npm_ketua_organisasi = models.CharField(max_length=255)
     nama_ketua_organisasi = models.CharField(max_length=255)
     tempat_pelaksanaan = models.CharField(max_length=255)
