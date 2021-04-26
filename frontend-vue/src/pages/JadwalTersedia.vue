@@ -12,27 +12,28 @@
                         <label for="exampleFormControlSelect1">Ruangan*:</label>
                         <select class="form-control" id="exampleFormControlSelect1" v-model="ruangan" @click="listAll">
                             <option selected disabled value="">Pilih...</option>
-                            <template v-for="i in ruangan">
-                                <option v-bind:key="i">{{i.nama}}</option>
+                            <option>Ruangan A</option>
+                            <template v-for="i in ruangan" v-bind:key="i.id" >
+                                <option v-bind:value="i.nama">{{i.nama}}</option>
                             </template>
+                            
                         </select>
-                        <p class="note-ruangan note-form text-right">Lihat daftar ruangan disini</p>
 
                     </div>
+                   
+                    <div class="col-12 col-md-6">
+                        <label for="exampleFormControlSelect1">Periode:</label>
+                        <select class="form-control" id="exampleFormControlSelect1" v-model="displayPeriodUom">
+                            <option value="week">Mingguan</option>
+                            <option value="month">Bulanan</option>
+                            <option value="year">Tahunan</option>
+                        </select>
+                    </div>
+
+                    
                 </div>
                 <br>
                 <br>
-                <!-- <div id="app">
-                    <calendar-view
-                        :show-date="showDate"
-                        class="theme-default holiday-us-traditional holiday-us-official">
-                        <template #header="{ headerProps }">
-                            <calendar-view-header
-                                :header-props="headerProps"
-                                @input="setShowDate" />
-                        </template>
-                    </calendar-view>
-                </div> -->
                 <div id="app">
                     <calendar-view
                         :show-date="showDate"
@@ -42,23 +43,28 @@
                         :selection-start="selectionStart"
                         :selection-end="selectionEnd"
                         :displayWeekNumbers="false"
+                        :display-period-uom="displayPeriodUom"
                         :itemTop="themeOptions.top"
                         :itemContentHeight="themeOptions.height"
                         :itemBorderHeight="themeOptions.border"
                         :class="`theme-` + theme"
                         :currentPeriodLabel="themeOptions.currentPeriodLabel"
+                        :period-changed-callback="periodChanged"
                         @date-selection-start="setSelection"
                         @date-selection="setSelection"
                         @date-selection-finish="finishSelection"
                         @click-date= "onClickDate"
+                        @click-item="onClickItem"
                         class="holiday-us-traditional holiday-us-official"
                     >
                         <template #header="{ headerProps }">
                             <calendar-view-header
                                 :header-props="headerProps"
                                 
+                                
                                 @input="setShowDate" />
                         </template>
+                        
                     </calendar-view>
                 </div>
             </form>
@@ -71,23 +77,41 @@
 <script>
 import { CalendarView, CalendarViewHeader } from "vue-simple-calendar";
 import "vue-simple-calendar/dist/style.css";
-// 	// The next two lines are optional themes
 
 import UserService from "../services/user.service";
 
 export default {
 		name: 'JadwalTersedia',
 		data: function() {
-		// 	return { showDate: new Date(), ruangan: '' }
-        // },
-        return { showDate: new Date(),
+		
+        return { showDate: this.thisMonth(1),
             ruangan: [],
+            jadwal: [],
 			selectionStart: null,
 			selectionEnd: null,
+            displayPeriodUom: "month",
 			theme: "gcal",
-			items: Array(25)
-				.fill()
-				.map((_, i) => this.getRandomEvent(i)),
+			// items: Array(25)
+			// 	.fill()
+			// 	.map((_, i) => this.getRandomEvent(i)),
+            items: [
+        {
+          id: "e0",
+          startDate: "2020-01-05",
+        },
+        {
+          id: "e1",
+          startDate: new Date(),
+          title: "Memancing",
+          
+        },
+        {
+          id: "e2",
+          startDate: new Date(2020, 11, 1),
+          endDate: new Date(2020, 11, 10),
+          title: "Multi-day item with a long title and times",
+        },
+      ],
             }
         },
 
@@ -123,16 +147,31 @@ export default {
 		},
 	},
 	methods: {
-		setShowDate(d) {
-			this.showDate = d
-		},
-		setSelection(dateRange) {
-			this.selectionEnd = dateRange[1]
-			this.selectionStart = dateRange[0]
-		},
-		finishSelection(dateRange) {
-			this.setSelection(dateRange)
-		},
+        periodChanged() {},
+            thisMonth(d, h, m) {
+            const t = new Date();
+            return new Date(t.getFullYear(), t.getMonth(), d, h || 0, m || 0);
+        },
+        onClickDay(d) {
+            this.selectionStart = null;
+            this.selectionEnd = null;
+            this.message = `You clicked: ${d.toLocaleDateString()}`;
+        },
+        onClickItem(e) {
+            this.message = `You clicked: ${e.title}`;
+        },
+        setShowDate(d) {
+            this.message = `Changing calendar view to ${d.toLocaleDateString()}`;
+            this.showDate = d;
+        },
+        setSelection(dateRange) {
+            this.selectionEnd = dateRange[1];
+            this.selectionStart = dateRange[0];
+        },
+        finishSelection(dateRange) {
+            this.setSelection(dateRange);
+            this.message = `You selected: ${this.selectionStart.toLocaleDateString()} -${this.selectionEnd.toLocaleDateString()}`;
+        },
 		getRandomEvent(index) {
 			const startDay = Math.floor(Math.random() * 28 + 1)
 			const endDay = Math.floor(Math.random() * 4 + 1) + startDay
@@ -143,9 +182,6 @@ export default {
 				startDate: Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), startDay),
 				endDate: Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), endDay),
             }
-        },
-        onClickDate(...params){
-            console.log(params);
         },
         listAll(){
             UserService.getAllRuanganKalender().then (
