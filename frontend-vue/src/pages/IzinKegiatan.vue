@@ -49,7 +49,7 @@
                     <td v-if="izin_kegiatan.status_perizinan_kegiatan==1" class="text-center"><span class="badge badge-pill badge-secondary">Menunggu<br>Persetujuan</span></td>
                     <td v-if="izin_kegiatan.status_perizinan_kegiatan==2" class="text-center"><span class="badge badge-pill badge-success">Disetujui</span></td>
                     <td v-if="izin_kegiatan.status_perizinan_kegiatan==3" class="text-center"><span class="badge badge-pill badge-danger">Ditolak</span></td>
-                    <td><a href="/izin-kegiatan/detail">Detail</a></td>
+                    <td><a :href="izin_kegiatan.id">Detail</a></td>
                 </tr>
             </tbody>
     </table>
@@ -91,9 +91,18 @@ export default {
 }
 </script>
 <style>
+.badge-secondary{
+    background-color: #bdbdbd;
+}
+.badge-success{
+    background-color: #27AE60;
+}
+.badge-danger{
+    background-color: #EB5757;
+}
 .badge{
     font-weight: 100;
-    background-color: #bdbdbd;
+    
     padding-left: 20px;
     padding-right: 20px;
     font-size: 14px;

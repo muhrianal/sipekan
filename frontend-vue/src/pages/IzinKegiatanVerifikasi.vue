@@ -7,7 +7,7 @@
 
         <div class="formulir m-3">
             
-            <form v-for="izin_kegiatan in list_izin_kegiatan" v-bind:key="izin_kegiatan.id">
+            <form>
                 <div class="form-row">
                     <div class="col-6 col-md-6 px-4">
                     <label v-if="izin_kegiatan.status_perizinan_kegiatan==1" class="status">Status Sekarang: <span class="status-span" style="color: #828282;">Menunggu Persetujuan</span></label>
@@ -105,17 +105,16 @@
             </form>
         </div>
         <div class="d-flex" style="margin-top:100px">
-                <div class="mr-auto">
+            <div class="mr-auto">
 
-                </div>
-               <div class="p-2">
-                    <a href="/" class="btn tolak" style="padding:3px 20px;font-size:16px;"> Tolak</a>
-               </div>
-              <div class="p-2 pr-4">
-              <a href="/" class="btn setuju" style="padding:3px 20px;font-size:16px;"> Setuju</a>
-              </div>
             </div>
-
+            <div class="p-2">
+                <button class="btn tolak" v-on:click="putTolak" style="padding:3px 20px;font-size:16px;"> Tolak</button>
+            </div>
+            <div class="p-2 pr-4">
+                <button class="btn setuju" v-on:click="putSetuju" style="padding:3px 20px;font-size:16px;"> Setuju</button>
+            </div>
+         </div>
     </div>
 </template>
 
@@ -127,34 +126,71 @@ export default {
     name: 'IzinKegiatan',
     data() {
         return {
-            list_izin_kegiatan: [[]],
+            izin_kegiatan: "",
             error_message: "",
         }
     },
-    methods: {
-        getDateDef : function (date) {
-            return moment(date, 'YYYY-MM-DDTHH:mm').format('D MMMM YYYY');
-        },
-        getDate : function (date) {
-            return moment(date, 'YYYY-MM-DDTHH:mm').format('HH:mm, D MMMM YYYY');
-        },
-        getHour : function (date) {
-            return moment(date, 'YYYY-MM-DDTHH:mm').format('HH:mm');
-        },
-    },
+   
     created(){
-         UserService.getAllIzinKegiatan().then(
+         UserService.getIzinKegiatan(this.$route.params.id).then(
             response => {
-                this.list_izin_kegiatan = response.data;
+                this.izin_kegiatan = response.data;
             },
             error => {
                 this.error_message = (error.response && error.response.data) || error.message || error.toString();
             }
-        )
+        );
     },
     mounted(){
-        console.log(this.list_izin_kegiatan);
         console.log(this.error_message);
+    },
+     methods: {
+        getDateDef : function (date) {
+            return moment(date, "yyyy-MM-dd'T'HH:mm:ssZ").format('D MMMM YYYY');
+        },
+        getDate : function (date) {
+            return moment(date, "yyyy-MM-dd'T'HH:mm:ssZ").format('HH:mm, D MMMM YYYY');
+        },
+        getHour : function (date) {
+            return moment(date, "yyyy-MM-dd'T'HH:mm:ssZ").format('HH:mm');
+        },
+        putSetuju() {
+            
+            console.log("test");
+            const data_put = {
+                izin_kegiatan: {
+                    status_perizinan_kegiatan: 2
+                },
+            };
+            console.log(data_put);
+            UserService.putIzinKegiatan(this.$route.params.id, data_put).then(
+                response => {
+                    console.log(response.data);
+                },
+                error => {
+                    console.log(error.message);
+                }
+            );
+            location.reload();
+        },
+        putTolak() {
+            console.log("test");
+            const data_put = {
+                izin_kegiatan: {
+                    status_perizinan_kegiatan: 3
+                },
+            };
+            console.log(data_put);
+            UserService.putIzinKegiatan(this.$route.params.id, data_put).then(
+                response => {
+                    console.log(response.data);
+                },
+                error => {
+                    console.log(error.message);
+                }
+            );
+            location.reload();
+        }
     },
 }
 </script>

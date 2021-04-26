@@ -13,6 +13,10 @@ class UserService {
     getIzinKegiatan(id){
         return axios.get(API_URL + 'izin-kegiatan/' + id)
     }
+    
+    putIzinKegiatan(id, data){
+        return axios.put(API_URL + 'izin-kegiatan/update/' + id + '/', data )
+    }
 }
 
 export default new UserService();

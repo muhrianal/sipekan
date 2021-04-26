@@ -23,7 +23,7 @@ from ..serializers.izin_kegiatan_serializer import IzinKegiatanSerializerSimplif
 from django.http.response import JsonResponse
 
 
-@api_view(['PUT',])
+@api_view(['PUT','PATCH'])
 @permission_classes([permissions.AllowAny,])
 def update_izin_kegiatan_by_id_perizinan(request, id_perizinan):
     try:
@@ -31,7 +31,7 @@ def update_izin_kegiatan_by_id_perizinan(request, id_perizinan):
     except:
         return JsonResponse({'message': 'Izin kegiatan tidak ada'}, status=status.HTTP_404_NOT_FOUND)
 
-    if request.method == 'PUT':
+    if request.method == 'PATCH':
 
         izin_data = JSONParser().parse(request) 
         izin_kegiatan_serialized = IzinKegiatanMahasiswaSerializer(izin_kegiatan, data=izin_data)
@@ -40,7 +40,27 @@ def update_izin_kegiatan_by_id_perizinan(request, id_perizinan):
             izin_kegiatan_serialized.save()
             return JsonResponse(izin_kegiatan_serialized.data)
 
-        return JsonResponse(izin_kegiatan_serialized.errors, status=status.HTTP_400_BAD_REQUEST) 
+        return JsonResponse(izin_kegiatan_serialized.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    if request.method == 'PUT':
+
+        izin_data = JSONParser().parse(request) 
+        print(izin_data)
+        izin_kegiatan.status_perizinan_kegiatan = izin_data["izin_kegiatan"]["status_perizinan_kegiatan"]
+        try:
+            izin_kegiatan.save()
+        except:
+           return JsonResponse(izin_kegiatan.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        izin_kegiatan_serialized = IzinKegiatanMahasiswaSerializer(izin_kegiatan)
+        return JsonResponse(izin_kegiatan_serialized.data, safe=False)
+        
+        
+        # if izin_kegiatan_serialized.is_valid():
+        #     izin_kegiatan_serialized.save()
+        #     return JsonResponse(izin_kegiatan_serialized.data)
+
+        # return JsonResponse(izin_kegiatan_serialized.errors, status=status.HTTP_400_BAD_REQUEST)  
     
     #case for else
     return JsonResponse({'message' : 'invalid API method'}, status=status.HTTP_405_METHOD_NOT_ALLOWED) 
