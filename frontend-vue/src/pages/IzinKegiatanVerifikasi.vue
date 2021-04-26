@@ -146,13 +146,13 @@ export default {
     },
      methods: {
         getDateDef : function (date) {
-            return moment(date, "yyyy-MM-dd'T'HH:mm:ssZ").format('D MMMM YYYY');
+            return moment(date, 'YYYY-MM-DDTHH:mm').format('D MMMM YYYY');
         },
         getDate : function (date) {
-            return moment(date, "yyyy-MM-dd'T'HH:mm:ssZ").format('HH:mm, D MMMM YYYY');
+            return moment(date, 'YYYY-MM-DDTHH:mm').format('HH:mm, D MMMM YYYY');
         },
         getHour : function (date) {
-            return moment(date, "yyyy-MM-dd'T'HH:mm:ssZ").format('HH:mm');
+            return moment(date, 'YYYY-MM-DDTHH:mm').format('HH:mm');
         },
         putSetuju() {
             
