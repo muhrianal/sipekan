@@ -64,6 +64,21 @@ def list_jadwal(request):
     }
     return Response(data=data, status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(['GET'])
+@permission_classes([permissions.AllowAny,])
+def list_peminjaman_ruangan(request):
+
+    if request.method == 'GET':
+        list_peminjaman_ruangan = PeminjamanRuangan.objects.all()
+        peminjaman_ruangan_serialized = PeminjamanRuanganSerializer(list_peminjaman_ruangan, many=True)
+        return JsonResponse(peminjaman_ruangan_serialized.data, safe=False)
+
+    #case for else
+    data = {
+        'message' : 'invalid API call'
+    }
+    return Response(data=data, status=status.HTTP_400_BAD_REQUEST)
+
 @api_view(['GET', 'POST'])
 @permission_classes([permissions.AllowAny,])
 def list_ruangan(request):
@@ -133,4 +148,3 @@ def get_post_peminjaman_ruangan_unit_kerja(request):
 
     #case for else
     return JsonResponse({'message' : 'invalid API method'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
-

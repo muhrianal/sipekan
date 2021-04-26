@@ -17,7 +17,7 @@ from ..permissions import AllowOnlyAdminFASTUR, AllowOnlyAdminHUMAS, AllowOnlyAd
 
 from ..models.izin_kegiatan import DetailKegiatan, IzinKegiatan
 
-from ..serializers.izin_kegiatan_serializer import IzinKegiatanSerializerSimplified
+from ..serializers.izin_kegiatan_serializer import IzinKegiatanSerializerSimplified, DetailKegiatanSerializer, IzinKegiatanMahasiswaSerializer
 
 
 from django.http.response import JsonResponse
@@ -34,7 +34,7 @@ def update_izin_kegiatan_by_id_perizinan(request, id_perizinan):
     if request.method == 'PUT':
 
         izin_data = JSONParser().parse(request) 
-        izin_kegiatan_serialized = IzinKegiatanSerializerSimplified(izin_kegiatan, data=izin_data)
+        izin_kegiatan_serialized = IzinKegiatanMahasiswaSerializer(izin_kegiatan, data=izin_data)
         
         if izin_kegiatan_serialized.is_valid():
             izin_kegiatan_serialized.save()
@@ -51,7 +51,7 @@ def list_izin_kegiatan(request):
 
     if request.method == 'POST':
         izin_data = JSONParser().parse(request)
-        izin_kegiatan_serialized = IzinKegiatanSerializerSimplified(data=izin_data)
+        izin_kegiatan_serialized = IzinKegiatanMahasiswaSerializer(data=izin_data)
         if peminjaman_data_serialized.is_valid():
             izin_kegiatan_serialized.save()
             return JsonResponse( izin_kegiatan_serialized.data, status=status.HTTP_201_CREATED) 
@@ -59,11 +59,25 @@ def list_izin_kegiatan(request):
 
     if request.method == 'GET':
         list_izin_kegiatan = IzinKegiatan.objects.all()
-        izin_kegiatan_serialized = IzinKegiatanSerializer(list_izin_kegiatan, many=True)
+        izin_kegiatan_serialized = IzinKegiatanMahasiswaSerializer(list_izin_kegiatan, many=True)
         return JsonResponse(izin_kegiatan_serialized.data, safe=False)
     
     #case for else
     data = {
         'message' : 'invalid API call'
     }
+    return Response(data=data, status=status.HTTP_400_BAD_REQUEST)
+    
+def detail_izin_kegiatan(request,pk):
+    try:
+        izin_kegiatan = IzinKegiatan.objects.get(pk=pk)
+    except IzinKegiatan.DoesNotExist:
+        return JsonResponse({'message': 'Izin kegiatan tidak ada'}, status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        izin_kegiatan_serialized = IzinKegiatanMahasiswaSerializer(izin_kegiatan)
+        return JsonResponse(izin_kegiatan_serialized.data, safe=False)
+    data = {
+            'message' : 'invalid API call'
+        }
     return Response(data=data, status=status.HTTP_400_BAD_REQUEST)

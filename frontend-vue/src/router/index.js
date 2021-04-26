@@ -30,10 +30,15 @@ const routes = [
     component: IzinKegiatan
   },
   {
-    path: "/izin-kegiatan/detail",
-    name: "Verifikasi Izin Kegiatan",
+    path: "/izin-kegiatan/:id",
+    name: "IzinKegiatanVerifikasi",
     component: IzinKegiatanVerifikasi
   },
+  // {
+  //   path: "/izin-kegiatan/update/:id",
+  //   name: "Verifikasi Izin Kegiatan",
+  //   component: IzinKegiatanVerifikasi
+  // },
 ];
 
 
@@ -49,7 +54,7 @@ router.beforeEach((to, from, next) =>{
     '/login',
     '/',
     '/izin-kegiatan',
-    '/izin-kegiatan/detail'
+    '/izin-kegiatan/:id',
   ];
 
   const authRequired = !publicPages.includes(to.path);
