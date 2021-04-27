@@ -1,26 +1,17 @@
 <template>
     <div class="root-class">
         <div class="header">
-            <h3 class="header-page">Buat Perizinan Ruangan</h3>
+            <h3 class="header-page">Buat Perizinan<span style="color:grey"> >> Ruangan</span></h3>
             <hr class="line-header line-title">
         </div>
-        
         <div class="formulir">
+            <div v-if="this.kebutuhan != null">
+                <router-link v-if="this.kebutuhan.length>0" :to="{path: '/buat-perizinan/form-humas/', name:'Form Permohonan Humas Mahasiswa',params:{id_izin_kegiatan:this.id_izin_kegiatan}}" > <button class="btn btn-primary">HUMAS</button> </router-link> 
+                <p v-if="this.kebutuhan.length == 1"> SELESAI</p> 
+            </div>
             <form>
-                <div class="form-row">
-                    <div class="col-12 col-md-6">
-                        <label for="inputNamaKegiatan">Nama Kegiatan<span class="asterisk">*</span></label>
-                        <input type="text" class="form-control" placeholder="e.g. Kelas Administrasi Bisnis" v-model="izin_kegiatan.nama_kegiatan">
-                    </div>
-                    <div class="col-12 col-md-6">
-                        <label for="inputOrganisasi">Organisasi/Divisi<span class="asterisk">*</span></label>
-                        <input type="text" class="form-control" placeholder="e.g. Akademik FEB UI" v-model="izin_kegiatan.organisasi">
-                    </div>    
-                </div>
-     
-
                 <template v-for="peminjaman in number_of_peminjaman" v-bind:key="peminjaman">
-                <hr class="line-header">
+                <hr v-if="peminjaman>1" >
                 <div class="text-right">
                     <button type="button" class="btn btn-outline-danger" id="button-hapus" @click="deleteRow(peminjaman - 1)" v-if="peminjaman > 1">Hapus</button>
                 </div>
@@ -39,18 +30,14 @@
                         <label for="waktuMulaiPeminjaman">Waktu mulai<span class="asterisk">*</span></label>
                         <select class="form-control" id="waktuMulaiPeminjaman" v-model="list_peminjaman_ruangan[peminjaman-1].waktu_mulai">
                             <option selected disabled value="">Pilih...</option>
-                            <template v-for="option in option_waktu" v-bind:key="option">
-                                <option v-bind:value="option.value">{{option.text}}</option>
-                            </template>
+                                <option v-for="option in option_waktu" v-bind:key="option" v-bind:value="option.value">{{option.text}}</option>
                         </select>
                     </div>
                     <div class="col-12 col-md-6">
                         <label for="waktuAkhirPeminjaman">Waktu akhir<span class="asterisk">*</span></label>
                         <select class="form-control" id="waktuAkhirPeminjaman" v-model="list_peminjaman_ruangan[peminjaman-1].waktu_akhir">
                             <option selected disabled value="">Pilih...</option>
-                            <template v-for="option in option_waktu" v-bind:key="option">
-                                <option v-bind:value="option.value">{{option.text}}</option>
-                            </template>
+                                <option v-for="option in option_waktu" v-bind:key="option" v-bind:value="option.value">{{option.text}}</option>
                         </select>
                     </div>  
                 </div>
@@ -94,15 +81,16 @@
                         <p class="note-form">isi dengan tanggal yang sama dengan tanggal mulai pelaksanaan jika memilih "sekali pakai"</p>
                     </div>  
                 </div>
-                
-                <!-- {{terbuka_untuk_umum}} -->
-                </template>
+                    </template>
+                 <!-- <div class="text-right">
+                        <input class="btn btn-success btn-simpan" type=submit value="Simpan">
+                    </div> -->
             </form>
             <div class="text-center">
                 <button @click="addRow" type="button" class="btn tambah-ruangan btn-outline-secondary">Tambah Ruangan</button>
             </div>
             <div class="text-right">
-                <button @click="submitPost" class="btn btn-success btn-simpan">Submit</button>
+                <button @click="submitPost" class="btn btn-success btn-simpan">Simpan</button>
             </div>
 
         </div>
@@ -112,11 +100,11 @@
 
 <script>
 import Perulangan from '../../models/perulangan';
-import IzinKegiatan from '../../models/izin_kegiatan';
 import PeminjamanRuangan from '../../models/peminjaman_ruangan';
-import UserService from '../../services/user.service';
+import IzinMahasiswaService from '../../services/izinMahasiswa.service';
+
 export default {
-    name: 'PeminjamanRuanganUnitKerja',
+    name: 'PeminjamanRuanganMahasiswa',
     data() {
         return {
             terbuka_untuk_umum: false,
@@ -124,9 +112,16 @@ export default {
             number_of_peminjaman : 1,
             list_perulangan : [new Perulangan("", "", "")],
             list_peminjaman_ruangan : [new PeminjamanRuangan("", "", "", "", "", "", ""),],
-            izin_kegiatan: new IzinKegiatan("", "", ""),
-        
+            id_izin_kegiatan: '',
+            kebutuhan: null
         } 
+    },
+    created(){
+        
+        this.id_izin_kegiatan =  this.$route.params.id_izin_kegiatan
+        this.kebutuhan = this.$route.params.kebutuhan
+        console.log('the response ' + this.$route.params.id_izin_kegiatan)
+        console.log('kebutuhan '+ this.$route.params.kebutuhan)
     },
     computed: {
         getUserId(){
@@ -146,16 +141,20 @@ export default {
             
         },
         submitPost(){
-            console.log(this.izin_kegiatan)
+            // console.log(this.izin_kegiatan)
             console.log(this.list_peminjaman_ruangan)
             console.log(this.list_perulangan)
             let i;
             for (i = 0; i < this.number_of_peminjaman; i++){
                 this.list_peminjaman_ruangan[i].setPerulangan(this.list_perulangan[i])
             }
-            this.izin_kegiatan.setPeminjamanRuangan(this.list_peminjaman_ruangan)
-            this.izin_kegiatan.setUser(1)
-            UserService.postPerizinanRuanganUnitKerja(this.izin_kegiatan).then(
+            const data ={
+                id : this.id_izin_kegiatan,
+                peminjaman_ruangan : this.list_peminjaman_ruangan
+            }
+            // this.izin_kegiatan.setPeminjamanRuangan(this.list_peminjaman_ruangan)
+            // this.izin_kegiatan.setUser(1)
+            IzinMahasiswaService.postPeminjamanRuanganMahasiswa(this.id_izin_kegiatan,data).then(
                 response => {
                     console.log(response.data);
                 },

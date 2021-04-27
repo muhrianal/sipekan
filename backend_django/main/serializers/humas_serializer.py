@@ -4,6 +4,11 @@ from ..models.humas import PerizinanPublikasi,PermintaanSouvenir,PermintaanProto
 
 from ..models.izin_kegiatan import IzinKegiatan
 
+class SouvenirSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Souvenir
+        fields = ('id', 'nama_souvenir','region','kelas', 'stok')
+
 class JenisPublikasiSerializer(serializers.ModelSerializer):
     class Meta:
         model = JenisPublikasi
@@ -13,31 +18,29 @@ class PerizinanPublikasiSerializer(serializers.ModelSerializer):
     jenis_publikasi = JenisPublikasiSerializer(read_only = True, many = True)
     class Meta:
         model = PerizinanPublikasi
-        # fields = '__all__'
-        fields = ('id','tanggal_mulai', 'tanggal_akhir', 'jenis_publikasi', 'status_perizinan_publikasi', 'alasan_penolakan','keterangan', 'file_materi_kegiatan', 'file_flyer_pengumuman')
+        fields = ('id','tanggal_mulai', 'tanggal_akhir', 'jenis_publikasi', 'status_perizinan_publikasi', 
+        'alasan_penolakan','keterangan', 'file_materi_kegiatan', 'file_flyer_pengumuman','izin_kegiatan')
 
 class PermintaanSouvenirSeriliazer(serializers.ModelSerializer):
+    # souvenir = SouvenirSerializer(read_only=True) 
     class Meta:
         model = PermintaanSouvenir
         # fields = '__all__'
         fields = ('id','alasan_penolakan', 'status_permintaan_souvenir', 'jumlah', 'souvenir', 
-        'nama_penerima_souvenir', 'jabatan_penerima_souvenir', )
+        'nama_penerima_souvenir', 'kelas_penerima_souvenir', 'region_penerima_souvenir', 'jabatan_penerima_souvenir' )
 
 class PermintaanProtokolerSerializer(serializers.ModelSerializer):
     class Meta:
         model = PermintaanProtokoler
-        # fields = '__all__'
-        fields = ('id','deskripsi_kebutuhan')
+        fields = ('id','deskripsi_kebutuhan','status_permintaan_protokoler','alasan_penolakan')
 
 class PerizinanKegiatanSerializer(serializers.ModelSerializer):
-    perizinan_publikasi = PerizinanPublikasiSerializer(required = False)
     permintaan_protokoler = PermintaanProtokolerSerializer(required = False)
     permintaan_souvenir = PermintaanSouvenirSeriliazer(many=True, required= False)
     
     class Meta:
         model = IzinKegiatan
-        fields = ('id', 'nama_kegiatan', 'organisasi', 'user', 'status_perizinan_kegiatan', 
-        'perizinan_publikasi', 'permintaan_souvenir', 'permintaan_protokoler')
+        fields = ('id', 'permintaan_souvenir', 'permintaan_protokoler')
     
     def update(self, izin_kegiatan, validated_data):
         # publikasi
@@ -57,11 +60,6 @@ class PerizinanKegiatanSerializer(serializers.ModelSerializer):
                 PermintaanSouvenir.objects.create(izin_kegiatan=izin_kegiatan, **permintaan_souvenir)
         
         return izin_kegiatan    
-
-class SouvenirSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Souvenir
-        fields = '__all__'
 
     
 

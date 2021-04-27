@@ -152,7 +152,7 @@ def get_post_peminjaman_ruangan_unit_kerja(request):
 
 @api_view(['POST'])
 @permission_classes([permissions.AllowAny,]) #nanti diganti jadi mahasiswa
-def post_peminjaman_ruangan_mahasiswa(request, id_izin_kegiatan):
+def post_peminjaman_ruangan_mahasiswa(request,id_izin_kegiatan):
     try: 
         izin_kegiatan =IzinKegiatan.objects.get(pk=id_izin_kegiatan)
     except:

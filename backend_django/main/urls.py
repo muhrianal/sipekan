@@ -13,7 +13,7 @@ from .views.views_status_perizinan import list_perizinan, detail_perizinan
 from .views.views_peminjaman_ruangan import update_peminjaman_ruangan_by_id_peminjaman_ruangan, get_post_peminjaman_ruangan_unit_kerja
 from .views.views_peminjaman_ruangan import post_peminjaman_ruangan_mahasiswa
 from .views.views_humas import get_post_perizinan_humas,list_perizinan_humas, get_jenis_publikasi, get_list_souvenir
-from .views.views_izin_kegiatan_mahasiswa import get_post_izin_kegiatan_mahasiswa
+from .views.views_izin_kegiatan_mahasiswa import get_post_izin_kegiatan_mahasiswa, post_izin_kegiatan_detail, post_izin_kegiatan_header
 
 urlpatterns = [
     path('login/', login),
@@ -29,10 +29,13 @@ urlpatterns = [
     path('api/perizinan/<int:pk>', detail_perizinan),
     path('peminjaman-ruangan/update/<int:id_peminjaman>/', update_peminjaman_ruangan_by_id_peminjaman_ruangan),
     path('peminjaman-ruangan/unit-kerja/', get_post_peminjaman_ruangan_unit_kerja),
-    path('peminjaman-ruangan/mahasiswa/<int:id_izin_kegiatan>', post_peminjaman_ruangan_mahasiswa),
-    path('perizinan-humas/<int:id_izin_kegiatan>',get_post_perizinan_humas),
+    #perizinan mahasiswa's code
+    path('peminjaman-ruangan/mahasiswa/<int:id_izin_kegiatan>/', post_peminjaman_ruangan_mahasiswa),
+    path('perizinan-humas/<int:id_izin_kegiatan>/',get_post_perizinan_humas),
     path('list-perizinan-humas/',list_perizinan_humas),
     path('perizinan-kegiatan-mahasiswa/',get_post_izin_kegiatan_mahasiswa),
+    path('perizinan-kegiatan-header/',post_izin_kegiatan_header),
+    path('perizinan-kegiatan-detail/',post_izin_kegiatan_detail),
     path('perizinan-humas/jenis-publikasi', get_jenis_publikasi),
     path('perizinan-humas/list-souvenir', get_list_souvenir)
 ] 

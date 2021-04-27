@@ -115,7 +115,7 @@ class PermintaanSouvenir(models.Model):
     jumlah = models.IntegerField()
     souvenir = models.ForeignKey(
         Souvenir,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
     )
     nama_penerima_souvenir = models.CharField(max_length=255)
     jabatan_penerima_souvenir = models.CharField(max_length=255)
@@ -133,7 +133,7 @@ class PermintaanSouvenir(models.Model):
         (2, 'Luar Negeri'),
         (3, 'Dalam dan Luar Negeri'),
     )
-    region = models.PositiveSmallIntegerField(choices=KELAS_CHOICES)
+    region_penerima_souvenir = models.PositiveSmallIntegerField(choices=KELAS_CHOICES)
 
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(default=timezone.now)

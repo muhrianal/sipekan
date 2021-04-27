@@ -10,17 +10,23 @@ class IzinMahasiswaService {
         return axios.get(API_URL + 'perizinan-humas/list-souvenir');
     }
     postIzinKegiatan(data){
-        return axios.post(API_URL + 'perizinan-kegiatan-mahasiswa/' , data)
+        return axios.post(API_URL + 'perizinan-kegiatan-mahasiswa/' , data) 
     }
-    // postIzinKegiatan(data){
-    //     return axios.post(API_URL + 'perizinan-kegiatan-mahasiswa/' , data,{
-    //         headers:{
-    //             'Content-Type': 'multipart/form-data'
-    //         }
-    //     })
-    // }
+    postIzinKegiatanHeader(data){
+        return axios.post(API_URL + 'perizinan-kegiatan-header/',data)
+    }
+    postIzinKegiatanDetail(data){
+        return axios.post(API_URL + 'perizinan-kegiatan-detail/', data,{
+            headers:{
+            'Content-Type': 'multipart/form-data'
+        }})
+    }
+    postPeminjamanRuanganMahasiswa(id,data){
+        return axios.post(API_URL + 'peminjaman-ruangan/mahasiswa/' + id + '/' , data)
+    }
+
     postPermohonanHumas(id,data){
-        return axios.post(API_URL + 'perizinan-humas/'+ id,data,)
+        return axios.post(API_URL + 'perizinan-humas/'+ id +'/',data)
     }
     // postTestApi(data){
     //     return axios.post(API_URL + 'test/', data)

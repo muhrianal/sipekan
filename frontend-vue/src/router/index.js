@@ -38,6 +38,7 @@ const routes = [
     path: "/buat-perizinan/form-humas",
     name: "Form Permohonan Humas Mahasiswa",
     component: PermohonanHumas,
+    props: true
   },
   {
     path: "/buat-perizinan/form-ruangan/",
@@ -45,9 +46,10 @@ const routes = [
     component: PeminjamanRuanganUnitKerja,
   },
   {
-    path: "/buat-perzinan/form-ruangan-mahasiswa/",
+    path: "/buat-perizinan/form-ruangan-mahasiswa/",
     name: "Form Peminjaman Ruangan Mahasiswa",
     component: PeminjamanRuanganMahasiswa,
+    props: true
   },
 ];
 
@@ -63,7 +65,6 @@ router.beforeEach((to, from, next) =>{
   const publicPages = [
     '/login',
     '/',
-    '/buat-perizinan/',
   ];
 
   const authRequired = !publicPages.includes(to.path);

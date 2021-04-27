@@ -6,7 +6,6 @@ class DetailKegiatanMahasiswaSerializer(serializers.ModelSerializer):
     
     class Meta:    
         model = DetailKegiatan
-        # fields = '__all__'
         fields =(
             'id',
             'waktu_tanggal_mulai',
@@ -23,6 +22,7 @@ class DetailKegiatanMahasiswaSerializer(serializers.ModelSerializer):
             'file_info_kegiatan',
             'created_at', 
             'updated_at', 
+            'izin_kegiatan'
         )
 
 class IzinKegiatanMahasiswaSerializer(serializers.ModelSerializer):
@@ -38,4 +38,7 @@ class IzinKegiatanMahasiswaSerializer(serializers.ModelSerializer):
         DetailKegiatan.objects.create(izin_kegiatan = izin_kegiatan, **detail_kegiatan_data)
         return izin_kegiatan
 
-        
+class IzinKegiatanHeaderSerialezer(serializers.ModelSerializer):
+    class Meta:
+        model= IzinKegiatan
+        fields= ('id','nama_kegiatan', 'organisasi', 'user', 'status_perizinan_kegiatan')
