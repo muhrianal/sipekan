@@ -6,6 +6,10 @@ import PeminjamanRuanganUnitKerja from '../pages/UnitKerja/PeminjamanRuanganUnit
 import Home from '../pages/Home.vue'; 
 import DaftarPerizinanRuangan from '../pages/AdminFastur/DaftarPerizinanRuangan';
 import DetailPerizinanRuangan from '../pages/AdminFastur/DetailPerizinanRuangan'
+import Profile from '../pages/Profile.vue';
+import PerizinanKegiatanMahasiswa from '../pages/Mahasiswa/PerizinanKegiatanMahasiswa.vue';
+import PermohonanHumas from '../pages/Mahasiswa/PermohonanHumas.vue';
+
 
 
 const routes = [
@@ -36,6 +40,18 @@ const routes = [
     component: Profile
   },
   {
+
+    path: "/buat-perizinan/form-kegiatan",
+    name: "Form Izin Kegiatan Mahasiswa",
+    component: PerizinanKegiatanMahasiswa,
+  },
+  {
+    path: "/buat-perizinan/form-humas",
+    name: "Form Permohonan Humas Mahasiswa",
+    component: PermohonanHumas,
+  },
+  {
+
     path: "/buat-perizinan/form-ruangan/",
     name: "Form Peminjaman Ruangan Unit Kerja",
     component: PeminjamanRuanganUnitKerja,
@@ -55,6 +71,7 @@ router.beforeEach((to, from, next) =>{
   const publicPages = [
     '/login',
     '/',
+    '/buat-perizinan',
     '/buat-perizinan/form-ruangan/',
     "/perizinan-fastur",
 
