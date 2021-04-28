@@ -5,11 +5,7 @@
             <hr class="line-header line-title">
         </div>
         <div class="formulir">
-            <div v-if="this.respon_kegiatan != null & this.kebutuhan.length>0">
-                    <router-link  v-if="this.kebutuhan[0] == 'ruangan'" :to="{path: '/buat-perizinan/form-ruangan-mahasiswa/', name:'Form Peminjaman Ruangan Mahasiswa',params:{id_izin_kegiatan:this.respon_kegiatan.id, kebutuhan: this.kebutuhan}}" > <button class="btn btn-primary">RUANGAN</button> </router-link>
-                    <router-link v-if="this.kebutuhan[0] == 'humas'" :to="{path: '/buat-perizinan/form-humas/', name:'Form Permohonan Humas Mahasiswa',params:{id_izin_kegiatan:this.respon_kegiatan.id, kebutuhan: this.kebutuhan}}" > <button class="btn btn-primary">HUMAS</button> </router-link>
-            </div>
-            <form v-on:submit.prevent="postIzinKegiatan">
+            <form v-on:submit.prevent="postIzinKegiatan" id="formKegiatan">
                 <div class="form-row">
                     <div class="col-12 col-md-6 px-4 py-2">
                         <label for="inputNamaKegiatan">Nama Kegiatan<span class="text-danger">*</span>:</label>
@@ -47,7 +43,7 @@
                     </div>
                     <div class="col-12 col-md-6  px-4 py-2">
                         <label for="inputNpmKetuaOrganisasi">NPM Ketua Organisasi<span class="text-danger">*</span>:</label>
-                        <input type="text" class="form-control" placeholder="e.g. 1806123456" required v-model="npm_ketua_organisasi">
+                        <input type="number" class="form-control" placeholder="e.g. 1806123456" required v-model="npm_ketua_organisasi">
                     </div>                    
                 </div>
 
@@ -58,7 +54,7 @@
                     </div>
                     <div class="col-12 col-md-6  px-4 py-2">
                         <label for="inputNpmPic">NPM PIC<span class="text-danger">*</span>:</label>
-                        <input type="text" class="form-control" placeholder="e.g. 1806123456" required v-model="npm_pic">
+                        <input type="number" class="form-control" placeholder="e.g. 1806123456" required v-model="npm_pic">
                     </div>                    
                 </div>
 
@@ -69,7 +65,7 @@
                     </div>
                     <div class="col-12 col-md-6  px-4 py-2">
                         <label for="inputHpPic">HP PIC<span class="text-danger">*</span>:</label>
-                        <input type="text" class="form-control" placeholder="e.g. 08151234567" required v-model="hp_pic">
+                        <input type="text" pattern="^[0-9]+$" class="form-control" placeholder="e.g. 08151234567" required v-model="hp_pic">
                     </div>                    
                 </div>
 
@@ -80,7 +76,9 @@
                     </div>
                     <div class="col-12 col-md-6  px-4 py-2">
                         <label for="inputUploadDokumen">Upload Dokumen<span class="text-danger">*</span>:<span class="text-keterangan">  (contoh: TOR-JGTC.pdf; Dokumen-JGTC.zip)</span></label>
-                        <input type="file" ref="file" @change="onFileChange">
+                        <input id="file_info" class="form-control-file" type="file" ref="file" @change="onFileChange" required>
+                        <p v-if="this.file_info_kegiatan !=null" class="text-right note-form" @Click="deleteFileInfo()">Hapus File</p>
+
                     </div>                    
                 </div>
 
@@ -100,20 +98,59 @@
                     </div>
                 </div>
             </form>
-            <!-- <div class="text-right">
-                <button href="/" @click="postIzinKegiatan" class="btn btn-success btn-simpan">Submit</button>
-            </div> -->
-            <div class="d-flex" style="margin-top:10px">
-            <div class="mr-auto"> </div>
-            
         </div>
+        <!-- Modal: Notif Sukses -->
+        <div class="modal fade" id="notification-success" tabindex="-1" role="dialog" aria-labelledby="sukses-setuju-modal" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                <div class="modal-body">
+                    <div class="text-center">
+                        <img src="../../assets/images/icon_ceklis.png" alt="icon-sukses">
+                    <h2 style="margin:20px 0px 15px 0px">Sukses</h2>
+                    <p style="margin:0px 0px -15px 0px">Pengajuan kegiatan berhasil</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="text-center">
+                        <router-link :to="{path:this.path_selanjutnya, name:this.nama_path,params:this.params_path}" >
+                            <div class="text-center">
+                                <button  @click="onCloseModal('#notification-success')" id="button-modal" type="button" class="text-center btn btn-success">
+                                    {{this.pesan_button}}
+                                </button>
+                            </div>
+                        </router-link>
+                    </div>
+                </div>
+                </div>
+            </div>
         </div>
-
+        <!-- Modal: Notif Gagal -->
+        <div class="modal fade" id="notification-failed" tabindex="-1" role="dialog" aria-labelledby="gagal-submit-modal" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                <div class="modal-body">
+                    <div class="text-center">
+                        <img src="../../assets/images/icon_silang.png" alt="icon-error">
+                    <h2 style="margin:20px 0px 15px 0px">Error</h2>
+                    <p style="margin:0px 0px -15px 0px">{{error_message}}</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="text-center">
+                        <button type="button" @click="onCloseModal('#notification-failed')" class="btn btn-success" data-dismiss="modal" style="width:80px; height:36px;">OK</button>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
     </div>
+    
+    
 </template>
 
 <script>
 import IzinMahasiswaService from '../../services/izinMahasiswa.service';
+import $ from 'jquery';
 
 export default{
     name: 'PerizinanKegiatanMahasiswa',
@@ -138,16 +175,28 @@ export default{
             file_info_kegiatan: null,
             kebutuhan:[],
             respon_kegiatan: null,
-            modalOpen:false
+            pesan_button: '',
+            path_selanjutnya:'',
+            nama_path:'',
+            params_path : null,
+            error_message: '',
         }
     },
     methods: {
+       
         mounted(){
         console.log(this.user);
         console.log(this.error_message);
         },
         onFileChange(){
             this.file_info_kegiatan = this.$refs.file.files[0];
+        },
+        deleteFileInfo(){
+            document.getElementById("file_info").value  = null; 
+            this.file_info_kegiatan = null
+        },
+        onCloseModal(id){
+            $(id).modal('hide')
         },
         postIzinKegiatan(){
             const data_kegiatan = {
@@ -180,9 +229,26 @@ export default{
                         IzinMahasiswaService.postIzinKegiatanDetail(formDataDetail).then(
                             response =>{
                                 console.log(response.data);
+                                if(this.kebutuhan.length == 0){
+                                    this.pesan_button = "OK"
+                                    this.path_selanjutnya = '/'
+                                }else if(this.kebutuhan[0] == 'ruangan' || (this.kebutuhan.length > 1 && this.kebutuhan[1] == 'ruangan')){
+                                    this.pesan_button = "Ke halaman perizinan ruangan"
+                                    this.path_selanjutnya = '/buat-perizinan/form-ruangan-mahasiswa/'
+                                    this.nama_path = 'Form Peminjaman Ruangan Mahasiswa'
+                                    this.params_path = {id_izin_kegiatan:this.respon_kegiatan.id, kebutuhan: this.kebutuhan}
+                                }else if(this.kebutuhan[0] == 'humas'){
+                                    this.pesan_button = "Ke halaman perizinan humas"
+                                    this.path_selanjutnya = '/buat-perizinan/form-humas'
+                                    this.nama_path = 'Form Permohonan Humas Mahasiswa'
+                                    this.params_path = {id_izin_kegiatan:this.respon_kegiatan.id, kebutuhan: this.kebutuhan}
+                                }                                
+                                $('#notification-success').modal('show')
                             },
                             error =>{
                                 console.log(error.message);
+                                this.error_message = error.message
+                                 $('#notification-failed').modal('show')
                             }
                         )
                         },
@@ -240,5 +306,9 @@ input {
     border-color: #27AE60;
     background-color: white !important;
     border-radius: 10px !important;
+}
+#button-modal{
+    display:inline-block;
+    text-align: center;
 }
 </style>

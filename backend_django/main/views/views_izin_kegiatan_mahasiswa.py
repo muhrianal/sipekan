@@ -40,7 +40,7 @@ def get_post_izin_kegiatan_mahasiswa(request):
     #case for else
         return JsonResponse({'message' : 'invalid API method'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
-#untuk izin kegiatan denga file
+#untuk izin kegiatan dengan file
 @api_view(['POST'])
 @permission_classes([permissions.AllowAny,]) 
 def post_izin_kegiatan_header(request):
@@ -57,7 +57,6 @@ def post_izin_kegiatan_header(request):
 @parser_classes([MultiPartParser, FormParser])
 def post_izin_kegiatan_detail(request):
     if request.method == 'POST': # post detail izin kegiatan
-        # perizinan_data = JSONParser().parse(request)
         perizinan_data_serialized = DetailKegiatanMahasiswaSerializer(data=request.data)
         if perizinan_data_serialized.is_valid():
             perizinan_data_serialized.save()

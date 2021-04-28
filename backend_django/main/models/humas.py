@@ -89,7 +89,7 @@ class Souvenir(models.Model):
         (2, 'Luar Negeri'),
         (3, 'Dalam dan Luar Negeri'),
     )
-    region = models.PositiveSmallIntegerField(choices=KELAS_CHOICES)
+    region = models.PositiveSmallIntegerField(choices=REGION_CHOICES)
     
     stok = models.IntegerField()
 

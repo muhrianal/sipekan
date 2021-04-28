@@ -9,9 +9,6 @@ class IzinMahasiswaService {
     getListSouvenir(){
         return axios.get(API_URL + 'perizinan-humas/list-souvenir');
     }
-    postIzinKegiatan(data){
-        return axios.post(API_URL + 'perizinan-kegiatan-mahasiswa/' , data) 
-    }
     postIzinKegiatanHeader(data){
         return axios.post(API_URL + 'perizinan-kegiatan-header/',data)
     }
@@ -24,13 +21,19 @@ class IzinMahasiswaService {
     postPeminjamanRuanganMahasiswa(id,data){
         return axios.post(API_URL + 'peminjaman-ruangan/mahasiswa/' + id + '/' , data)
     }
-
     postPermohonanHumas(id,data){
         return axios.post(API_URL + 'perizinan-humas/'+ id +'/',data)
     }
-    // postTestApi(data){
-    //     return axios.post(API_URL + 'test/', data)
-    // }
+    postPerizinanPublikasi(data){
+        return axios.post(API_URL+ 'perizinan-humas-publikasi/', data ,{
+            headers:{
+            'Content-Type': 'multipart/form-data'
+        }})
+    }
+    getRuangan(){
+        return axios.get(API_URL + 'api/ruangan/');
+    }
+  
 }
 
 export default new IzinMahasiswaService();
