@@ -25,7 +25,7 @@ class IzinKegiatan(models.Model):
 
 
 class DetailKegiatan(models.Model):
-    izin_kegiatan = models.ForeignKey(
+    izin_kegiatan = models.OneToOneField(
         IzinKegiatan,
         on_delete=models.CASCADE
     )
