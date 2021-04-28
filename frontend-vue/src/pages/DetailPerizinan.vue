@@ -220,6 +220,7 @@
 <script>
 import UserService from '../services/user.service';
 import moment from 'moment';
+
 export default {
     name: 'DetailPerizinan',
     data() {

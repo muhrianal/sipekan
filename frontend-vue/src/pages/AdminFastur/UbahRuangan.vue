@@ -88,25 +88,47 @@
                         </div>
 
                         </div>
-<!-- Modal -->
-<div class="modal fade" id="ubahModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Berhasil</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        Ruangan Berhasil Diubah
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn simpan" v-on:click="ubahDone">Ok</button>
-      </div>
+<!-- Modal: Notif Sukses -->
+    <div class="modal fade" id="ubahModal" tabindex="-1" role="dialog" aria-labelledby="sukses-setuju-modal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+
+            <div class="modal-body">
+                <div class="text-center">
+                    <img src="../../assets/images/icon_ceklis.png" alt="icon-sukses">
+                <h2 style="margin:20px 0px 15px 0px">Sukses</h2>
+                <p style="margin:0px 0px -15px 0px">Ruangan berhasil disimpan</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="text-center">
+                    <button type="button" class="btn btn-success" data-dismiss="modal" v-on:click="ubahDone" style="width:80px; height:36px;">OK</button>
+                </div>
+            </div>
+            </div>
+        </div>
     </div>
-  </div>
-</div>
+    <!-- Modal: Notif Gagal -->
+    <div class="modal fade" id="notification-failed" tabindex="-1" role="dialog" aria-labelledby="gagal-submit-modal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+
+            <div class="modal-body">
+                <div class="text-center">
+                    <img src="../../assets/images/icon_silang.png" alt="icon-error">
+                <h2 style="margin:20px 0px 15px 0px">Error</h2>
+                <p style="margin:0px 0px -15px 0px">Bagian berbintang harus diisi</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="text-center">
+                    <button type="button" class="btn btn-success" data-dismiss="modal" style="width:80px; height:36px;">OK</button>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+
 
         </div>
 
@@ -115,7 +137,9 @@
 </template>
 
 <script>
-import UserService from '../services/user.service';
+import UserService from '../../services/user.service';
+import $ from 'jquery';
+
 export default {
     name: 'EditRuangan',
     data() {
@@ -198,8 +222,7 @@ export default {
                 },
                 error => {
                     console.log(error.message);
-                    alert("Bagian berbintang harus diisi");
-                    window.location.href="/ruangan/ubah/"+ this.$route.params.id;
+                    $('#notification-failed').modal('show')
                 }
         );
         },

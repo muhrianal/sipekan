@@ -77,52 +77,57 @@
               <a :href="'/ruangan/ubah/'+ ruangan.id" class="btn ubah" style="padding:3px 20px;font-size:16px;"> Ubah</a>
               </div>
             </div>
-<!-- Modal -->
-<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        Ingin menghapus Ruangan?
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-        <button type="button" class="btn btn-primary" v-on:click="hapusRuangan">Hapus</button>
-      </div>
-    </div>
-  </div>
-</div>
 
-<div class="modal fade" id="deleteSuksesModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        Ruangan {{ruangan.nama}} berhasil dihapus
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" v-on:click="deleteDone" data-dismiss="modal">Ok</button>
-      </div>
+<!-- Modal: Notif Sukses -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="sukses-setuju-modal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+
+            <div class="modal-body">
+                <div class="text-center d-flex ml-5">
+                 <img src="../../assets/images/icon_ceklis.png" alt="icon-sukses" class="my-4" style="width:7%;height:7%;margin-right:2%;">
+                <p class="my-4">Ingin menghapus Ruangan?</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+
+                        <button type="button" class="btn batal" data-dismiss="modal">Batal</button>
+                        <button type="button" class="btn simpan" v-on:click="hapusRuangan">Hapus</button>
+
+            </div>
+            </div>
+        </div>
     </div>
-  </div>
-</div>
+    <!-- Modal: Notif Gagal -->
+    <div class="modal fade" id="deleteSuksesModal" tabindex="-1" role="dialog" aria-labelledby="gagal-submit-modal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+
+            <div class="modal-body">
+                <div class="text-center">
+                    <img src="../../assets/images/icon_ceklis.png" alt="icon-error">
+                <p class="my-2">Ruangan {{ruangan.nama}} berhasil dihapus</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="text-center">
+                    <button type="button" class="btn btn-success" data-dismiss="modal" v-on:click="deleteDone" style="width:80px; height:36px;">OK</button>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+<!-- Modal -->
+
 
     </div>
 </template>
 
 <script>
-import UserService from '../services/user.service';
+import UserService from '../../services/user.service';
 import moment from 'moment';
+import $ from 'jquery';
+
 
 export default {
     name: 'DetailRuangan',
@@ -154,7 +159,7 @@ export default {
                 response => {
                     console.log(response.data);
                     console.log("ruangan berhasil dihapus");
-                    $('#deleteSuksesModal').modal('toggle')
+                    $('#deleteSuksesModal').modal('show')
                 },
                 error => {
                     console.log(error.message);
