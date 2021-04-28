@@ -2,13 +2,9 @@ import {createRouter, createWebHistory} from 'vue-router';
 
 import Login from '../pages/Login.vue';
 import PeminjamanRuanganUnitKerja from '../pages/UnitKerja/PeminjamanRuanganUnitKerja';
-import Test from '../pages/Test.vue';
-// import Home from '../pages/Home.vue'; 
-import Profile from '../pages/Profile.vue';
 import Profile from '../pages/Profile.vue';
 import IzinKegiatan from '../pages/IzinKegiatan.vue';
 import IzinKegiatanVerifikasi from '../pages/IzinKegiatanVerifikasi.vue';
- 
 import Ruangan from '../pages/AdminFastur/Ruangan';
 import AddRuangan from '../pages/AdminFastur/AddRuangan';
 import DetailRuangan from '../pages/AdminFastur/DetailRuangan';
@@ -16,13 +12,7 @@ import UbahRuangan from '../pages/AdminFastur/UbahRuangan';
 import StatusPerizinan from '../pages/StatusPerizinan';
 import DetailPerizinan from '../pages/DetailPerizinan';
 import UbahPeminjamanRuangan from '../pages/UbahPeminjamanRuangan';
-
-import PeminjamanRuanganUnitKerja from '../pages/UnitKerja/PeminjamanRuanganUnitKerja';
-import Test from '../pages/Test.vue';
 import JadwalTersedia from '../pages/JadwalTersedia.vue';
-// import Home from '../pages/Home.vue'; 
-// import Profile from '../pages/Profile.vue';
-import Home from '../pages/Home.vue'; 
 import DaftarPerizinanRuangan from '../pages/AdminFastur/DaftarPerizinanRuangan';
 import DetailPerizinanRuangan from '../pages/AdminFastur/DetailPerizinanRuangan'
 import PerizinanKegiatanMahasiswa from '../pages/Mahasiswa/PerizinanKegiatanMahasiswa.vue';
@@ -32,12 +22,6 @@ import PeminjamanRuanganMahasiswa from '../pages/Mahasiswa/PeminjamanRuanganMaha
 
 
 const routes = [
-  {
-    path: "/",
-    name: "Home",
-    component: Home
-
-  },
   {
     path: "/perizinan-fastur/:id",
     name: "DetailPerizinanRuangan",
@@ -68,11 +52,6 @@ const routes = [
     name: "IzinKegiatanVerifikasi",
     component: IzinKegiatanVerifikasi
   },
-  // {
-  //   path: "/izin-kegiatan/update/:id",
-  //   name: "Verifikasi Izin Kegiatan",
-  //   component: IzinKegiatanVerifikasi
-  // },
   {
     path: "/ruangan",
     name: "Ruangan",

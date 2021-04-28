@@ -11,22 +11,29 @@
 
             <ul class="list-unstyled components">
                 
-                <li v-bind:class="{active : isInHomePage}" >
+                <li v-if="isLoggedIn && (currentUser.role == 'MAHASISWA' || currentUser.role == 'UNIT KERJA')" v-bind:class="{active : isInHomePage}" >
                     <a class="sidebar-child" href="/perizinan">Status Perizinan</a>
                 </li>
 
-                <li v-bind:class="{active : isInPeminjamanRuanganUnitKerjaPage}" >
+                <li v-if="isLoggedIn && currentUser.role == 'UNIT KERJA'" v-bind:class="{active : isInPeminjamanRuanganUnitKerjaPage}" >
                     <a class="sidebar-child" href="/buat-perizinan/form-ruangan/">Buat Perizinan</a>
+                </li>
 
+                <li v-if="isLoggedIn && currentUser.role == 'MAHASISWA'" v-bind:class="{active : isInPeminjamanRuanganUnitKerjaPage}" >
+                    <a class="sidebar-child" href="/buat-perizinan/form-kegiatan/">Buat Perizinan</a>
                 </li>
 
 
-                <li v-bind:class="{active : isInHomePage}" >
+                <li v-if="isLoggedIn && (currentUser.role == 'ADMIN PKM' || currentUser.role == 'ADMIN FASTUR' || currentUser.role == 'ADMIN HUMAS')" v-bind:class="{active : isInHomePage}" >
                     <a class="sidebar-child" href="/">Dashboard</a>
                 </li>
 
-                <li v-bind:class="{active : false}" >
+                <li v-if="isLoggedIn && currentUser.role == 'ADMIN FASTUR'" v-bind:class="{active : isInHomePage}" >
                     <a class="sidebar-child" href="/perizinan-fastur">Daftar Perizinan</a>
+                </li>
+
+                <li v-if="isLoggedIn && currentUser.role == 'ADMIN PKM'" v-bind:class="{active : isInHomePage}" >
+                    <a class="sidebar-child" href="/izin-kegiatan">Daftar Perizinan</a>
                 </li>
 
                 <li v-bind:class="{active : isInHomePage}" >
@@ -36,12 +43,8 @@
                     <a class="sidebar-child" href="/ruangan">Daftar Ruangan</a>
                 </li>
 
-                <li v-bind:class="{active : isInLoginPage}" >
+                <li v-if="isLoggedIn != true" v-bind:class="{active : isInLoginPage}" >
                     <a class="sidebar-child" href="/login">Login</a>
-                </li>
-
-                <li v-bind:class="{active : isInHomePage}" >
-                    <a class="sidebar-child" href="/" >Home</a>
                 </li>
             </ul>
                 
@@ -83,7 +86,12 @@ export default {
         }
     },
     computed: {
-        
+        isLoggedIn() {
+            return this.$store.state.auth.status.loggedIn;
+        },
+        currentUser() {
+            return this.$store.state.auth.user;
+        }
     },
     methods:{
         toggleSidebar: function(){

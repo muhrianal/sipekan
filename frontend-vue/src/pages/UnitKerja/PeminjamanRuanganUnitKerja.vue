@@ -4,7 +4,6 @@
             <h3 class="header-page">Buat Perizinan Ruangan</h3>
             <hr class="line-header line-title">
         </div>
-        
         <div class="formulir">
             <form v-on:submit.prevent="submitPost">
                 <div class="form-row">
@@ -18,7 +17,7 @@
                     </div>    
                 </div>
 
-                <template v-for="peminjaman in number_of_peminjaman" v-bind:key="peminjaman">
+                <div v-for="peminjaman in number_of_peminjaman" v-bind:key="peminjaman">
                 <hr class="line-header">
                 <div class="text-right">
                     <button type="button" class="btn btn-outline-danger" id="button-hapus" @click="deleteRow(peminjaman - 1)" v-if="peminjaman > 1">Hapus</button>
@@ -38,18 +37,16 @@
                         <label for="waktuMulaiPeminjaman">Waktu mulai<span class="asterisk">*</span></label>
                         <select class="form-control" id="waktuMulaiPeminjaman" v-model="list_peminjaman_ruangan[peminjaman-1].waktu_mulai" required>
                             <option selected disabled value="">Pilih...</option>
-                            <template v-for="option in option_waktu" v-bind:key="option">
-                                <option v-bind:value="option.value">{{option.text}}</option>
-                            </template>
+                            
+                            <option v-for="option in option_waktu" v-bind:key="option" v-bind:value="option.value">{{option.text}}</option>
+                            
                         </select>
                     </div>
                     <div class="col-12 col-md-6">
                         <label for="waktuAkhirPeminjaman">Waktu akhir<span class="asterisk">*</span></label>
                         <select class="form-control" id="waktuAkhirPeminjaman" v-model="list_peminjaman_ruangan[peminjaman-1].waktu_akhir" required>
                             <option selected disabled value="">Pilih...</option>
-                            <template v-for="option in option_waktu" v-bind:key="option">
-                                <option v-bind:value="option.value">{{option.text}}</option>
-                            </template>
+                            <option v-for="option in option_waktu" v-bind:key="option" v-bind:value="option.value">{{option.text}}</option>
                         </select>
                     </div>  
                 </div>
@@ -96,7 +93,7 @@
                 
                 <!-- {{terbuka_untuk_umum}} -->
                 
-                </template>
+                </div>
                 <div class="text-center">
                     <button @click="addRow" type="button" class="btn tambah-ruangan btn-outline-secondary">Tambah Ruangan</button>
                 </div>
@@ -107,48 +104,47 @@
             </form>
             
         </div>
-    </div>
+        <!-- Modal: Notif Sukses -->
+            <div class="modal fade" id="notification-success" tabindex="-1" role="dialog" aria-labelledby="sukses-setuju-modal" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
 
-    <!-- Modal: Notif Sukses -->
-    <div class="modal fade" id="notification-success" tabindex="-1" role="dialog" aria-labelledby="sukses-setuju-modal" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-
-            <div class="modal-body">
-                <div class="text-center">
-                    <img src="../../assets/images/icon_ceklis.png" alt="icon-sukses">
-                <h2 style="margin:20px 0px 15px 0px">Sukses</h2>
-                <p style="margin:0px 0px -15px 0px">Peminjaman ruangan berhasil dibuat</p>
+                    <div class="modal-body">
+                        <div class="text-center">
+                            <img src="../../assets/images/icon_ceklis.png" alt="icon-sukses">
+                        <h2 style="margin:20px 0px 15px 0px">Sukses</h2>
+                        <p style="margin:0px 0px -15px 0px">Peminjaman ruangan berhasil dibuat</p>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="text-center">
+                            <button type="button" class="btn btn-success" data-dismiss="modal" v-on:click="refreshPage" style="width:80px; height:36px;">OK</button>
+                        </div>
+                    </div>
+                    </div>
                 </div>
             </div>
-            <div class="modal-footer">
-                <div class="text-center">
-                    <button type="button" class="btn btn-success" data-dismiss="modal" v-on:click="refreshPage" style="width:80px; height:36px;">OK</button>
-                </div>
-            </div>
-            </div>
-        </div>
-    </div>
 
-    <!-- Modal: Notif Gagal -->
-    <div class="modal fade" id="notification-failed" tabindex="-1" role="dialog" aria-labelledby="gagal-submit-modal" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
+            <!-- Modal: Notif Gagal -->
+            <div class="modal fade" id="notification-failed" tabindex="-1" role="dialog" aria-labelledby="gagal-submit-modal" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
 
-            <div class="modal-body">
-                <div class="text-center">
-                    <img src="../../assets/images/icon_silang.png" alt="icon-error">
-                <h2 style="margin:20px 0px 15px 0px">Error</h2>
-                <p style="margin:0px 0px -15px 0px">{{error_message}}</p>
+                    <div class="modal-body">
+                        <div class="text-center">
+                            <img src="../../assets/images/icon_silang.png" alt="icon-error">
+                        <h2 style="margin:20px 0px 15px 0px">Error</h2>
+                        <p style="margin:0px 0px -15px 0px">{{error_message}}</p>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="text-center">
+                            <button type="button" class="btn btn-success" data-dismiss="modal" style="width:80px; height:36px;">OK</button>
+                        </div>
+                    </div>
+                    </div>
                 </div>
             </div>
-            <div class="modal-footer">
-                <div class="text-center">
-                    <button type="button" class="btn btn-success" data-dismiss="modal" style="width:80px; height:36px;">OK</button>
-                </div>
-            </div>
-            </div>
-        </div>
     </div>
 
 </template>
@@ -204,6 +200,8 @@ export default {
             }
             this.izin_kegiatan.setPeminjamanRuangan(this.list_peminjaman_ruangan)
             this.izin_kegiatan.setUser(1)
+
+            console.log(this.izin_kegiatan)
 
             UserService.postPerizinanRuanganUnitKerja(this.izin_kegiatan).then(
                 response => {

@@ -57,13 +57,10 @@ export default {
   methods: {
     handleLogin() {
       this.loading = true;
-      console.log("Bawah ini print: ")
-      console.log(this.$store)
-
       if (this.user.username && this.user.password) {
         this.$store.dispatch('auth/login', this.user).then(
           () => {
-            this.$router.push('/profile');
+            this.$router.push('/jadwal-tersedia');
           },
           error => {
             this.loading = false;
@@ -74,14 +71,6 @@ export default {
           }
         );
       }
-      // this.$validator.validateAll().then(isValid => {
-      //   if (!isValid) {
-      //     this.loading = false;
-      //     return;
-      //   }
-
-
-      // });
     }
   },
   mounted(){

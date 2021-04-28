@@ -74,8 +74,10 @@ class IzinKegiatanUnitKerjaSerializer(serializers.ModelSerializer):
         peminjaman_ruangan_data = validated_data.pop('peminjaman_ruangan')
         
         izin_kegiatan = IzinKegiatan.objects.create(**validated_data)
-        for subkegiatan in subkegiatan_data:
-            PeminjamanRuangan.objects.create(izin_kegiatan=izin_kegiatan, **subkegiatan)
+        for peminjaman_ruangan in peminjaman_ruangan_data:
+            perulangan_data = peminjaman_ruangan.pop('perulangan')
+            peminjaman_ruangan_created = PeminjamanRuangan.objects.create(izin_kegiatan=izin_kegiatan, **peminjaman_ruangan)
+            Perulangan.objects.create(peminjaman_ruangan=peminjaman_ruangan_created, **perulangan_data)
         return izin_kegiatan
 
 class PeminjamanRuanganMahasiswa(serializers.ModelSerializer):

@@ -3,7 +3,8 @@
         Test
     </div>
 </template>
-<sripct>
+
+<script>
 import UserService from '../services/user.service';
 export default {
     name: 'EditRuangan',
@@ -63,4 +64,4 @@ export default {
         }
     }
 }
-</sccript>
+</script>

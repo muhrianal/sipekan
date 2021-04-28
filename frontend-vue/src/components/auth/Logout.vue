@@ -1,10 +1,11 @@
 <template>
-    <div class="card card-custom-root mb-3 rounded">
+    <div v-if="isLoggedIn" class="card card-custom-root mb-3 rounded">
         <div class="card-body card-custom">
             <p id="masuk-sebagai">MASUK SEBAGAI:</p>
-            <p id="nama-user">Akhmad Diponegoro</p>
-            <p id="role-user">Admin PKM</p>
-            <button type="button" class="btn btn-danger" id="button-logout">Logout</button>
+            <p id="nama-user">{{currentUser.name}}</p>
+            <p id="role-user">{{currentUser.role}}</p>
+            
+            <button type="submit" @click="logOut" class="btn btn-danger" id="button-logout">Logout</button>
         </div>
     </div>  
 </template>
@@ -12,7 +13,21 @@
 
 <script>
 export default {
-    name:'Logout'
+    name:'Logout',
+    methods: {
+        logOut() {
+            this.$store.dispatch('auth/logout');
+            this.$router.push('/login');
+        }
+    },
+    computed: {
+        isLoggedIn() {
+            return this.$store.state.auth.status.loggedIn;
+        },
+        currentUser() {
+            return this.$store.state.auth.user;
+        }
+  },
 }
 </script>
 
