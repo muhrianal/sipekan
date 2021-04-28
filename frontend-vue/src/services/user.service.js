@@ -45,6 +45,41 @@ class UserService {
     putUpdateStatusDanAlasanPenolakanPeminjamanRuangan(data, id){
         return axios.put(API_URL + 'peminjaman-ruangan/update-status/' + id + '/', data)
     }
+
+    getRuangan(id){
+        return axios.get(API_URL + 'api/ruangan/' + id)
+    }
+
+    postRuangan(data){
+        return axios.post(API_URL + 'api/ruangan/', data);
+    }
+
+    postIzinKegiatanHeader(data){
+        return axios.post(API_URL + 'api/ruangan/', data)
+    }
+
+    putRuangan(id, data) {
+        return axios.put(API_URL + 'api/ruangan/' + id +'/', data)
+    }
+
+    deleteRuangan(id){
+        return axios.delete(API_URL + 'api/ruangan/' + id)
+    }
+
+    getAllPerizinan() {
+        return axios.get(API_URL + 'api/list-perizinan/')
+    }
+
+    getPerizinan(id) {
+        return axios.get(API_URL + 'api/perizinan/' + id)
+    }
+
+    putPeminjamanRuangan(id,data) {
+        return axios.get(API_URL + 'api/peminjaman-ruangan/update/'+id+'/',data)
+    }
+
+
+
 }
 
 export default new UserService();
