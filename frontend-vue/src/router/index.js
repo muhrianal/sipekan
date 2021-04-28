@@ -6,7 +6,6 @@ import PeminjamanRuanganUnitKerja from '../pages/UnitKerja/PeminjamanRuanganUnit
 import Home from '../pages/Home.vue'; 
 import DaftarPerizinanRuangan from '../pages/AdminFastur/DaftarPerizinanRuangan';
 import DetailPerizinanRuangan from '../pages/AdminFastur/DetailPerizinanRuangan'
-import Profile from '../pages/Profile.vue';
 import PerizinanKegiatanMahasiswa from '../pages/Mahasiswa/PerizinanKegiatanMahasiswa.vue';
 import PermohonanHumas from '../pages/Mahasiswa/PermohonanHumas.vue';
 
