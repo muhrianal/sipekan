@@ -1,0 +1,102 @@
+
+<template>
+    <div class="card" id="app">
+    <div class="d-flex">
+        <div class="mr-auto p-3">
+            <h4 class="judul p-1 align-middle" style="font-weight: 500;">Daftar Ruangan</h4>
+        </div>
+      <div class="p-3">
+          <a href="/ruangan/add" class="btn tambah" style="padding:3px 6px;font-size:14px;"> Tambah Ruangan</a>
+      </div>
+    </div>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col" class="text-center" > No.</th>
+          <th scope="col" class="text-center">Nama Ruangan</th>
+          <th scope="col" class="text-center">Jenis Ruangan</th>
+          <th scope="col" class="text-center">Lokasi</th>
+          <th scope="col" class="text-center">Kapasitas</th>
+          <th scope="col"></th>
+
+        </tr>
+      </thead>
+      <tbody id="app">
+        <tr v-for="(ruang, index) in ruangan" v-bind:key="ruang.id">
+            <th scope="row" class="text-center" >{{ index+1+"." }} </th>
+            <td>{{ ruang.nama }}</td>
+            <td v-if="ruang.jenis_ruang==1">Ruang Pertemuan</td>
+            <td v-if="ruang.jenis_ruang==2">Ruang Kelas</td>
+            <td v-if="ruang.jenis_ruang==3">Ruang Rapat</td>
+            <td v-if="ruang.jenis_ruang==4">Ruang Selasar</td>
+            <td>{{ ruang.lokasi }}</td>
+            <td class="text-center">{{ ruang.kapasitas }}</td>
+            <td><a :href="'/ruangan/'+ruang.id">Detail</a></td>
+        </tr>
+
+      </tbody>
+    </table>
+    </div>
+    <p>{{ruangan[0].nama}}</p>
+</template>
+
+
+<script>
+import UserService from '../../services/user.service';
+
+
+export default {
+    name: 'Ruangan',
+    data() {
+        return {
+            ruangan: [],
+        }
+    },
+    created(){
+        console.log("masuk created daftar")
+        UserService.getAllRuangan().then(
+            response => {
+                this.ruangan = response.data;
+            },
+            error => {
+                this.error_message = (error.response && error.response.data) || error.message || error.toString();
+            }
+        )
+    },
+    mounted(){
+        console.log(this.ruangan);
+        console.log(this.error_message);
+    },
+}
+</script>
+
+
+<style>
+
+.judul{
+    color: #FFD505;
+}
+*{
+    @import url('https://fonts.googleapis.com/css2?family=Mulish:wght@200&display=swap');
+    font-family: 'Mulish', sans-serif;
+}
+tbody{
+    font-weight: lighter;
+}
+h4{
+    margin-bottom:0px;
+}
+.tambah {
+    color: #FFD505;
+    border-color: #FFD505;
+    border-width: 2px;
+}
+th{
+    font-weight: normal;
+}
+.tambah:hover{
+    background-color: #FFD505 !important;
+    border-color: #FFD505;
+    color: white;
+}
+</style>

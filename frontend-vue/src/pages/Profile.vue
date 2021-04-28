@@ -30,11 +30,6 @@ export default {
       return this.$store.state.auth.user;
     }
   },
-  // mounted() {
-  //   console.log("disini ke print yann")
-  //   if (!this.currentUser) {
-  //     this.$router.push('/login');
-  //   }
-  // }
+
 };
 </script>

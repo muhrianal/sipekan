@@ -1,22 +1,22 @@
 <template>
-    
+<div>
    <Navbar></Navbar>
     <div class="wrapper">
         <!-- Sidebar  -->
         <nav id="sidebar" v-bind:class="{active: sidebarClosed}">
             <div class="sidebar-header">
-                <!-- <h3>Bootstrap Sidebar</h3> -->
+                
                 <Logout></Logout>
             </div>
 
             <ul class="list-unstyled components">
-                <!-- <p>Dummy Heading</p> -->
+                
                 <li v-bind:class="{active : isInHomePage}" >
-                    <a class="sidebar-child" href="/">Status Perizinan</a>
+                    <a class="sidebar-child" href="/perizinan">Status Perizinan</a>
                 </li>
 
-                <li v-bind:class="{active : isInHomePage}" >
-                    <a class="sidebar-child" href="/buat-perizinan/form-kegiatan/">Buat Perizinan</a>
+                <li v-bind:class="{active : isInPeminjamanRuanganUnitKerjaPage}" >
+                    <a class="sidebar-child" href="/buat-perizinan/form-ruangan/">Buat Perizinan</a>
 
                 </li>
 
@@ -25,8 +25,8 @@
                     <a class="sidebar-child" href="/">Dashboard</a>
                 </li>
 
-                <li v-bind:class="{active : isInHomePage}" >
-                    <a class="sidebar-child" href="/">Daftar Perizinan</a>
+                <li v-bind:class="{active : false}" >
+                    <a class="sidebar-child" href="/perizinan-fastur">Daftar Perizinan</a>
                 </li>
 
                 <li v-bind:class="{active : isInHomePage}" >
@@ -57,24 +57,13 @@
         <!-- Page Content  -->
         <div id="content" v-bind:class="{active: sidebarClosed}">
 
-            <!-- <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                <div class="container-fluid">
-                    <button type="button" id="sidebarCollapse" class="btn btn-info" v-on:click="toggleSidebar">
-                        <i class="fas fa-align-left"></i>
-                        <span>Toggle Sidebar</span>
-                    </button>
-                    <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                        <i class="fas fa-align-justify"></i>
-                    </button>
-                </div>
-            </nav> -->
             <i class="far fa-sign-out-alt fa-2x"   v-on:click="toggleSidebar"></i>
-            <!-- <i class="far fa-caret-square-left fa-2x" v-else v-on:click="toggleSidebar"></i> -->
             
-            <router-view @inLoginPage="isInLoginPageFunc" @inHomePage="isInHomePageFunc"/>
+            <router-view @inLoginPage="isInLoginPageFunc" @inHomePage="isInHomePageFunc"  @inPeminjamanRuanganUnitKerjaPage="isInPeminjamanRuanganUnitKerjaPageFunc"/>
             
         </div>
     </div>
+</div>
 </template>
 <script>
 import Navbar from './Navbar'
@@ -90,6 +79,7 @@ export default {
             sidebarClosed : false,
             isInHomePage : false,
             isInLoginPage : false,
+            isInPeminjamanRuanganUnitKerjaPage : false,
         }
     },
     computed: {
@@ -106,6 +96,9 @@ export default {
         },
         isInHomePageFunc(value){
             this.isInHomePage = value;
+        },
+        isInPeminjamanRuanganUnitKerjaPageFunc(value){
+            this.isInPeminjamanRuanganUnitKerjaPage = value;
         }
     },
 }
@@ -117,9 +110,10 @@ export default {
 /*
     DEMO STYLE
 */
-@import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
+
+@import "https://fonts.googleapis.com/css2?family=Mulish:wght@200&display=swap";
 body {
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Times', sans-serif;
     background: #fafafa;
 }
 p {
@@ -277,16 +271,3 @@ a.article:hover {
     }
 }
 </style>
-© 2021 GitHub, Inc.
-Terms
-Privacy
-Security
-Status
-Docs
-Contact GitHub
-Pricing
-API
-Training
-Blog
-About
-Loading complete

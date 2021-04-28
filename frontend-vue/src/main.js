@@ -10,7 +10,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 // import Login from './pages/Login.vue'
 // import { BNavbar } from 'bootstrap-vue'
 
-
+// import SuksesMembuatPeminjamanRuangan from './components/modal/SuksesMembuatPeminjamanRuangan.vue';
 
 import router from "./router";
 import store from "./store";
@@ -33,6 +33,8 @@ import store from "./store";
 
 const app = createApp(App)
 
-// app.component('b-navbar', BNavbar)
+// app.component('modal-sukses-ruangan', SuksesMembuatPeminjamanRuangan)
+
+
 
 app.use(router).use(store).mount('#app')
