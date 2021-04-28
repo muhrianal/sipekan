@@ -4,7 +4,7 @@ from .models.profile import Profile
 from .models.izin_kegiatan import IzinKegiatan, DetailKegiatan
 
 from .models.peminjaman_ruangan import PeminjamanRuangan, Ruangan, Perulangan
-from .models.humas import PerizinanPublikasi, PermintaanProtokoler, PermintaanSouvenir, Souvenir
+from .models.humas import PerizinanPublikasi, PermintaanProtokoler, PermintaanSouvenir, Souvenir, JenisPublikasi
 
 # Register your models here.
 admin.site.register(Profile)
@@ -27,3 +27,4 @@ admin.site.register(PermintaanSouvenir)
 admin.site.register(Perulangan)
 
 admin.site.register(Souvenir)
+admin.site.register(JenisPublikasi)

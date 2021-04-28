@@ -1,6 +1,10 @@
 import {createRouter, createWebHistory} from 'vue-router';
 
 import Login from '../pages/Login.vue';
+import PeminjamanRuanganUnitKerja from '../pages/UnitKerja/PeminjamanRuanganUnitKerja';
+import Test from '../pages/Test.vue';
+// import Home from '../pages/Home.vue'; 
+import Profile from '../pages/Profile.vue';
 import Profile from '../pages/Profile.vue';
 import IzinKegiatan from '../pages/IzinKegiatan.vue';
 import IzinKegiatanVerifikasi from '../pages/IzinKegiatanVerifikasi.vue';
@@ -19,6 +23,7 @@ import DaftarPerizinanRuangan from '../pages/AdminFastur/DaftarPerizinanRuangan'
 import DetailPerizinanRuangan from '../pages/AdminFastur/DetailPerizinanRuangan'
 import PerizinanKegiatanMahasiswa from '../pages/Mahasiswa/PerizinanKegiatanMahasiswa.vue';
 import PermohonanHumas from '../pages/Mahasiswa/PermohonanHumas.vue';
+import PeminjamanRuanganMahasiswa from '../pages/Mahasiswa/PeminjamanRuanganMahasiswa.vue';
 
 
 
@@ -109,14 +114,19 @@ const routes = [
     path: "/buat-perizinan/form-humas",
     name: "Form Permohonan Humas Mahasiswa",
     component: PermohonanHumas,
+    props: true
   },
   {
-
     path: "/buat-perizinan/form-ruangan/",
     name: "Form Peminjaman Ruangan Unit Kerja",
     component: PeminjamanRuanganUnitKerja,
-  }
-
+  },
+  {
+    path: "/buat-perizinan/form-ruangan-mahasiswa/",
+    name: "Form Peminjaman Ruangan Mahasiswa",
+    component: PeminjamanRuanganMahasiswa,
+    props: true
+  },
 ];
 
 

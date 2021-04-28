@@ -20,7 +20,12 @@ from django.http.response import JsonResponse
 
 from ..serializers.peminjaman_ruangan_serializer import PeminjamanRuanganSerializer
 from ..serializers.kalender_serializer import KalenderSerializer
+<<<<<<< HEAD
+from ..serializers.peminjaman_ruangan_serializer import PeminjamanRuanganSerializer, RuanganSerializer
+from ..serializers.peminjaman_ruangan_serializer import PeminjamanRuanganMahasiswaSerializer
+=======
 from ..serializers.peminjaman_ruangan_serializer import PeminjamanRuanganSerializer, RuanganSerializer, IzinKegiatanFasturSerializer
+>>>>>>> master
 
 
 @api_view(['PUT',])
@@ -163,6 +168,27 @@ def get_list_perizinan_fastur(request):
     #case for else
     return JsonResponse({'message' : 'invalid API method'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
+<<<<<<< HEAD
+@api_view(['POST'])
+@permission_classes([permissions.AllowAny,]) #nanti diganti jadi mahasiswa
+def post_peminjaman_ruangan_mahasiswa(request,id_izin_kegiatan):
+    try: 
+        izin_kegiatan =IzinKegiatan.objects.get(pk=id_izin_kegiatan)
+    except:
+        return JsonResponse({'message': 'Izin kegiatan tidak ada'}, status=status.HTTP_404_NOT_FOUND)
+    
+    if request.method == 'POST':
+        peminjaman_data = JSONParser().parse(request)
+        peminjaman_ruangan_serialized =PeminjamanRuanganMahasiswaSerializer(izin_kegiatan,data=peminjaman_data)
+        if peminjaman_ruangan_serialized.is_valid():
+            peminjaman_ruangan_serialized.save()
+            return JsonResponse(peminjaman_ruangan_serialized.data)
+        return JsonResponse(peminjaman_ruangan_serialized.errors, status=status.HTTP_400_BAD_REQUEST) 
+    
+    #case for else
+    return JsonResponse({'message' : 'invalid API method'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+=======
 
 @api_view(['GET',])
 @permission_classes([permissions.AllowAny,])
@@ -174,3 +200,4 @@ def get_peminjaman_ruangan_by_id_izin_kegiatan(request, id_izin_kegiatan):
     
     #case for else
     return JsonResponse({'message' : 'invalid API method'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+>>>>>>> master
