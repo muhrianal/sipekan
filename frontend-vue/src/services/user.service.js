@@ -59,6 +59,9 @@ class UserService {
         return axios.put(API_URL + 'peminjaman-ruangan/update-status/' + id + '/', data)
     }
 
+    getAllRuanganKalender(){
+        return axios.get(API_URL + 'api/ruangan');
+    }
     getRuangan(id){
         return axios.get(API_URL + 'api/ruangan/' + id)
     }
