@@ -6,15 +6,15 @@
         </div>
         
         <div class="formulir">
-            <form>
+            <form v-on:submit.prevent="submitPost">
                 <div class="form-row">
                     <div class="col-12 col-md-6">
                         <label for="inputNamaKegiatan">Nama Kegiatan<span class="asterisk">*</span></label>
-                        <input type="text" class="form-control" placeholder="e.g. Kelas Administrasi Bisnis" v-model="izin_kegiatan.nama_kegiatan">
+                        <input type="text" class="form-control" placeholder="e.g. Kelas Administrasi Bisnis" v-model="izin_kegiatan.nama_kegiatan" required>
                     </div>
                     <div class="col-12 col-md-6">
                         <label for="inputOrganisasi">Organisasi/Divisi<span class="asterisk">*</span></label>
-                        <input type="text" class="form-control" placeholder="e.g. Akademik FEB UI" v-model="izin_kegiatan.organisasi">
+                        <input type="text" class="form-control" placeholder="e.g. Akademik FEB UI" v-model="izin_kegiatan.organisasi" required>
                     </div>    
                 </div>
 
@@ -26,17 +26,17 @@
                 <div class="form-row">
                     <div class="col-12 col-md-6">
                         <label for="inputSubkegiatan">Nama Subkegiatan<span class="asterisk">*</span></label>
-                        <input type="text" class="form-control" placeholder="e.g. Administrasi Bisnis - B" v-model="list_peminjaman_ruangan[peminjaman-1].judul_peminjaman">
+                        <input type="text" class="form-control" placeholder="e.g. Administrasi Bisnis - B" v-model="list_peminjaman_ruangan[peminjaman-1].judul_peminjaman" required>
                     </div>
                     <div class="col-12 col-md-6">
                         <label for="inputJumlahPeserta">Jumlah Peserta<span class="asterisk">*</span></label>
-                        <input type="number" class="form-control" placeholder="e.g. 120" v-model="list_peminjaman_ruangan[peminjaman-1].jumlah_peserta">
+                        <input type="number" min='1' class="form-control" placeholder="e.g. 120" v-model="list_peminjaman_ruangan[peminjaman-1].jumlah_peserta" required>
                     </div>  
                 </div>
                 <div class="form-row">
                     <div class="col-12 col-md-6">
                         <label for="waktuMulaiPeminjaman">Waktu mulai<span class="asterisk">*</span></label>
-                        <select class="form-control" id="waktuMulaiPeminjaman" v-model="list_peminjaman_ruangan[peminjaman-1].waktu_mulai">
+                        <select class="form-control" id="waktuMulaiPeminjaman" v-model="list_peminjaman_ruangan[peminjaman-1].waktu_mulai" required>
                             <option selected disabled value="">Pilih...</option>
                             <template v-for="option in option_waktu" v-bind:key="option">
                                 <option v-bind:value="option.value">{{option.text}}</option>
@@ -45,7 +45,7 @@
                     </div>
                     <div class="col-12 col-md-6">
                         <label for="waktuAkhirPeminjaman">Waktu akhir<span class="asterisk">*</span></label>
-                        <select class="form-control" id="waktuAkhirPeminjaman" v-model="list_peminjaman_ruangan[peminjaman-1].waktu_akhir">
+                        <select class="form-control" id="waktuAkhirPeminjaman" v-model="list_peminjaman_ruangan[peminjaman-1].waktu_akhir" required>
                             <option selected disabled value="">Pilih...</option>
                             <template v-for="option in option_waktu" v-bind:key="option">
                                 <option v-bind:value="option.value">{{option.text}}</option>
@@ -56,13 +56,13 @@
                 <div class="form-row">
                     <div class="col-12 col-md-6">
                         <label for="ruangan">Ruangan<span class="asterisk">*</span></label>
-                        <select class="form-control" id="daftar-ruangan" v-model="list_peminjaman_ruangan[peminjaman-1].ruangan">
+                        <select class="form-control" id="daftar-ruangan" v-model="list_peminjaman_ruangan[peminjaman-1].ruangan" required>
                             <option selected disabled value="">Pilih...</option>
                             <option value="1">Ruangan A</option>
                         </select>
                         <p class="note-ruangan note-form text-right">Lihat daftar ruangan <a href="#">disini</a> </p>
                         <label for="perulangan">Perulangan<span class="asterisk">*</span></label>
-                        <select class="form-control" id="perulangan" v-model="list_perulangan[peminjaman-1].jenjang">
+                        <select class="form-control" id="perulangan" v-model="list_perulangan[peminjaman-1].jenjang" required>
                             <option selected disabled value="">Pilih...</option>
                             <option value=1>SEKALI PAKAI</option>
                             <option value=2>HARIAN</option>
@@ -79,7 +79,7 @@
                 <div class="form-row">
                     <div class="col-12 col-md-6">
                         <label for="tanggalMulaiPelaksanaan">Tanggal Mulai Penggunaan<span class="asterisk">*</span></label>
-                        <input type="date" class="form-control" v-model="list_perulangan[peminjaman -1].tanggal_mulai">
+                        <input type="date" class="form-control" v-model="list_perulangan[peminjaman -1].tanggal_mulai" required>
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" v-model="list_peminjaman_ruangan[peminjaman-1].terbuka_untuk_umum" id="checkbox-terbuka-untuk-umum">
                             <label class="form-check-label" for="flexCheckDefault">
@@ -89,21 +89,23 @@
                     </div>
                     <div class="col-12 col-md-6">
                         <label for="tanggalAkhirPelaksanaan">Tanggal Akhir Penggunaan<span class="asterisk">*</span></label>
-                        <input type="date" class="form-control" v-model="list_perulangan[peminjaman -1].tanggal_akhir">
+                        <input type="date" class="form-control" v-model="list_perulangan[peminjaman -1].tanggal_akhir" required>
                         <p class="note-form">isi dengan tanggal yang sama dengan tanggal mulai pelaksanaan jika memilih "sekali pakai"</p>
                     </div>  
                 </div>
                 
                 <!-- {{terbuka_untuk_umum}} -->
+                
                 </template>
+                <div class="text-center">
+                    <button @click="addRow" type="button" class="btn tambah-ruangan btn-outline-secondary">Tambah Ruangan</button>
+                </div>
+                
+                <div class="text-right">
+                    <button type="submit" class="btn btn-success btn-simpan">Submit</button>
+                </div>
             </form>
-            <div class="text-center">
-                <button @click="addRow" type="button" class="btn tambah-ruangan btn-outline-secondary">Tambah Ruangan</button>
-            </div>
-            <div class="text-right">
-                <button @click="submitPost" class="btn btn-success btn-simpan">Submit</button>
-            </div>
-
+            
         </div>
     </div>
 
@@ -308,6 +310,7 @@ label.form-check-label{
 
 .tambah-ruangan {
     width: 400px;
+    margin-bottom: 10px;
 }
 
 #button-hapus{

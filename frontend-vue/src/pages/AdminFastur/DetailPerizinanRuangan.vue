@@ -146,18 +146,20 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
 
-            <div class="modal-body">
-                <label for="keterangan">Tambah alasan penolakan<span class="asterisk">*</span></label>
-                <textarea class="form-control" id="textarea-keterangan" rows="6" v-model="alasan_penolakan" placeholder="e.g. Pilih ruangan lain yang lebih kecil"></textarea>
-            </div>
-            <div class="modal-footer">
-                <div class="text-center">
-                    <button type="button" class="btn btn-outline-secondary" data-dismiss="modal" style="width:80px; height:36px;">Batal</button>
+            <form v-on:submit.prevent="putTolak">
+                <div class="modal-body">
+                    <label for="keterangan">Tambah alasan penolakan<span class="asterisk">*</span></label>
+                    <textarea class="form-control" id="textarea-keterangan" rows="6" v-model="alasan_penolakan" placeholder="e.g. Pilih ruangan lain yang lebih kecil" required></textarea>
                 </div>
-                <div class="text-center">
-                    <button type="button" class="btn btn-success" v-on:click="putTolak()" style="width:80px; height:36px;">Selesai</button>
+                <div class="modal-footer">
+                    <div class="text-center">
+                        <button class="btn btn-outline-secondary" data-dismiss="modal" style="width:80px; height:36px;">Batal</button>
+                    </div>
+                    <div class="text-center">
+                        <button class="btn btn-success" type="submit" style="width:80px; height:36px;">Selesai</button>
+                    </div>
                 </div>
-            </div>
+            </form>
             </div>
         </div>
     </div>
