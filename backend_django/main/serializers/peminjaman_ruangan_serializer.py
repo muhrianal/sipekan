@@ -74,7 +74,6 @@ class IzinKegiatanUnitKerjaSerializer(serializers.ModelSerializer):
         peminjaman_ruangan_data = validated_data.pop('peminjaman_ruangan')
         
         izin_kegiatan = IzinKegiatan.objects.create(**validated_data)
-<<<<<<< HEAD
         for subkegiatan in subkegiatan_data:
             PeminjamanRuangan.objects.create(izin_kegiatan=izin_kegiatan, **subkegiatan)
         return izin_kegiatan
@@ -98,12 +97,6 @@ class PeminjamanRuanganMahasiswaSerializer(serializers.ModelSerializer):
         print(izin_kegiatan)
         peminjaman_ruangan = validated_data.pop('peminjaman_ruangan')
         for data in peminjaman_ruangan:
-            PeminjamanRuangan.objects.create(izin_kegiatan=izin_kegiatan, **data)
-        return izin_kegiatan
-     
-     
-=======
-        for peminjaman_ruangan in peminjaman_ruangan_data:
             perulangan_data = peminjaman_ruangan.pop('perulangan')
             peminjaman_ruangan_created = PeminjamanRuangan.objects.create(izin_kegiatan=izin_kegiatan, **peminjaman_ruangan)
             Perulangan.objects.create(peminjaman_ruangan=peminjaman_ruangan_created, **perulangan_data)
@@ -137,4 +130,3 @@ class IzinKegiatanFasturSerializer(serializers.ModelSerializer):
     class Meta:
         model = IzinKegiatan
         fields = ('id', 'nama_kegiatan', 'organisasi', 'status_perizinan_kegiatan', 'user', 'peminjaman_ruangan')
->>>>>>> master

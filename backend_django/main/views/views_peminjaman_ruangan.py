@@ -1,7 +1,6 @@
 from django.shortcuts import render, HttpResponse
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
-
 from rest_framework import status, permissions
 from rest_framework.parsers import JSONParser, MultiPartParser 
 from rest_framework.decorators import api_view, permission_classes
@@ -9,7 +8,6 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authtoken.models import Token
-
 from ..permissions import AllowOnlyAdminFASTUR, AllowOnlyAdminHUMAS, AllowOnlyAdminPKM
 from ..models.profile import Profile
 from ..models.peminjaman_ruangan import PeminjamanRuangan
@@ -17,15 +15,11 @@ from ..models.peminjaman_ruangan import Ruangan
 from ..models.izin_kegiatan import IzinKegiatan
 from ..serializers.peminjaman_ruangan_serializer import PeminjamanRuanganUnitKerjaSerializer, IzinKegiatanUnitKerjaSerializer
 from django.http.response import JsonResponse
-
 from ..serializers.peminjaman_ruangan_serializer import PeminjamanRuanganSerializer
 from ..serializers.kalender_serializer import KalenderSerializer
-<<<<<<< HEAD
 from ..serializers.peminjaman_ruangan_serializer import PeminjamanRuanganSerializer, RuanganSerializer
 from ..serializers.peminjaman_ruangan_serializer import PeminjamanRuanganMahasiswaSerializer
-=======
 from ..serializers.peminjaman_ruangan_serializer import PeminjamanRuanganSerializer, RuanganSerializer, IzinKegiatanFasturSerializer
->>>>>>> master
 
 
 @api_view(['PUT',])
@@ -168,7 +162,6 @@ def get_list_perizinan_fastur(request):
     #case for else
     return JsonResponse({'message' : 'invalid API method'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
-<<<<<<< HEAD
 @api_view(['POST'])
 @permission_classes([permissions.AllowAny,]) #nanti diganti jadi mahasiswa
 def post_peminjaman_ruangan_mahasiswa(request,id_izin_kegiatan):
@@ -188,7 +181,6 @@ def post_peminjaman_ruangan_mahasiswa(request,id_izin_kegiatan):
     #case for else
     return JsonResponse({'message' : 'invalid API method'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
-=======
 
 @api_view(['GET',])
 @permission_classes([permissions.AllowAny,])
@@ -200,4 +192,3 @@ def get_peminjaman_ruangan_by_id_izin_kegiatan(request, id_izin_kegiatan):
     
     #case for else
     return JsonResponse({'message' : 'invalid API method'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
->>>>>>> master
