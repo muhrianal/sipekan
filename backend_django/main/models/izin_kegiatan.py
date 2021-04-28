@@ -27,8 +27,12 @@ class IzinKegiatan(models.Model):
 class DetailKegiatan(models.Model):
     izin_kegiatan = models.OneToOneField(
         IzinKegiatan,
+<<<<<<< HEAD
         on_delete=models.CASCADE,
         related_name="detail_kegiatan"
+=======
+        on_delete=models.CASCADE, related_name='detail_kegiatan'
+>>>>>>> master
     )
 
     waktu_tanggal_mulai = models.DateTimeField()

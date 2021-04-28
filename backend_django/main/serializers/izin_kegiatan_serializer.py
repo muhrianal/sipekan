@@ -44,6 +44,28 @@ class PermintaanSouvenirSerializer(serializers.ModelSerializer):
         model = PermintaanSouvenir
         fields = '__all__'
 
+class DetailKegiatanSerializer(serializers.ModelSerializer):
+
+    class Meta:
+            model = DetailKegiatan
+            fields =(
+                'id',
+                'waktu_tanggal_mulai',
+                'waktu_tanggal_akhir',
+                'email_pic',
+                'nama_pic',
+                'hp_pic',
+                'npm_pic',
+                'npm_ketua_organisasi',
+                'nama_ketua_organisasi',
+                'tempat_pelaksanaan',
+                'sumber_pendanaan',
+                'alasan_penolakan',
+                'file_info_kegiatan',
+                'created_at',
+                'updated_at',
+                'izin_kegiatan'
+            )
 
 class IzinKegiatanSerializer(serializers.ModelSerializer):
 
@@ -54,8 +76,9 @@ class IzinKegiatanSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = IzinKegiatan
-        fields = '__all__'
+        fields = ('id','nama_kegiatan', 'organisasi', 'user', 'status_perizinan_kegiatan','detail_kegiatan','peminjaman_ruangan','permintaan_protokoler','perizinan_publikasi','permintaan_souvenir')
 
+<<<<<<< HEAD
 class DetailKegiatanSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -109,3 +132,5 @@ class IzinKegiatanMahasiswaSerializer(serializers.ModelSerializer):
         izin_kegiatan = IzinKegiatan.objects.create(**validated_data)
         DetailKegiatan.objects.create(izin_kegiatan = izin_kegiatan, **detail_kegiatan_data)
         return izin_kegiatan
+=======
+>>>>>>> master

@@ -17,7 +17,11 @@ from ..permissions import AllowOnlyAdminFASTUR, AllowOnlyAdminHUMAS, AllowOnlyAd
 
 from ..models.izin_kegiatan import DetailKegiatan, IzinKegiatan
 
+<<<<<<< HEAD
 from ..serializers.izin_kegiatan_serializer import IzinKegiatanSerializerSimplified, DetailKegiatanSerializer, IzinKegiatanMahasiswaSerializer
+=======
+from ..serializers.izin_kegiatan_serializer import IzinKegiatanSerializerSimplified, IzinKegiatanSerializer
+>>>>>>> master
 
 
 from django.http.response import JsonResponse

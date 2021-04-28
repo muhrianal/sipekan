@@ -5,18 +5,19 @@
         <!-- Sidebar  -->
         <nav id="sidebar" v-bind:class="{active: sidebarClosed}">
             <div class="sidebar-header">
-                <!-- <h3>Bootstrap Sidebar</h3> -->
+                
                 <Logout></Logout>
             </div>
 
             <ul class="list-unstyled components">
-                <!-- <p>Dummy Heading</p> -->
+                
                 <li v-bind:class="{active : isInHomePage}" >
-                    <a class="sidebar-child" href="/">Status Perizinan</a>
+                    <a class="sidebar-child" href="/perizinan">Status Perizinan</a>
                 </li>
 
-                <li v-bind:class="{active : isInHomePage}" >
-                    <a class="sidebar-child" href="/">Buat Perizinan</a>
+                <li v-bind:class="{active : isInPeminjamanRuanganUnitKerjaPage}" >
+                    <a class="sidebar-child" href="/buat-perizinan/form-ruangan/">Buat Perizinan</a>
+
                 </li>
 
 
@@ -24,15 +25,15 @@
                     <a class="sidebar-child" href="/">Dashboard</a>
                 </li>
 
-                <li v-bind:class="{active : isInHomePage}" >
-                    <a class="sidebar-child" href="/izin-kegiatan">Daftar Perizinan</a>
+                <li v-bind:class="{active : false}" >
+                    <a class="sidebar-child" href="/perizinan-fastur">Daftar Perizinan</a>
                 </li>
 
                 <li v-bind:class="{active : isInHomePage}" >
                     <a class="sidebar-child" href="/">Jadwal Tersedia</a>
                 </li>
                 <li v-bind:class="{active : isInHomePage}" >
-                    <a class="sidebar-child" href="/">Daftar Ruangan</a>
+                    <a class="sidebar-child" href="/ruangan">Daftar Ruangan</a>
                 </li>
 
                 <li v-bind:class="{active : isInLoginPage}" >
@@ -56,30 +57,17 @@
         <!-- Page Content  -->
         <div id="content" v-bind:class="{active: sidebarClosed}">
 
-            <!-- <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                <div class="container-fluid">
-                    <button type="button" id="sidebarCollapse" class="btn btn-info" v-on:click="toggleSidebar">
-                        <i class="fas fa-align-left"></i>
-                        <span>Toggle Sidebar</span>
-                    </button>
-                    <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                        <i class="fas fa-align-justify"></i>
-                    </button>
-                </div>
-            </nav> -->
             <i class="far fa-sign-out-alt fa-2x"   v-on:click="toggleSidebar"></i>
-            <!-- <i class="far fa-caret-square-left fa-2x" v-else v-on:click="toggleSidebar"></i> -->
             
-            <router-view @inLoginPage="isInLoginPageFunc" @inHomePage="isInHomePageFunc"/>
+            <router-view @inLoginPage="isInLoginPageFunc" @inHomePage="isInHomePageFunc"  @inPeminjamanRuanganUnitKerjaPage="isInPeminjamanRuanganUnitKerjaPageFunc"/>
+            
         </div>
     </div>
 </div>
 </template>
 <script>
 import Navbar from './Navbar'
-
 import Logout from './auth/Logout'
-
 export default {
     name: 'Base',
     components:{
@@ -91,6 +79,7 @@ export default {
             sidebarClosed : false,
             isInHomePage : false,
             isInLoginPage : false,
+            isInPeminjamanRuanganUnitKerjaPage : false,
         }
     },
     computed: {
@@ -101,15 +90,15 @@ export default {
             this.sidebarClosed = !this.sidebarClosed;
             console.log(this.$router.currentRoute._value.href)
         },
-
-
-
         // getting a var from child to get to know that it is the active one
         isInLoginPageFunc(value){
             this.isInLoginPage = value;
         },
         isInHomePageFunc(value){
             this.isInHomePage = value;
+        },
+        isInPeminjamanRuanganUnitKerjaPageFunc(value){
+            this.isInPeminjamanRuanganUnitKerjaPage = value;
         }
     },
 }
@@ -122,12 +111,11 @@ export default {
     DEMO STYLE
 */
 
-@import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
+@import "https://fonts.googleapis.com/css2?family=Mulish:wght@200&display=swap";
 body {
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Times', sans-serif;
     background: #fafafa;
 }
-
 p {
     font-family: 'Poppins', sans-serif;
     font-size: 1.1em;
@@ -135,7 +123,6 @@ p {
     line-height: 1.7em;
     color: #999;
 }
-
 a,
 a:hover,
 a:focus {
@@ -143,7 +130,6 @@ a:focus {
     text-decoration: none;
     transition: all 0.3s;
 }
-
 .navbar {
     padding: 15px 10px;
     background: #fff;
@@ -152,29 +138,24 @@ a:focus {
     margin-bottom: 40px;
     box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
 }
-
 .navbar-btn {
     box-shadow: none;
     outline: none !important;
     border: none;
 }
-
 .line {
     width: 100%;
     height: 1px;
     border-bottom: 1px dashed #ddd;
     margin: 40px 0;
 }
-
 /* ---------------------------------------------------
     SIDEBAR STYLE
 ----------------------------------------------------- */
-
 .wrapper {
     display: flex;
     width: 100%;
 }
-
 #sidebar {
     width: 250px;
     position: fixed;
@@ -186,53 +167,41 @@ a:focus {
     color:green;
     transition: all 0.3s;
 }
-
 #sidebar.active {
     margin-left: -250px;
 }
-
-
 #sidebar .sidebar-header {
     padding: 20px;
     background: #FFFFFF;
 }
-
 #sidebar ul.components {
     padding: 20px 0;
     border-bottom: 1px solid blanchedalmond;
 }
-
 #sidebar ul p {
     color: #fff;
     padding: 10px;
 }
-
 #sidebar ul li a {
     padding: 10px;
     font-size: 1.1em;
     display: block;
 }
-
 #sidebar ul li a:hover {
     color: black;
     background: #FFD505;
 }
-
 #sidebar ul li.active>a,
 a[aria-expanded="true"] {
     color: black;
     background: #FFD505;
 }
-
 .sidebar-child {
     color: #828282;
 }
-
-
 a[data-toggle="collapse"] {
     position: relative;
 }
-
 .dropdown-toggle::after {
     display: block;
     position: absolute;
@@ -240,17 +209,14 @@ a[data-toggle="collapse"] {
     right: 20px;
     transform: translateY(-50%);
 }
-
 ul ul a {
     font-size: 0.9em !important;
     padding-left: 30px !important;
     background: #6d7fcc;
 }
-
 ul.CTAs {
     padding: 20px;
 }
-
 ul.CTAs a {
     text-align: center;
     font-size: 0.9em !important;
@@ -258,22 +224,19 @@ ul.CTAs a {
     border-radius: 5px;
     margin-bottom: 5px;
 }
-
 /* a.download {
     background: #fff;
     color: #7386D5;
 } */
-
 a.article,
 a.article:hover {
-    background: yellow !important;
+    background: #FFD505 !important;
+
     color: #fff !important;
 }
-
 /* ---------------------------------------------------
     CONTENT STYLE
 ----------------------------------------------------- */
-
 #content {
     width: calc(100% - 250px);
     padding: 45px;
@@ -284,15 +247,12 @@ a.article:hover {
     right: 0;
     background: #F2F2F2;
 }
-
 #content.active {
     width: 100%;
 }
-
 /* ---------------------------------------------------
     MEDIAQUERIES
 ----------------------------------------------------- */
-
 @media (max-width: 768px) {
     #sidebar {
         margin-left: -250px;

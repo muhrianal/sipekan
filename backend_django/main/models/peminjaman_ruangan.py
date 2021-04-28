@@ -4,12 +4,27 @@ from ..models.izin_kegiatan import IzinKegiatan
 from django.utils import timezone
 
 class Ruangan(models.Model):
+    JENIS_RUANG_CHOICES = (
+      (1, 'Ruang Pertemuan'),
+      (2, 'Ruang Kelas'),
+      (3, 'Ruang Rapat'),
+      (4, 'Selasar'),
+    )
+
+    jenis_ruang = models.PositiveSmallIntegerField(choices=JENIS_RUANG_CHOICES)
     nama = models.CharField(max_length=255)
     kapasitas = models.IntegerField()
     lokasi = models.CharField(max_length=255)
-    waktu_available_mulai = models.DateTimeField()
-    waktu_available_akhir = models.DateTimeField()
+    fasilitas = models.CharField(max_length=255, default=None, blank=True, null=True)
+    waktu_available_mulai = models.DateTimeField(blank=True, null=True)
+    waktu_available_akhir = models.DateTimeField(blank=True, null=True)
     informasi_tambahan = models.CharField(max_length=255, default=None, blank=True, null=True)
+    STATUS_RUANG_CHOICES = (
+       (1, 'Aktif'),
+       (2, 'Nonaktif'),
+    )
+    status = models.PositiveSmallIntegerField(default=1, choices=STATUS_RUANG_CHOICES, blank=True, null=True )
+
 
     class Meta:
         app_label = 'main'
@@ -22,6 +37,8 @@ class PeminjamanRuangan(models.Model):
         on_delete=models.CASCADE
 
     )
+
+    jumlah_peserta = models.BigIntegerField()
 
     STATUS_CHOICES = (
       (1, 'Menunggu Persetujuan'),
@@ -42,6 +59,8 @@ class PeminjamanRuangan(models.Model):
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(default=timezone.now)
     
+    terbuka_untuk_umum = models.BooleanField(default=False)
+
     class Meta:
         app_label = 'main'
 
