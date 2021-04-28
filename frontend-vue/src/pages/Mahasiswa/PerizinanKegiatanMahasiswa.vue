@@ -159,7 +159,7 @@ export default{
         return{
             nama_kegiatan: '',
             organisasi: '',
-            user: 1, 
+            user: this.$store.state.auth.user.id_user, 
             status_perizinan_kegiatan: 1,
             waktu_tanggal_mulai: '',
             waktu_tanggal_akhir: '',
@@ -188,6 +188,9 @@ export default{
         console.log(this.user);
         console.log(this.error_message);
         },
+        // created(){
+        //     this.user =  
+        // },
         onFileChange(){
             this.file_info_kegiatan = this.$refs.file.files[0];
         },
