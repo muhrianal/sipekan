@@ -38,6 +38,8 @@ class PeminjamanRuangan(models.Model):
 
     )
 
+    jumlah_peserta = models.BigIntegerField()
+
     STATUS_CHOICES = (
       (1, 'Menunggu Persetujuan'),
       (2, 'Disetujui'),
@@ -57,6 +59,8 @@ class PeminjamanRuangan(models.Model):
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(default=timezone.now)
     
+    terbuka_untuk_umum = models.BooleanField(default=False)
+
     class Meta:
         app_label = 'main'
 
