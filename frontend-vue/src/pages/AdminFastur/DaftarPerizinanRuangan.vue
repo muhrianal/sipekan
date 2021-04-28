@@ -1,7 +1,20 @@
 <template>
     <div class="root-class">
         <div class="header">
-            <h3 class="header-page">Daftar Perizinan</h3>
+            <div class="row">
+                <div class="col-12 col-md-9">
+                    <h3 class="header-page">Daftar Perizinan</h3>
+                </div>
+                <div class="col-12 col-md-3">
+                    <select class="form-control" v-model="choice" @change="filterPerizinan">
+                        <option selected disabled value=-1>Pilih status</option>
+                        <option value=-5>Semua</option>
+                        <option value=1>Menunggu Persetujuan</option>
+                        <option value=2>Disetujui</option>
+                        <option value=3>Ditolak</option>
+                    </select>
+                </div>
+            </div>
             <hr class="line-header line-title">
         </div>
         <div class="content-perizinan">
@@ -15,19 +28,19 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <template v-for="perizinan in list_perizinan" v-bind:key="perizinan.id">
+                    <template v-for="perizinan in list_perizinan_filtered" v-bind:key="perizinan.id">
                         <tr v-if="perizinan.peminjaman_ruangan.length != 0">
                             <td class="nama-kegiatan">{{perizinan.nama_kegiatan}}</td>
                             <td>{{perizinan.organisasi}}</td>
                             <td>{{perizinan.user.profile.role}} a.n. {{perizinan.user.profile.nama}}</td>
-                            <td><a href="/izin-kegiatan/detail">Detail</a></td>
+                            <td><a :href="'/perizinan-fastur/' + perizinan.id">Detail</a></td>
                         </tr>
                     </template>
                 </tbody>
             </table>
         </div>
     </div>
-    {{list_perizinan}}
+    <!-- {{list_perizinan}} -->
 </template>
 
 
@@ -38,7 +51,9 @@ export default{
     name: 'DaftarPerizinanRuangan',
     data(){
         return {
-            list_perizinan : ''
+            list_perizinan : [],
+            choice : -1,
+            list_perizinan_filtered : [],
 
         }
     },
@@ -46,11 +61,34 @@ export default{
         UserService.getListPerizinanFastur().then(
             response => {
                 this.list_perizinan = response.data
+                this.list_perizinan_filtered = response.data
             },
             error => {
                 console.log(error.message) // untuk sementara, nanti handle ini
             }
         )
+    },
+    methods: {
+        filterPerizinan(){
+            if (this.choice < 0) {
+                this.list_perizinan_filtered = this.list_perizinan;
+            }
+            else {
+                this.list_perizinan_filtered = []
+                
+                for (let i = 0; i < this.list_perizinan.length; i++){
+                    for (let j = 0; j<this.list_perizinan[i].peminjaman_ruangan.length; j++){
+                        if (this.list_perizinan[i].peminjaman_ruangan[j].status_peminjaman_ruangan == this.choice){
+                            this.list_perizinan_filtered.push(this.list_perizinan[i]);
+                            break;
+                        }
+                    }
+                }
+
+            }
+
+
+        }
     }
 }
 </script>

@@ -78,7 +78,7 @@
                 </div>
                 <div class="form-row">
                     <div class="col-12 col-md-6">
-                        <label for="tanggalMulaiPelaksanaan">Tanggal Mulai Pelaksanaan<span class="asterisk">*</span></label>
+                        <label for="tanggalMulaiPelaksanaan">Tanggal Mulai Penggunaan<span class="asterisk">*</span></label>
                         <input type="date" class="form-control" v-model="list_perulangan[peminjaman -1].tanggal_mulai">
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" v-model="list_peminjaman_ruangan[peminjaman-1].terbuka_untuk_umum" id="checkbox-terbuka-untuk-umum">
@@ -88,7 +88,7 @@
                         </div>
                     </div>
                     <div class="col-12 col-md-6">
-                        <label for="tanggalAkhirPelaksanaan">Tanggal Akhir Pelaksanaan<span class="asterisk">*</span></label>
+                        <label for="tanggalAkhirPelaksanaan">Tanggal Akhir Penggunaan<span class="asterisk">*</span></label>
                         <input type="date" class="form-control" v-model="list_perulangan[peminjaman -1].tanggal_akhir">
                         <p class="note-form">isi dengan tanggal yang sama dengan tanggal mulai pelaksanaan jika memilih "sekali pakai"</p>
                     </div>  
@@ -105,8 +105,50 @@
             </div>
 
         </div>
-
     </div>
+
+    <!-- Modal: Notif Sukses -->
+    <div class="modal fade" id="notification-success" tabindex="-1" role="dialog" aria-labelledby="sukses-setuju-modal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+
+            <div class="modal-body">
+                <div class="text-center">
+                    <img src="../../assets/images/icon_ceklis.png" alt="icon-sukses">
+                <h2 style="margin:20px 0px 15px 0px">Sukses</h2>
+                <p style="margin:0px 0px -15px 0px">Peminjaman ruangan berhasil dibuat</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="text-center">
+                    <button type="button" class="btn btn-success" data-dismiss="modal" v-on:click="refreshPage" style="width:80px; height:36px;">OK</button>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Notif Gagal -->
+    <div class="modal fade" id="notification-failed" tabindex="-1" role="dialog" aria-labelledby="gagal-submit-modal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+
+            <div class="modal-body">
+                <div class="text-center">
+                    <img src="../../assets/images/icon_silang.png" alt="icon-error">
+                <h2 style="margin:20px 0px 15px 0px">Error</h2>
+                <p style="margin:0px 0px -15px 0px">{{error_message}}</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="text-center">
+                    <button type="button" class="btn btn-success" data-dismiss="modal" style="width:80px; height:36px;">OK</button>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+
 </template>
 
 <script>
@@ -115,6 +157,8 @@ import Perulangan from '../../models/perulangan';
 import IzinKegiatan from '../../models/izin_kegiatan';
 import PeminjamanRuangan from '../../models/peminjaman_ruangan';
 import UserService from '../../services/user.service';
+import $ from 'jquery';
+
 
 export default {
     name: 'PeminjamanRuanganUnitKerja',
@@ -122,10 +166,11 @@ export default {
         return {
             terbuka_untuk_umum: false,
             option_waktu : [],
+            error_message: '',
 
             number_of_peminjaman : 1,
             list_perulangan : [new Perulangan("", "", "")],
-            list_peminjaman_ruangan : [new PeminjamanRuangan("", "", "", "", "", "", ""),],
+            list_peminjaman_ruangan : [new PeminjamanRuangan("", "", "", "", "", "", false),],
             izin_kegiatan: new IzinKegiatan("", "", ""),
         
         } 
@@ -140,7 +185,7 @@ export default {
     methods: {
         addRow(){
             this.list_perulangan.push(new Perulangan("", "", ""));
-            this.list_peminjaman_ruangan.push(new PeminjamanRuangan("", "", "", "", "", "",""));
+            this.list_peminjaman_ruangan.push(new PeminjamanRuangan("", "", "", "", "", "",false));
             this.number_of_peminjaman++
         },
         deleteRow(index){
@@ -151,10 +196,6 @@ export default {
         },
 
         submitPost(){
-
-            console.log(this.izin_kegiatan)
-            console.log(this.list_peminjaman_ruangan)
-            console.log(this.list_perulangan)
             let i;
             for (i = 0; i < this.number_of_peminjaman; i++){
                 this.list_peminjaman_ruangan[i].setPerulangan(this.list_perulangan[i])
@@ -164,12 +205,20 @@ export default {
 
             UserService.postPerizinanRuanganUnitKerja(this.izin_kegiatan).then(
                 response => {
+                    $('#notification-success').modal('show')
                     console.log(response.data);
                 },
                 error => {
+                    this.error_message = error.message
+                    
+
+                    $('#notification-failed').modal('show')
                     console.log(error.message);
                 }
             )
+        },
+        refreshPage(){
+            location.reload()
         }
 
 

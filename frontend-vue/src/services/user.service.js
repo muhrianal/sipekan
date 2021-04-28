@@ -40,6 +40,11 @@ class UserService {
     getPeminjamanRuanganByIdIzinKegiatan(id){
         return axios.get(API_URL + 'peminjaman-ruangan/verifikasi-fastur/' + id + '/')
     }
+
+
+    putUpdateStatusDanAlasanPenolakanPeminjamanRuangan(data, id){
+        return axios.put(API_URL + 'peminjaman-ruangan/update-status/' + id + '/', data)
+    }
 }
 
 export default new UserService();
