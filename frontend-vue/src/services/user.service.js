@@ -4,6 +4,19 @@ import axios from 'axios';
 const API_URL = 'http://localhost:8000/';
 
 class UserService {
+    // path('izin-kegiatan/<int:id_perizinan>/', update_izin_kegiatan_by_id_perizinan),
+    // path('izin-kegiatan/', list_izin_kegiatan)
+    getAllIzinKegiatan() {
+        return axios.get(API_URL + 'izin-kegiatan/')
+    }
+
+    getIzinKegiatan(id){
+        return axios.get(API_URL + 'izin-kegiatan/' + id)
+    }
+    
+    putIzinKegiatan(id, data){
+        return axios.put(API_URL + 'izin-kegiatan/update/' + id + '/', data )
+    }
     // getA() {
     //     return axios.get(API_URL + 'peminjaman-ruangan/unit-kerja/', {headers : authHeader()});
     // }

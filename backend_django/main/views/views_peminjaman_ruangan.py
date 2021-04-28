@@ -174,4 +174,3 @@ def get_peminjaman_ruangan_by_id_izin_kegiatan(request, id_izin_kegiatan):
     
     #case for else
     return JsonResponse({'message' : 'invalid API method'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
-

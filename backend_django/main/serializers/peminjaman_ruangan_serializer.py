@@ -18,6 +18,14 @@ class PerulanganSerializer(serializers.ModelSerializer):
 
 
 
+class PeminjamanRuanganSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = PeminjamanRuangan
+
+        fields = '__all__'
+
+
 class PeminjamanRuanganUnitKerjaSerializer(serializers.ModelSerializer):
     perulangan = PerulanganSerializer()
     

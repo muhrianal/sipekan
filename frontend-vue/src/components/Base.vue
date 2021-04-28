@@ -1,5 +1,5 @@
 <template>
-    
+<div>
    <Navbar></Navbar>
     <div class="wrapper">
         <!-- Sidebar  -->
@@ -63,6 +63,7 @@
             
         </div>
     </div>
+</div>
 </template>
 <script>
 import Navbar from './Navbar'

@@ -48,5 +48,3 @@ class DetailKegiatan(models.Model):
     
     class Meta:
         app_label = 'main'
-    
-
