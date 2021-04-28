@@ -14,7 +14,12 @@ class PermintaanProtokoler(models.Model):
 
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(default=timezone.now)
-    
+    STATUS_CHOICES = (
+          (1, 'Menunggu Persetujuan'),
+          (2, 'Disetujui'),
+          (3, 'Ditolak'),
+        )
+    status_permintaan_protokoler = models.PositiveSmallIntegerField(choices=STATUS_CHOICES, default=1)
 
     class Meta:
         app_label = 'main'

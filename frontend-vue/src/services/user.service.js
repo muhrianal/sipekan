@@ -35,6 +35,16 @@ class UserService {
         return axios.get(API_URL + 'api/list-perizinan/')
     }
 
+    getPerizinan(id) {
+        return axios.get(API_URL + 'api/perizinan/' + id)
+    }
+
+    putPeminjamanRuangan(id,data) {
+        return axios.get(API_URL + 'api/peminjaman-ruangan/update/'+id+'/',data)
+    }
+
+
+
 }
 
 export default new UserService();

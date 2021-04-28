@@ -31,8 +31,8 @@
                         <input type="text" class="form-control" :placeholder="ruangan.nama" readonly>
                     </div>
                     <div class="col-12 col-md-6 px-4 py-2">
-                        <label>Keterangan:</label>
-                        <input type="text" class="form-control" :placeholder="ruangan.informasi_tambahan" readonly>
+                        <label>Kapasitas:</label>
+                            <input type="text" class="form-control" :placeholder="ruangan.kapasitas" readonly>
                     </div>
                 </div>
                 <div class="form-row">
@@ -41,17 +41,25 @@
                         <input type="text" class="form-control" :placeholder="ruangan.lokasi" readonly>
                     </div>
                     <div class="col-12 col-md-6 px-4 py-2">
-                        <label>Status:</label>
-                        <input type="text" class="form-control" v-if="ruangan.status==1" placeholder="Aktif" readonly>
-                        <input type="text" class="form-control" v-if="ruangan.status==2" placeholder="Nonaktif" readonly>
+                        <label>Informasi Tambahan:</label>
+                            <input type="text" class="form-control" :placeholder="ruangan.informasi_tambahan" readonly>
+
                     </div>
                 </div>
                 <div class="form-row">
-                    <div class="col-12 col-md-6 px-4 py-2">
-                        <label>Kapasitas:</label>
-                        <input type="text" class="form-control" :placeholder="ruangan.kapasitas" readonly>
+                    <div class="col-12 col-md-3 px-4 py-2">
+                        <label for="input">Waktu Tersedia Mulai<label style="color:red">*</label>:</label>
+                        <input class="form-control"  :placeholder="getHour(ruangan.waktu_available_mulai)" readonly>
+                    </div>
+                    <div class="col-12 col-md-3 px-4 py-2">
+                        <label for="input">Waktu Tersedia Akhir<label style="color:red">*</label>:</label>
+                            <input class="form-control"  :placeholder="getHour(ruangan.waktu_available_akhir)" readonly>
+
                     </div>
                     <div class="col-12 col-md-6 px-4 py-2">
+                    <label>Status:</label>
+                        <input type="text" class="form-control" v-if="ruangan.status==1" placeholder="Aktif" readonly>
+                        <input type="text" class="form-control" v-if="ruangan.status==2" placeholder="Nonaktif" readonly>
                     </div>
                 </div>
 
@@ -63,18 +71,59 @@
 
                 </div>
                <div class="p-2">
-                    <button href="/ruangan" class="btn hapus" v-on:click="hapusRuangan" style="padding:3px 20px;font-size:16px;"> Hapus</button>
+                    <button href="/ruangan" class="btn hapus" data-toggle="modal" data-target="#deleteModal" style="padding:3px 20px;font-size:16px;"> Hapus</button>
                </div>
               <div class="p-2 pr-4">
               <a :href="'/ruangan/ubah/'+ ruangan.id" class="btn ubah" style="padding:3px 20px;font-size:16px;"> Ubah</a>
               </div>
             </div>
+<!-- Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Ingin menghapus Ruangan?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+        <button type="button" class="btn btn-primary" v-on:click="hapusRuangan">Hapus</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="deleteSuksesModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Ruangan {{ruangan.nama}} berhasil dihapus
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" v-on:click="deleteDone" data-dismiss="modal">Ok</button>
+      </div>
+    </div>
+  </div>
+</div>
 
     </div>
 </template>
 
 <script>
 import UserService from '../services/user.service';
+import moment from 'moment';
+
 export default {
     name: 'DetailRuangan',
     data() {
@@ -105,11 +154,24 @@ export default {
                 response => {
                     console.log(response.data);
                     console.log("ruangan berhasil dihapus");
+                    $('#deleteSuksesModal').modal('toggle')
                 },
                 error => {
                     console.log(error.message);
                 }
             );
+        },
+        deleteDone() {
+            window.location.href='/ruangan';
+        },
+        getDateDef : function (date) {
+            return moment(date, 'YYYY-MM-DDTHH:mm').format('D MMMM YYYY');
+        },
+        getDate : function (date) {
+            return moment(date, 'YYYY-MM-DDTHH:mm').format('HH:mm, D MMMM YYYY');
+        },
+        getHour : function (date) {
+            return moment(date, 'YYYY-MM-DDTHH:mm').format('HH:mm');
         },
     }
 }

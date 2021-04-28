@@ -6,4 +6,4 @@ class RuanganSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Ruangan
-        fields = ('id', 'nama')
+        fields = ['id', 'nama']

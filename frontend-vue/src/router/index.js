@@ -8,6 +8,8 @@ import AddRuangan from '../pages/AddRuangan';
 import DetailRuangan from '../pages/DetailRuangan';
 import UbahRuangan from '../pages/UbahRuangan';
 import StatusPerizinan from '../pages/StatusPerizinan';
+import DetailPerizinan from '../pages/DetailPerizinan';
+import UbahPeminjamanRuangan from '../pages/UbahPeminjamanRuangan';
 
 
 
@@ -53,6 +55,16 @@ const routes = [
     name: "StatusPerizinan",
     component: StatusPerizinan
   },
+  {
+    path: "/perizinan/:id",
+    name: "DetailPerizinan",
+    component: DetailPerizinan
+  },
+  {
+    path: "/peminjaman-ruangan/ubah/:id",
+    name: "UbahPeminjamanRuangan",
+    component: UbahPeminjamanRuangan
+  },
 ];
 
 
@@ -69,8 +81,6 @@ router.beforeEach((to, from, next) =>{
     '/',
     '/ruangan',
     '/ruangan/add',
-    '/ruangan/15',
-    '/ruangan/ubah/15',
     '/perizinan',
   ];
 

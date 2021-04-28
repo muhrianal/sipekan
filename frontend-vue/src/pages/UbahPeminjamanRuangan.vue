@@ -9,7 +9,7 @@
             <form>
                 <div class="form-row">
                     <div class="col-12 col-md-6 px-4 py-2">
-                        <label for="inputJenisRuangan">Jenis Ruangan<label style="color:red">*</label>:</label>
+                        <label>Jenis Ruangan:</label>
                         <select class="form-control" id="exampleFormControlSelect1" v-model="jenis_ruang">
                             <option value="1">Ruang Pertemuan</option>
                             <option value="2">Ruang Kelas</option>
@@ -26,51 +26,33 @@
 
                 <div class="form-row">
                     <div class="col-12 col-md-6 px-4 py-2">
-                        <label for="inputNamaRuangan">Nama Ruangan<label style="color:red">*</label>:</label>
+                        <label>Nama Ruangan:</label>
                         <input type="text" class="form-control" v-model="nama" :placeholder="ruangan.nama" onfocus="this.placeholder=''">
                     </div>
                     <div class="col-12 col-md-6 px-4 py-2">
-                        <label for="inputKapasitas">Kapasitas<label style="color:red">*</label>:</label>
-                        <input type="text" class="form-control" v-model="kapasitas" :placeholder="ruangan.kapasitas" onfocus="this.placeholder=''">
-
+                        <label>Informasi Tambahan:</label>
+                        <input type="text" class="form-control" v-model="informasi_tambahan" :placeholder="ruangan.informasi_tambahan" onfocus="this.placeholder=''">
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="col-12 col-md-6 px-4 py-2">
-                        <label for="inputLokasi">Lokasi<label style="color:red">*</label>:</label>
+                        <label>Lokasi:</label>
                         <input type="text" class="form-control" v-model="lokasi" :placeholder="ruangan.lokasi" onfocus="this.placeholder=''">
                     </div>
                     <div class="col-12 col-md-6 px-4 py-2">
-                    <label>Informasi Tambahan:</label>
-                    <input type="text" class="form-control" v-model="informasi_tambahan" :placeholder="ruangan.informasi_tambahan" onfocus="this.placeholder=''">
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="col-12 col-md-3 px-4 py-2">
-                        <label for="input">Waktu Tersedia Mulai<label style="color:red">*</label>:</label>
-                        <select class="form-control"  v-model="waktu_available_mulai">
-                            <option  value="" selected disabled>Pilih...</option>
-                            <template v-for="option in option_waktu" v-bind:key="option">
-                                <option v-bind:value="option.value">{{option.text}}</option>
-                            </template>
-                        </select>
-                    </div>
-                    <div class="col-12 col-md-3 px-4 py-2">
-                        <label for="input">Waktu Tersedia Akhir<label style="color:red">*</label>:</label>
-                            <select class="form-control"  v-model="waktu_available_akhir">
-                                <option selected disabled value="">Pilih...</option>
-                                    <template v-for="option in option_waktu" v-bind:key="option">
-                                        <option v-bind:value="option.value">{{option.text}}
-                                </option>
-                                    </template>
-                            </select>
-                    </div>
-                    <div class="col-12 col-md-6 px-4 py-2">
-                    <label>Status:</label>
+                        <label>Status:</label>
                         <select class="form-control" id="exampleFormControlSelect1" v-model="status">
                             <option value="1">Aktif</option>
                             <option value="2">Nonaktif</option>
                         </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-12 col-md-6 px-4 py-2">
+                        <label>Kapasitas:</label>
+                        <input type="text" class="form-control" v-model="kapasitas" :placeholder="ruangan.kapasitas" onfocus="this.placeholder=''">
+                    </div>
+                    <div class="col-12 col-md-6 px-4 py-2">
                     </div>
                 </div>
 
@@ -81,33 +63,13 @@
 
                         </div>
                         <div class="p-2">
-                            <a :href="'/ruangan/'+ruangan.id" class="btn batal" style="padding:3px 20px;font-size:16px;"> Batal</a>
+                            <a href="/ruangan/detail" class="btn batal" style="padding:3px 20px;font-size:16px;"> Batal</a>
                         </div>
                         <div class="p-2 pr-4">
                             <button href="/ruangan" class="btn simpan" v-on:click="putEditRuangan" style="padding:3px 20px;font-size:16px;"> Simpan</button>
                         </div>
 
                         </div>
-<!-- Modal -->
-<div class="modal fade" id="ubahModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Berhasil</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        Ruangan Berhasil Diubah
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn simpan" v-on:click="ubahDone">Ok</button>
-      </div>
-    </div>
-  </div>
-</div>
-
         </div>
 
 
@@ -147,30 +109,6 @@ export default {
     mounted(){
         console.log(this.ruangan);
         console.log(this.error_message);
-                let option_waktu_made = [];
-                    let i;
-                    for (i = 0; i < 24; i++){
-                        if (i < 10 ){
-                            option_waktu_made.push({
-                                value: "2021-01-01T0" + i + ":00" +":00+07:00",
-                                text: "0" + i + ":00"
-                            });
-                            option_waktu_made.push({
-                                value: "2021-01-01T0" + i + ":30" +":00+07:00",
-                                text: "0" + i + ":30"
-                            });
-                        } else {
-                            option_waktu_made.push({
-                                value: "2021-01-01T" + i + ":00" +":00+07:00",
-                                text:  i + ":00"
-                            });
-                            option_waktu_made.push({
-                                value: "2021-01-01T" + i + ":30" +":00+07:00",
-                                text: i + ":30"
-                            });
-                        }
-                    }
-                    this.option_waktu = option_waktu_made;
     },
     methods: {
         putEditRuangan() {
@@ -193,19 +131,11 @@ export default {
             UserService.putRuangan(this.$route.params.id, data_put).then(
                 response => {
                     console.log(response.data);
-                    $('#ubahModal').modal('toggle')
-
                 },
                 error => {
                     console.log(error.message);
-                    alert("Bagian berbintang harus diisi");
-                    window.location.href="/ruangan/ubah/"+ this.$route.params.id;
                 }
         );
-        },
-        ubahDone() {
-            window.location.href="/ruangan/"+ this.$route.params.id;
-
         }
     }
 }
