@@ -49,7 +49,7 @@
                     <td v-if="izin_kegiatan.status_perizinan_kegiatan==1" class="text-center"><span class="badge badge-pill badge-secondary">Menunggu<br>Persetujuan</span></td>
                     <td v-if="izin_kegiatan.status_perizinan_kegiatan==2" class="text-center"><span class="badge badge-pill badge-success">Disetujui</span></td>
                     <td v-if="izin_kegiatan.status_perizinan_kegiatan==3" class="text-center"><span class="badge badge-pill badge-danger">Ditolak</span></td>
-                    <td><a :href="izin_kegiatan.id">Detail</a></td>
+                    <td><a :href="'izin-kegiatan/'+izin_kegiatan.id">Detail</a></td>
                 </tr>
             </tbody>
     </table>

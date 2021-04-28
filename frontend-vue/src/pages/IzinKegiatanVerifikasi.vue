@@ -10,18 +10,18 @@
             <form>
                 <div class="form-row">
                     <div class="col-6 col-md-6 px-4">
-                    <label v-if="izin_kegiatan.status_perizinan_kegiatan==1" class="status">Status Sekarang: <span class="status-span" style="color: #828282;">Menunggu Persetujuan</span></label>
-                    <label v-if="izin_kegiatan.status_perizinan_kegiatan==2" class="status">Status Sekarang: <span class="status-span" style="color: #27AE60;">Disetujui</span></label>
-                    <label v-if="izin_kegiatan.status_perizinan_kegiatan==3" class="status">Status Sekarang: <span class="status-span" style="color: #EB5757;">Ditolak</span></label>
+                        <label v-if="izin_kegiatan.status_perizinan_kegiatan==1" class="status">Status Sekarang: <span class="status-span" style="color: #828282;">Menunggu Persetujuan</span></label>
+                        <label v-if="izin_kegiatan.status_perizinan_kegiatan==2" class="status">Status Sekarang: <span class="status-span" style="color: #27AE60;">Disetujui</span></label>
+                        <label v-if="izin_kegiatan.status_perizinan_kegiatan==3" class="status">Status Sekarang: <span class="status-span" style="color: #EB5757;">Ditolak</span></label>
                     </div>
                     <div class="col-6 col-md-6 px-4 d-flex justify-content-end">
-                    <label class="status">Dibuat: {{getDate(izin_kegiatan.detail_kegiatan.created_at)}}</label>
+                        <label class="status">Dibuat: {{getDate(izin_kegiatan.detail_kegiatan.created_at)}}</label>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="col-6 col-md-6"></div>
                     <div class="col-6 col-md-6 px-4 d-flex justify-content-end">
-                    <label class="status">Disunting: {{getDate(izin_kegiatan.detail_kegiatan.updated_at)}}</label>
+                        <label class="status">Disunting: {{getDate(izin_kegiatan.detail_kegiatan.updated_at)}}</label>
                     </div>
                 </div>
                 <div class="form-row">
@@ -109,18 +109,85 @@
 
             </div>
             <div class="p-2">
-                <button class="btn tolak" v-on:click="putTolak" style="padding:3px 20px;font-size:16px;"> Tolak</button>
+                <button v-if="izin_kegiatan.status_perizinan_kegiatan==1" class="btn tolak" v-on:click="popUpAlasanPenolakan" style="padding:3px 20px;font-size:16px;"> Tolak</button>
             </div>
             <div class="p-2 pr-4">
-                <button class="btn setuju" v-on:click="putSetuju" style="padding:3px 20px;font-size:16px;"> Setuju</button>
+                <button v-if="izin_kegiatan.status_perizinan_kegiatan==1" class="btn setuju" v-on:click="putSetuju" style="padding:3px 20px;font-size:16px;"> Setuju</button>
             </div>
          </div>
+    
+    <!-- Modal: Notif Sukses -->
+    <div class="modal fade" id="notification-success" tabindex="-1" role="dialog" aria-labelledby="sukses-setuju-modal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+
+            <div class="modal-body">
+                <div class="text-center">
+                    <img src="../assets/images/icon_ceklis.png" alt="icon-sukses">
+                <h2 style="margin:20px 0px 15px 0px">Sukses</h2>
+                <p style="margin:0px 0px -15px 0px">{{success_message}}</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="text-center">
+                    <button type="button" class="btn btn-success" data-dismiss="modal" v-on:click="refreshPage" style="width:80px; height:36px;">OK</button>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Notif Gagal -->
+    <div class="modal fade" id="notification-failed" tabindex="-1" role="dialog" aria-labelledby="gagal-submit-modal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+
+            <div class="modal-body">
+                <div class="text-center">
+                    <img src="../assets/images/icon_silang.png" alt="icon-error">
+                <h2 style="margin:20px 0px 15px 0px">Error</h2>
+                <p style="margin:0px 0px -15px 0px">{{error_message}}</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="text-center">
+                    <button type="button" class="btn btn-success" data-dismiss="modal" style="width:80px; height:36px;">OK</button>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Popup Alasan Penolakan -->
+    <div class="modal fade" id="popup-penolakan" tabindex="-1" role="dialog" aria-labelledby="popup-penolakan" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+
+            <form v-on:submit.prevent="putTolak">
+                <div class="modal-body">
+                    <label for="keterangan">Tambah alasan penolakan<span style="color:#EB5757;">*</span></label>
+                    <textarea class="form-control" id="textarea-keterangan" rows="6" v-model="alasan_penolakan" placeholder="e.g. Waktu terlalu dekat" required></textarea>
+                </div>
+                <div class="modal-footer">
+                    <div class="text-center">
+                        <button class="btn btn-outline-secondary" data-dismiss="modal" style="width:80px; height:36px;">Batal</button>
+                    </div>
+                    <div class="text-center">
+                        <button class="btn btn-success" type="submit" style="width:80px; height:36px;">Selesai</button>
+                    </div>
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>
     </div>
 </template>
 
 <script>
 import UserService from '../services/user.service';
 import moment from 'moment';
+import $ from 'jquery';
+
 export default {
     
     name: 'IzinKegiatan',
@@ -128,6 +195,7 @@ export default {
         return {
             izin_kegiatan: "",
             error_message: "",
+            success_message: "",
         }
     },
    
@@ -159,37 +227,54 @@ export default {
             console.log("test");
             const data_put = {
                 izin_kegiatan: {
-                    status_perizinan_kegiatan: 2
+                    status_perizinan_kegiatan: 2,
+                    detail_kegiatan: {alasan_penolakan:''}
                 },
             };
             console.log(data_put);
             UserService.putIzinKegiatan(this.$route.params.id, data_put).then(
                 response => {
+                    this.success_message = 'Izin kegiatan berhasil disetujui'
+                    $('#notification-success').modal('show')
                     console.log(response.data);
                 },
                 error => {
+                    this.error_message = error.message
+                    
+                    $('#notification-failed').modal('show')
                     console.log(error.message);
                 }
             );
-            location.reload();
         },
         putTolak() {
+            $('#popup-penolakan').modal('hide')
             console.log("test");
             const data_put = {
                 izin_kegiatan: {
-                    status_perizinan_kegiatan: 3
+                    status_perizinan_kegiatan: 3,
+                    detail_kegiatan: {alasan_penolakan : this.alasan_penolakan}
                 },
             };
             console.log(data_put);
             UserService.putIzinKegiatan(this.$route.params.id, data_put).then(
                 response => {
+                    this.success_message = 'Izin kegiatan berhasil ditolak'
+                    $('#notification-success').modal('show')
                     console.log(response.data);
                 },
                 error => {
+                    this.error_message = error.message
+                    
+                    $('#notification-failed').modal('show')
                     console.log(error.message);
                 }
             );
-            location.reload();
+        },
+        popUpAlasanPenolakan(){
+            $('#popup-penolakan').modal('show')
+        },
+        refreshPage(){
+            location.reload()
         }
     },
 }

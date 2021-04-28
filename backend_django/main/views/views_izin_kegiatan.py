@@ -43,17 +43,20 @@ def update_izin_kegiatan_by_id_perizinan(request, id_perizinan):
         return JsonResponse(izin_kegiatan_serialized.errors, status=status.HTTP_400_BAD_REQUEST)
 
     if request.method == 'PUT':
-
-        izin_data = JSONParser().parse(request) 
-        print(izin_data)
-        izin_kegiatan.status_perizinan_kegiatan = izin_data["izin_kegiatan"]["status_perizinan_kegiatan"]
         try:
+            izin_data = JSONParser().parse(request) 
+            print(izin_data)
+            izin_kegiatan.status_perizinan_kegiatan = izin_data["izin_kegiatan"]["status_perizinan_kegiatan"]
+            if izin_data["izin_kegiatan"]["detail_kegiatan"]["alasan_penolakan"] is not None:
+                izin_kegiatan.detail_kegiatan.alasan_penolakan = izin_data["izin_kegiatan"]["detail_kegiatan"]["alasan_penolakan"] 
             izin_kegiatan.save()
+            izin_kegiatan_serialized = IzinKegiatanMahasiswaSerializer(izin_kegiatan)
+            return JsonResponse(izin_kegiatan_serialized.data, safe=False)
         except:
            return JsonResponse(izin_kegiatan.errors, status=status.HTTP_400_BAD_REQUEST)
-
-        izin_kegiatan_serialized = IzinKegiatanMahasiswaSerializer(izin_kegiatan)
-        return JsonResponse(izin_kegiatan_serialized.data, safe=False)
+           
+        return JsonResponse(izin_kegiatan.errors, status=status.HTTP_400_BAD_REQUEST)
+        
         
         
         # if izin_kegiatan_serialized.is_valid():
