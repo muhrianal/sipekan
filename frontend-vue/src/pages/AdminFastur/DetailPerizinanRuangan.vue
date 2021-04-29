@@ -1,7 +1,7 @@
 <template>
     <div class="root-class">
         <div class="header">
-            <h3 class="header-page" style="font-weight: 500;">Verfikasi Perizinan Kegiatan</h3>
+            <h3 class="header-page" style="font-weight: bold;">Verfikasi Perizinan Kegiatan</h3>
             <hr class="line-header">
         </div>
 

@@ -1,15 +1,15 @@
 <template>
     <div class="root-class">
         <div class="header">
-            <h3 class="header-page" style="font-weight: 500;">Tambah Ruangan</h3>
+            <h3 class="header-page" style="font-weight: bold;">Tambah Ruangan</h3>
             <hr class="line-header">
         </div>
 
         <div class="formulir m-3">
             <form>
                 <div class="form-row">
-                    <div class="col-12 col-md-6 px-4 py-2">
-                        <label for="inputJenisRuangan">Jenis Ruangan<label style="color:red">*</label>:</label>
+                    <div class="col-12 col-md-6 px-3">
+                        <label class="fontg3">Jenis Ruangan<label style="color:red">*</label>:</label>
                         <select class="form-control" id="jenis_ruang" v-model="jenis_ruang">
                             <option value="1">Ruang Pertemuan</option>
                             <option value="2">Ruang Kelas</option>
@@ -17,36 +17,36 @@
                             <option value="4">Selasar</option>
                         </select>
                     </div>
-                    <div class="col-12 col-md-6 px-4 py-2">
-                        <label for="inputFasilitas">Fasilitas<label>:</label></label>
+                    <div class="col-12 col-md-6 px-3">
+                        <label for="inputFasilitas" style="color:#828282;">Fasilitas<label>:</label></label>
                         <input type="text" class="form-control" id="fasilitas" placeholder="e.g. AC, proyektor, sound system, white board, sofa"
                         v-model="fasilitas">
                     </div>
                 </div>
 
                 <div class="form-row">
-                    <div class="col-12 col-md-6 px-4 py-2">
+                    <div class="col-12 col-md-6 px-3">
                         <label for="inputNamaRuangan">Nama Ruangan<label style="color:red">*</label>:</label>
                         <input name="fname" type="text" class="form-control" id="nama" placeholder="e.g. Auditorium" v-model="nama">
                     </div>
-                    <div class="col-12 col-md-6 px-4 py-2">
+                    <div class="col-12 col-md-6 px-3">
                         <label for="inputKapasitas">Kapasitas<label style="color:red">*</label>:</label>
                         <input type="number" class="form-control" id="kapasitas" placeholder="e.g. 350" v-model="kapasitas">
                     </div>
                 </div>
                 <div class="form-row">
-                    <div class="col-12 col-md-6 px-4 py-2">
+                    <div class="col-12 col-md-6 px-3 ">
                         <label for="inputLokasi">Lokasi<label style="color:red">*</label>:</label>
                         <input type="text" class="form-control" id="lokasi" placeholder="e.g. Gedung Dekanat Lantai 1" v-model="lokasi">
                     </div>
-                    <div class="col-12 col-md-6 px-4 py-2">
+                    <div class="col-12 col-md-6 px-3">
                         <label for="inputKeterangan">Informasi Tambahan<label>:</label></label>
                         <input type="text" class="form-control" placeholder="peminjaman ruangan maksimal dilakukan h-3 kegiatan"
                         v-model="informasi_tambahan">
                     </div>
                 </div>
                 <div class="form-row d-flex">
-                    <div class="col-12 col-md-3 px-4 py-2">
+                    <div class="col-12 col-md-3 px-3">
                         <label for="input">Waktu Tersedia Mulai<label style="color:red">*</label>:</label>
                         <select class="form-control"  id="waktu_available_mulai" v-model="waktu_available_mulai">
                             <option value="" selected disabled>Pilih...</option>
@@ -55,7 +55,7 @@
                             </template>
                         </select>
                     </div>
-                    <div class="col-12 col-md-3 px-4 py-2">
+                    <div class="col-12 col-md-3 px-3">
                         <label for="input">Waktu Tersedia Akhir<label style="color:red">*</label>:</label>
                             <select class="form-control" id="waktu_available_akhir"  v-model="waktu_available_akhir">
                                 <option selected disabled value="">Pilih...</option>
@@ -238,5 +238,8 @@ label {
 }
 input, select{
     border-radius: 10px !important;
+}
+.fontg3{
+    color: #828282 !important;
 }
 </style>

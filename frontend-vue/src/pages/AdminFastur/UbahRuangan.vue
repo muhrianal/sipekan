@@ -1,14 +1,14 @@
 <template>
     <div class="root-class">
         <div class="header">
-            <h3 class="header-page" style="font-weight: 500;">Ubah Ruangan</h3>
+            <h3 class="header-page" style="font-weight: bold;">Ubah Ruangan</h3>
             <hr class="line-header">
         </div>
 
         <div class="formulir m-3">
             <form>
                 <div class="form-row">
-                    <div class="col-12 col-md-6 px-4 py-2">
+                    <div class="col-12 col-md-6 px-3">
                         <label for="inputJenisRuangan">Jenis Ruangan<label style="color:red">*</label>:</label>
                         <select class="form-control" id="exampleFormControlSelect1" v-model="jenis_ruang">
                             <option value="1">Ruang Pertemuan</option>
@@ -17,36 +17,36 @@
                             <option value="4">Selasar</option>
                         </select>
                     </div>
-                    <div class="col-12 col-md-6 px-4 py-2">
-                        <label>Fasilitas:</label>
+                    <div class="col-12 col-md-6 px-3">
+                        <label>Fasilitas<label>:</label></label>
                         <input type="text" class="form-control" v-model="fasilitas" :placeholder="ruangan.fasilitas" onfocus="this.placeholder=''">
                     </div>
 
                 </div>
 
                 <div class="form-row">
-                    <div class="col-12 col-md-6 px-4 py-2">
+                    <div class="col-12 col-md-6 px-3">
                         <label for="inputNamaRuangan">Nama Ruangan<label style="color:red">*</label>:</label>
                         <input type="text" class="form-control" v-model="nama" :placeholder="ruangan.nama" onfocus="this.placeholder=''">
                     </div>
-                    <div class="col-12 col-md-6 px-4 py-2">
+                    <div class="col-12 col-md-6 px-3">
                         <label for="inputKapasitas">Kapasitas<label style="color:red">*</label>:</label>
                         <input type="text" class="form-control" v-model="kapasitas" :placeholder="ruangan.kapasitas" onfocus="this.placeholder=''">
 
                     </div>
                 </div>
                 <div class="form-row">
-                    <div class="col-12 col-md-6 px-4 py-2">
+                    <div class="col-12 col-md-6 px-3">
                         <label for="inputLokasi">Lokasi<label style="color:red">*</label>:</label>
                         <input type="text" class="form-control" v-model="lokasi" :placeholder="ruangan.lokasi" onfocus="this.placeholder=''">
                     </div>
-                    <div class="col-12 col-md-6 px-4 py-2">
-                    <label>Informasi Tambahan:</label>
+                    <div class="col-12 col-md-6 px-3">
+                    <label>Informasi Tambahan<label>:</label></label>
                     <input type="text" class="form-control" v-model="informasi_tambahan" :placeholder="ruangan.informasi_tambahan" onfocus="this.placeholder=''">
                     </div>
                 </div>
                 <div class="form-row">
-                    <div class="col-12 col-md-3 px-4 py-2">
+                    <div class="col-12 col-md-3 px-3">
                         <label for="input">Waktu Tersedia Mulai<label style="color:red">*</label>:</label>
                         <select class="form-control"  v-model="waktu_available_mulai">
                             <option  value="" selected disabled>Pilih...</option>
@@ -55,7 +55,7 @@
                             </template>
                         </select>
                     </div>
-                    <div class="col-12 col-md-3 px-4 py-2">
+                    <div class="col-12 col-md-3 px-3">
                         <label for="input">Waktu Tersedia Akhir<label style="color:red">*</label>:</label>
                             <select class="form-control"  v-model="waktu_available_akhir">
                                 <option selected disabled value="">Pilih...</option>
@@ -65,8 +65,8 @@
                                     </template>
                             </select>
                     </div>
-                    <div class="col-12 col-md-6 px-4 py-2">
-                    <label>Status:</label>
+                    <div class="col-12 col-md-6 px-3">
+                    <label>Status<label>:</label></label>
                         <select class="form-control" id="exampleFormControlSelect1" v-model="status">
                             <option value="1">Aktif</option>
                             <option value="2">Nonaktif</option>

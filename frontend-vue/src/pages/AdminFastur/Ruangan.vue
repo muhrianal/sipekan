@@ -1,14 +1,15 @@
 
 <template>
-    <div class="card" id="app">
+    <div class="card">
     <div class="d-flex">
         <div class="mr-auto p-3">
-            <h4 class="judul p-1 align-middle" style="font-weight: 500;">Daftar Ruangan</h4>
+            <h4 class="judul p-1 align-middle" style="font-weight: bold;">Daftar Ruangan</h4>
         </div>
       <div class="p-3">
           <a href="/ruangan/add" class="btn tambah" style="padding:3px 6px;font-size:14px;"> Tambah Ruangan</a>
       </div>
     </div>
+    <div class="table-responsive">
     <table class="table table-striped">
       <thead>
         <tr>
@@ -21,7 +22,7 @@
 
         </tr>
       </thead>
-      <tbody id="app">
+      <tbody id="app" style="font-weight=300;">
         <tr v-for="(ruang, index) in ruangan" v-bind:key="ruang.id">
             <th scope="row" class="text-center" >{{ index+1+"." }} </th>
             <td>{{ ruang.nama }}</td>
@@ -37,7 +38,7 @@
       </tbody>
     </table>
     </div>
-    <p>{{ruangan[0].nama}}</p>
+    </div>
 </template>
 
 
@@ -77,11 +78,7 @@ export default {
     color: #FFD505;
 }
 *{
-    @import url('https://fonts.googleapis.com/css2?family=Mulish:wght@200&display=swap');
-    font-family: 'Mulish', sans-serif;
-}
-tbody{
-    font-weight: lighter;
+    font-weight: bold !important;
 }
 h4{
     margin-bottom:0px;
@@ -91,9 +88,7 @@ h4{
     border-color: #FFD505;
     border-width: 2px;
 }
-th{
-    font-weight: normal;
-}
+
 .tambah:hover{
     background-color: #FFD505 !important;
     border-color: #FFD505;

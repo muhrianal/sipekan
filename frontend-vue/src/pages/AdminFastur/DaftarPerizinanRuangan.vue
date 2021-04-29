@@ -3,7 +3,7 @@
         <div class="header">
             <div class="row">
                 <div class="col-12 col-md-9">
-                    <h3 class="header-page">Daftar Perizinan</h3>
+                    <h3 class="header-page" style="font-weight: bold;">Daftar Perizinan</h3>
                 </div>
                 <div class="col-12 col-md-3">
                     <select class="form-control" v-model="choice" @change="filterPerizinan">

@@ -9,7 +9,7 @@
         <div class="formulir m-3">
             <form>
                 <div class="form-row">
-                    <div class="col-12 col-md-6 px-4 py-2">
+                    <div class="col-12 col-md-6 px-3">
                         <label>Jenis Ruangan:</label>
                         <input type="text" class="form-control" v-if="ruangan.jenis_ruang==1" placeholder="Ruang Pertemuan" readonly>
                         <input type="text" class="form-control" v-if="ruangan.jenis_ruang==2" placeholder="Ruang Kelas" readonly>
@@ -17,7 +17,7 @@
                         <input type="text" class="form-control" v-if="ruangan.jenis_ruang==4" placeholder="Ruang Selasar" readonly>
 
                     </div>
-                    <div class="col-12 col-md-6 px-4 py-2">
+                    <div class="col-12 col-md-6 px-3">
                         <label>Fasilitas:</label>
 
                         <input type="text" class="form-control" :placeholder="ruangan.fasilitas" readonly>
@@ -26,37 +26,37 @@
                 </div>
 
                 <div class="form-row">
-                    <div class="col-12 col-md-6 px-4 py-2">
+                    <div class="col-12 col-md-6 px-3">
                         <label>Nama Ruangan:</label>
                         <input type="text" class="form-control" :placeholder="ruangan.nama" readonly>
                     </div>
-                    <div class="col-12 col-md-6 px-4 py-2">
+                    <div class="col-12 col-md-6 px-3">
                         <label>Kapasitas:</label>
                             <input type="text" class="form-control" :placeholder="ruangan.kapasitas" readonly>
                     </div>
                 </div>
                 <div class="form-row">
-                    <div class="col-12 col-md-6 px-4 py-2">
+                    <div class="col-12 col-md-6 px-3">
                         <label>Lokasi:</label>
                         <input type="text" class="form-control" :placeholder="ruangan.lokasi" readonly>
                     </div>
-                    <div class="col-12 col-md-6 px-4 py-2">
+                    <div class="col-12 col-md-6 px-3">
                         <label>Informasi Tambahan:</label>
                             <input type="text" class="form-control" :placeholder="ruangan.informasi_tambahan" readonly>
 
                     </div>
                 </div>
                 <div class="form-row">
-                    <div class="col-12 col-md-3 px-4 py-2">
+                    <div class="col-12 col-md-3 px-3">
                         <label for="input">Waktu Tersedia Mulai<label style="color:red">*</label>:</label>
                         <input class="form-control"  :placeholder="getHour(ruangan.waktu_available_mulai)" readonly>
                     </div>
-                    <div class="col-12 col-md-3 px-4 py-2">
+                    <div class="col-12 col-md-3 px-3">
                         <label for="input">Waktu Tersedia Akhir<label style="color:red">*</label>:</label>
                             <input class="form-control"  :placeholder="getHour(ruangan.waktu_available_akhir)" readonly>
 
                     </div>
-                    <div class="col-12 col-md-6 px-4 py-2">
+                    <div class="col-12 col-md-6 px-3">
                     <label>Status:</label>
                         <input type="text" class="form-control" v-if="ruangan.status==1" placeholder="Aktif" readonly>
                         <input type="text" class="form-control" v-if="ruangan.status==2" placeholder="Nonaktif" readonly>
@@ -111,7 +111,7 @@
             </div>
             <div class="modal-footer">
                 <div class="text-center">
-                    <button type="button" class="btn btn-success" data-dismiss="modal" v-on:click="deleteDone" style="width:80px; height:36px;">OK</button>
+                    <button type="button" class="btn simpan" data-dismiss="modal" v-on:click="deleteDone" style="width:80px; height:36px;">OK</button>
                 </div>
             </div>
             </div>
