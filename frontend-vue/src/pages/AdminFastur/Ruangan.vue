@@ -1,14 +1,15 @@
 
 <template>
-    <div class="card" id="app">
+    <div class="card">
     <div class="d-flex">
         <div class="mr-auto p-3">
-            <h4 class="judul p-1 align-middle" style="font-weight: 500;">Daftar Ruangan</h4>
+            <h4 class="judul p-1 align-middle" style="font-weight: bold;">Daftar Ruangan</h4>
         </div>
       <div class="p-3">
           <a href="/ruangan/add" class="btn tambah" style="padding:3px 6px;font-size:14px;"> Tambah Ruangan</a>
       </div>
     </div>
+    <div class="table-responsive">
     <table class="table table-striped">
       <thead>
         <tr>
@@ -37,7 +38,7 @@
       </tbody>
     </table>
     </div>
-    <p>{{ruangan[0].nama}}</p>
+    </div>
 </template>
 
 
