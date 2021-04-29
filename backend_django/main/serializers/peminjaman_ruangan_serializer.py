@@ -81,27 +81,28 @@ class IzinKegiatanUnitKerjaSerializer(serializers.ModelSerializer):
         return izin_kegiatan
 
 class PeminjamanRuanganMahasiswa(serializers.ModelSerializer):
-
+    perulangan = PerulanganSerializer()
     class Meta:
         model = PeminjamanRuangan
         fields = ('id', 'judul_peminjaman', 'status_peminjaman_ruangan',
-        'alasan_penolakan', 'waktu_mulai','waktu_akhir','catatan','ruangan')
+        'alasan_penolakan', 'waktu_mulai','waktu_akhir','catatan','ruangan','perulangan')
 
 
 class PeminjamanRuanganMahasiswaSerializer(serializers.ModelSerializer):
-    peminjaman_ruangan = PeminjamanRuanganMahasiswa(many=True)
+    peminjaman_ruangan = PeminjamanRuanganUnitKerjaSerializer(many=True)
 
     class Meta: 
         model = IzinKegiatan
         fields = ('id','peminjaman_ruangan')
 
     def update(self,izin_kegiatan,validated_data):
-        print(izin_kegiatan)
-        peminjaman_ruangan = validated_data.pop('peminjaman_ruangan')
-        for data in peminjaman_ruangan:
-            perulangan_data = peminjaman_ruangan.pop('perulangan')
+        peminjaman_ruangan_data = validated_data.pop('peminjaman_ruangan')
+        for peminjaman_ruangan in peminjaman_ruangan_data:
+            # print("peminjaman data " + peminjaman_ruangan_data)
+            # print("peminjaman " + peminjaman_ruangan)
+            perulangan = peminjaman_ruangan.pop('perulangan')
             peminjaman_ruangan_created = PeminjamanRuangan.objects.create(izin_kegiatan=izin_kegiatan, **peminjaman_ruangan)
-            Perulangan.objects.create(peminjaman_ruangan=peminjaman_ruangan_created, **perulangan_data)
+            Perulangan.objects.create(peminjaman_ruangan=peminjaman_ruangan_created, **perulangan)
         return izin_kegiatan
     
 
