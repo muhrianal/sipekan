@@ -18,7 +18,7 @@
                 </div>
 
                 <div v-for="peminjaman in number_of_peminjaman" v-bind:key="peminjaman">
-                <hr class="line-header">
+                <hr class="line-header" style="margin-bottom:15px;">
                 <div class="text-right">
                     <button type="button" class="btn btn-outline-danger" id="button-hapus" @click="deleteRow(peminjaman - 1)" v-if="peminjaman > 1">Hapus</button>
                 </div>
@@ -199,7 +199,7 @@ export default {
                 this.list_peminjaman_ruangan[i].setPerulangan(this.list_perulangan[i])
             }
             this.izin_kegiatan.setPeminjamanRuangan(this.list_peminjaman_ruangan)
-            this.izin_kegiatan.setUser(1)
+            this.izin_kegiatan.setUser(this.$store.state.auth.user.id_user)
 
             console.log(this.izin_kegiatan)
 

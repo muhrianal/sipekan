@@ -28,8 +28,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <template v-for="perizinan in list_perizinan_filtered" v-bind:key="perizinan.id">
-                        <tr v-if="perizinan.peminjaman_ruangan.length != 0">
+                    <template v-for="perizinan in list_perizinan_filtered" >
+                        <tr v-bind:key="perizinan.id" v-if="perizinan.peminjaman_ruangan.length != 0">
                             <td class="nama-kegiatan">{{perizinan.nama_kegiatan}}</td>
                             <td>{{perizinan.organisasi}}</td>
                             <td>{{perizinan.user.profile.role}} a.n. {{perizinan.user.profile.nama}}</td>
@@ -136,9 +136,10 @@ td{
 
 .line-header {
     background-color: #BDBDBD ;
+    margin: 10px 0px 0px 0px;
 }
 
 .content-perizinan {
-    margin: -16px -20px 0px -20px;
+    margin: 0px -20px 0px -20px;
 }
 </style>
