@@ -24,8 +24,6 @@
           </button>
         </div>
       </form>
-      
-
     </div>
   </div>
 </template>
