@@ -6,7 +6,7 @@
         </div>
         <div class="formulir">
             <form v-on:submit.prevent="submitPost">
-                <template v-for="peminjaman in number_of_peminjaman" v-bind:key="peminjaman">
+                <div v-for="peminjaman in number_of_peminjaman" v-bind:key="peminjaman">
                 <hr v-if="peminjaman>1" >
                 <div class="text-right">
                     <button type="button" class="btn btn-outline-danger" id="button-hapus" @click="deleteRow(peminjaman - 1)" v-if="peminjaman > 1">Hapus</button>
@@ -18,7 +18,7 @@
                     </div>
                     <div class="col-12 col-md-6 px-4 py-2">
                         <label for="inputJumlahPeserta">Jumlah Peserta<span class="asterisk">*</span></label>
-                        <input type="number" class="form-control" placeholder="e.g. 120" v-model="list_peminjaman_ruangan[peminjaman-1].jumlah_peserta">
+                        <input type="number" class="form-control" placeholder="e.g. 120" v-model="list_peminjaman_ruangan[peminjaman-1].jumlah_peserta" required>
                     </div>  
                 </div>
                 <div class="form-row">
@@ -77,7 +77,7 @@
                         <p class="note-form">isi dengan tanggal yang sama dengan tanggal mulai pelaksanaan jika memilih "sekali pakai"</p>
                     </div>  
                 </div>
-                    </template>
+                    </div>
                     <div class="text-center">
                         <button @click="addRow" type="button" class="btn tambah-ruangan btn-outline-secondary">Tambah Ruangan</button>
                     </div> 
@@ -144,8 +144,8 @@ export default {
             terbuka_untuk_umum: false,
             option_waktu : [],
             number_of_peminjaman : 1,
-            list_perulangan : [new Perulangan("", "", "")],
-            list_peminjaman_ruangan : [new PeminjamanRuangan("", "", "", "", "", "", ""),],
+            list_perulangan : [new Perulangan(null, "", "")],
+            list_peminjaman_ruangan : [new PeminjamanRuangan("", "", "", "", "", "", false),],
             id_izin_kegiatan: '',
             kebutuhan: [],
             pesan_button: '',
@@ -178,8 +178,8 @@ export default {
     },
     methods: {
         addRow(){
-            this.list_perulangan.push(new Perulangan("", "", ""));
-            this.list_peminjaman_ruangan.push(new PeminjamanRuangan("", "", "", "", "", "",""));
+            this.list_perulangan.push(new Perulangan(null, "", ""));
+            this.list_peminjaman_ruangan.push(new PeminjamanRuangan("", "", "", "", "", "",false));
             this.number_of_peminjaman++
         },
         deleteRow(index){
@@ -218,6 +218,7 @@ export default {
             }
             // this.izin_kegiatan.setPeminjamanRuangan(this.list_peminjaman_ruangan)
             // this.izin_kegiatan.setUser(1)
+            console.log(data)
             IzinMahasiswaService.postPeminjamanRuanganMahasiswa(this.id_izin_kegiatan,data).then(
                 response => {
                     console.log(response.data);
