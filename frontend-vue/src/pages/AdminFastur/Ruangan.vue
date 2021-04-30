@@ -5,8 +5,8 @@
         <div class="mr-auto p-3">
             <h4 class="judul p-1 align-middle" style="font-weight: bold;">Daftar Ruangan</h4>
         </div>
-      <div class="p-3">
-          <a href="/ruangan/add" class="btn tambah" style="padding:3px 6px;font-size:14px;"> Tambah Ruangan</a>
+      <div class="p-3" v-if="isLoggedIn && currentUser.role == 'ADMIN FASTUR'" v-bind:class="{active : isInHomePage}" >
+          <a href="/ruangan/add" class="btn tambah adminfastur" style="padding:3px 6px;font-size:14px;"> Tambah Ruangan</a>
       </div>
     </div>
     <div class="table-responsive">
@@ -68,6 +68,25 @@ export default {
         console.log(this.ruangan);
         console.log(this.error_message);
     },
+    computed: {
+            isLoggedIn() {
+                return this.$store.state.auth.status.loggedIn;
+            },
+            currentUser() {
+                return this.$store.state.auth.user;
+            }
+        },
+        methods:{
+
+            // getting a var from child to get to know that it is the active one
+            isInLoginPageFunc(value){
+                this.isInLoginPage = value;
+            },
+            isInHomePageFunc(value){
+                this.isInHomePage = value;
+            },
+        },
+
 }
 </script>
 
