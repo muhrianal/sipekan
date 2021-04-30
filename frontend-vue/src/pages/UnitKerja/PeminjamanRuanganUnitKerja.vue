@@ -55,7 +55,7 @@
                         <label for="ruangan">Ruangan<span class="asterisk">*</span></label>
                         <select class="form-control" id="daftar-ruangan" v-model="list_peminjaman_ruangan[peminjaman-1].ruangan" required>
                             <option selected disabled value="">Pilih...</option>
-                            <option value="1">Ruangan A</option>
+                            <option v-for="pilihan_ruangan in list_ruangan" v-bind:key="pilihan_ruangan.id" :value="pilihan_ruangan.id">{{pilihan_ruangan.nama}}</option>
                         </select>
                         <p class="note-ruangan note-form text-right">Lihat daftar ruangan <a href="#">disini</a> </p>
                         <label for="perulangan">Perulangan<span class="asterisk">*</span></label>
@@ -156,6 +156,7 @@ import IzinKegiatan from '../../models/izin_kegiatan';
 import PeminjamanRuangan from '../../models/peminjaman_ruangan';
 import UserService from '../../services/user.service';
 import $ from 'jquery';
+import IzinMahasiswaService from '../../services/izinMahasiswa.service';
 
 
 export default {
@@ -165,6 +166,9 @@ export default {
             terbuka_untuk_umum: false,
             option_waktu : [],
             error_message: '',
+
+            list_ruangan: [],
+            error_call_api : "",
 
             number_of_peminjaman : 1,
             list_perulangan : [new Perulangan("", "", "")],
@@ -178,6 +182,17 @@ export default {
             return this.$store.state.auth.user.id_user;
 
         },
+
+    },
+    created(){
+        IzinMahasiswaService.getRuangan().then(
+            response =>{
+                this.list_ruangan = response.data
+            },
+            error => {
+                this.error_call_api = (error.response && error.response.data) || error.message || error.toString();
+            }
+        )
 
     },
     methods: {
