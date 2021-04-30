@@ -78,15 +78,17 @@ export default {
          UserService.getAllIzinKegiatan().then(
             response => {
                 this.list_izin_kegiatan = response.data;
+                // console.log(this.list_izin_kegiatan)
             },
             error => {
                 this.error_message = (error.response && error.response.data) || error.message || error.toString();
+                // console.log(this.error_message)
             }
         )
     },
     mounted(){
-        console.log(this.list_izin_kegiatan);
-        console.log(this.error_message);
+        // console.log(this.list_izin_kegiatan);
+        // console.log(this.error_message);
     },
 }
 </script>

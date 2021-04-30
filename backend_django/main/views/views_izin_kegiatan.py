@@ -75,13 +75,13 @@ def list_izin_kegiatan(request):
     if request.method == 'POST':
         izin_data = JSONParser().parse(request)
         izin_kegiatan_serialized = IzinKegiatanMahasiswaSerializer(data=izin_data)
-        if peminjaman_data_serialized.is_valid():
+        if izin_kegiatan_serialized.is_valid():
             izin_kegiatan_serialized.save()
             return JsonResponse( izin_kegiatan_serialized.data, status=status.HTTP_201_CREATED) 
         return JsonResponse( izin_kegiatan_serialized.errors, status=status.HTTP_400_BAD_REQUEST)
 
     if request.method == 'GET':
-        list_izin_kegiatan = IzinKegiatan.objects.all()
+        list_izin_kegiatan = IzinKegiatan.objects.filter(user__profile__role = 'MAHASISWA')
         izin_kegiatan_serialized = IzinKegiatanMahasiswaSerializer(list_izin_kegiatan, many=True)
         return JsonResponse(izin_kegiatan_serialized.data, safe=False)
     
