@@ -66,7 +66,7 @@
 
             </form>
         </div>
-        <div class="d-flex" style="margin-top:100px">
+        <div class="d-flex" style="margin-top:100px" v-if="isLoggedIn && currentUser.role == 'ADMIN FASTUR'">
                 <div class="mr-auto">
 
                 </div>
@@ -153,7 +153,22 @@ export default {
         console.log(this.ruangan);
         console.log(this.error_message);
     },
+        computed: {
+                    isLoggedIn() {
+                        return this.$store.state.auth.status.loggedIn;
+                    },
+                    currentUser() {
+                        return this.$store.state.auth.user;
+                    }
+                },
     methods: {
+                        // getting a var from child to get to know that it is the active one
+                        isInLoginPageFunc(value){
+                            this.isInLoginPage = value;
+                        },
+                        isInHomePageFunc(value){
+                            this.isInHomePage = value;
+                        },
         hapusRuangan() {
             UserService.deleteRuangan(this.$route.params.id).then(
                 response => {
