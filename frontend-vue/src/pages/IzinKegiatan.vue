@@ -2,11 +2,11 @@
     <div class="card">
     <div class="d-flex">
         <div class="mr-auto p-3">
-            <h4 class="judul p-1 align-middle mb-0" style="font-weight: 500;">Daftar Perizinan</h4>
+            <h4 class="judul p-1 align-middle mb-0" style="font-weight: bold;">Daftar Perizinan</h4>
         </div>
     </div>
     <table class="table table-striped">
-            <thead>
+            <thead> 
                 <tr>
                     <th scope="col" class="text-left"><span class="ml-3">Nama Kegiatan</span></th>
                     <th scope="col" class="text-left">Tanggal Mulai</th>
@@ -101,7 +101,7 @@ export default {
     background-color: #EB5757;
 }
 .badge{
-    font-weight: 100;
+    font-weight: 500;
     
     padding-left: 20px;
     padding-right: 20px;
@@ -111,14 +111,7 @@ export default {
     color: #FFD505;
 }
 *{
-    @import url('https://fonts.googleapis.com/css2?family=Mulish:wght@200&display=swap');
-    font-family: 'Mulish', sans-serif;
+    font-weight: bold !important;
 }
 
-tbody{
-    font-weight: lighter;
-}
-th{
-    font-weight: normal;
-}
 </style>

@@ -1,9 +1,9 @@
 <template>
     <div v-if="isLoggedIn" class="card card-custom-root mb-3 rounded">
         <div class="card-body card-custom">
-            <p id="masuk-sebagai">MASUK SEBAGAI:</p>
-            <p id="nama-user">{{currentUser.name}}</p>
-            <p id="role-user">{{currentUser.role}}</p>
+            <p style="font-weight: 500 !important; " id="masuk-sebagai">MASUK SEBAGAI:</p>
+            <p style="font-weight: 500 !important;" id="nama-user">{{currentUser.name}}</p>
+            <p style="font-weight: 500 !important;" id="role-user">{{currentUser.role}}</p>
             
             <button type="submit" @click="logOut" class="btn btn-danger" id="button-logout">Logout</button>
         </div>

@@ -1,7 +1,7 @@
 <template>
     <div class="root-class">
         <div class="header">
-            <h3 class="header-page" style="font-weight: 500;">Verfikasi Perizinan Kegiatan</h3>
+            <h3 class="header-page">Verfikasi Perizinan Kegiatan</h3>
             <hr class="line-header">
         </div>
 
@@ -331,5 +331,8 @@ label {
 }
 input, select{
     border-radius: 10px !important;
+}
+*{
+    font-weight: bold !important;
 }
 </style>
