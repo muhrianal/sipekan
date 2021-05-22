@@ -6,140 +6,139 @@
         </div>
         
         <div class="formulir">
-            <form>               
-                <div class="form-row">        
-                    <div class="col-12 col-md-6 px-4 py-2">
-                        <label for="inputPublikasiLuarRuangan">Publikasi Luar Ruangan</label>
-                        <hr noshade >
-                        <span v-for="publikasi in publikasi_luar_ruangan" v-bind:key="publikasi.id">
-                            <input id="input_publikasi" v-model="jenis_publikasi" type="checkbox" :value="publikasi"> <span class="checkbox-label">{{publikasi.deskripsi_publikasi}}</span><br>
-                        </span>
+            <form>       
+                <div class="header-perizinan col-12 px-2"> 
+                    <input id="check_publikasi" v-model="publikasi_checked" :value="!publikasi_checked" @Click="resetPublikasi" type="checkbox"> <span class="checkbox-label">Ajukan Permohonan Publikasi</span><br>
+                </div>   
+                <div v-show="publikasi_checked" class="border-form">      
+                    <div class="form-row">        
+                        <div class="col-12 col-md-6 px-4 py-2">
+                            <label for="inputPublikasiLuarRuangan">Publikasi Luar Ruangan</label>
+                            <hr noshade >
+                            <span v-for="publikasi in publikasi_luar_ruangan" v-bind:key="publikasi.id">
+                                <input id="input_publikasi" v-model="jenis_publikasi" type="checkbox" :value="publikasi"> <span class="checkbox-label">{{publikasi.deskripsi_publikasi}}</span><br>
+                            </span>
+                        </div>
+                        <div class="col-12 col-md-6  px-4 py-2">
+                            <label for="inputPublikasi">Publikasi</label>
+                            <hr noshade >
+                            <span v-for="publikasi in publikasi" v-bind:key="publikasi.id">
+                                <input id="input_publikasi" v-model="jenis_publikasi" type="checkbox" :value="publikasi"> <span class="checkbox-label">{{publikasi.deskripsi_publikasi}}</span><br>
+                            </span>
+                        </div>                    
+                    </div>            
+                    <div class="form-row">
+                        <div class="col-12 col-md-6  px-4 py-2">
+                            <label for="inputKeterangan">Jenis dan Lokasi <span class="text-keterangan"> (untuk jenis Publikasi  “Lainnya”)</span></label>
+                            <textarea id="input_keterangan" type="text" v-model="keterangan" class="form-control" placeholder="e.g. Baliho di Depan Gedung x ukuran (axb)"></textarea>
+                        </div>   
+                        <div class="col-12 col-md-6  px-4 py-2"> 
+                            <label for="inputMateriKegiatan">Materi Kegiatan / Press Release:<span class="text-keterangan">  (Dapat diunggah dalam format zip)</span> </label>
+                            <input id= "file_materi" type="file" ref="fileMateri" @change="onFileMateriChange" class="form-control-file">
+                            <p v-if="this.file_materi_kegiatan !=null" class="text-right note-form" @Click="deleteFileMateri()">Hapus File</p>
+                            <label for="inputFlyerPengumuman">Flyer Pengumuman / Poster Kegiatan:<span class="text-keterangan">  (jika ada)</span></label>
+                            <input id= "file_flyer" type="file" ref="fileFlyer" @change="onFileFlyerChange" class="form-control-file">
+                            <p v-if="this.file_flyer_pengumuman !=null" class="text-right note-form" @Click="deleteFileFlyer()">Hapus File</p>
+                        </div>                                     
                     </div>
-                    <div class="col-12 col-md-6  px-4 py-2">
-                        <label for="inputPublikasi">Publikasi</label>
-                         <hr noshade >
-                         <span v-for="publikasi in publikasi" v-bind:key="publikasi.id">
-                            <input id="input_publikasi" v-model="jenis_publikasi" type="checkbox" :value="publikasi"> <span class="checkbox-label">{{publikasi.deskripsi_publikasi}}</span><br>
-                        </span>
-                    </div>                    
-                </div>
-
-                <div class="form-row">
-                    <div class="col-12 col-md-6  px-4 py-2">
-                        <label for="inputTanggalMulai">Tanggal Mulai:<span class="text-danger">*</span><span class="text-keterangan">  (wajib disi jika mengajukan permintaan publikasi)</span></label>
-                        <input id="input_tanggal_mulai" v-model="tanggal_mulai" type="date" class="form-control" >                   
+                    <div class="form-row">
+                        <div class="col-12 col-md-6  px-4 py-2">
+                            <label for="inputTanggalMulai">Tanggal Mulai<span class="text-danger">*</span></label>
+                            <input id="input_tanggal_mulai" v-model="tanggal_mulai" type="date" class="form-control" >                   
+                        </div>
+                        <div class="col-12 col-md-6  px-4 py-2 ">
+                            <label for="inputTanggalAkhir">Tanggal Akhir<span class="text-danger">*</span></label>
+                            <input id="input_tanggal_akhir" v-model="tanggal_akhir" type="date" class="form-control" >
+                        </div>                        
                     </div>
-                    <div class="col-12 col-md-6  px-4 py-2 ">
-                        <label for="inputTanggalAkhir">Tanggal Akhir:<span class="text-danger">*</span><span class="text-keterangan">  (wajib disi jika mengajukan permintaan publikasi)</span></label>
-                        <input id="input_tanggal_akhir" v-model="tanggal_akhir" type="date" class="form-control" >
-                    </div>                        
                 </div>
-
-                <div class="form-row">
-                    <div class="col-12 col-md-6  px-4 py-2">
-                        <label for="inputMateriKegiatan">Materi Kegiatan / Press Release:<span class="text-keterangan">  (Dapat diunggah dalam format zip)</span> </label>
-                        <input id= "file_materi" type="file" ref="fileMateri" @change="onFileMateriChange" class="form-control-file">
-                        <p v-if="this.file_materi_kegiatan !=null" class="text-right note-form" @Click="deleteFileMateri()">Hapus File</p>
-                    </div>   
-                      <div class="col-12 col-md-6  px-4 py-2">
-                        <label for="inputFlyerPengumuman">Flyer Pengumuman / Poster Kegiatan:<span class="text-keterangan">  (jika ada)</span></label>
-                        <input id= "file_flyer" type="file" ref="fileFlyer" @change="onFileFlyerChange" class="form-control-file">
-                        <p v-if="this.file_flyer_pengumuman !=null" class="text-right note-form" @Click="deleteFileFlyer()">Hapus File</p>
-                    </div>                       
-                </div>
-
-                 <div class="form-row">
-                    <div class="col-12 col-md-6  px-4 py-2">            
-                    </div>
-                    <div class="col-12 col-md-6  px-4 py-2">
-                        <label for="inputKeterangan">Keterangan: <span class="text-keterangan">  (jika memilih jenis Lainnya, silahkan isi spesifikasi publikasi disini)</span></label>
-                        <textarea id="input_keterangan" type="text" v-model="keterangan" class="form-control" placeholder="e.g. Baliho di Depan Gedung x ukuran (axb)"></textarea>
-                    </div>                    
-                </div>
+<!--                  
                  <div class="text-right">
                         <button type="button" class="btn btn-outline-danger" id="button-reset" @click="resetPublikasi" >Reset Formulir Publikasi</button>
-                </div>
+                </div> -->
                
-               <div class="col-12 px-4"> 
+               <!-- <div class="col-12 px-4"> 
                     <label> Souvenir<span class="text-keterangan"> (semua field wajib diisi jika mengajukan permintaan souvenir)</span></label>    
                     <hr >  
-                </div>  
-                <template v-for="peminjaman in number_of_permintaan_souvenir" v-bind:key="peminjaman">
-                    <hr v-if="peminjaman>1" >
-                    <div class="text-right">
-                        <button type="button" class="btn btn-outline-danger" id="button-hapus" @click="deleteRow(peminjaman - 1)" v-if="peminjaman > 1">Hapus</button>
-                    </div>
-                    <div class="form-row">
-                        <div class="col-12 col-md-6  px-4 py-2">
-                            <label for="inputNamaPenerima">Nama Penerima:<span class="text-danger">*</span></label>
-                            <input pattern="[A-Za-z]" id="input_nama_penerima" type="text" v-model="list_permintaan_souvenir[peminjaman-1].nama_penerima_souvenir" class="form-control" placeholder="e.g. Akhmad">
+                </div>   -->
+                <div class="header-perizinan col-12 px-2"> 
+                    <input id="check_publikasi" v-model="souvenir_checked" :value="!souvenir_checked" @Click="resetSouvenir" type="checkbox"> <span class="checkbox-label">Ajukan Permohonan Souvenir</span><br>
+                </div> 
+                <div v-show="souvenir_checked" class="border-form">
+                    <div v-for="peminjaman in number_of_permintaan_souvenir" v-bind:key="peminjaman">
+                        <hr v-if="peminjaman>1" >
+                        <div class="text-right">
+                            <button type="button" class="btn btn-outline-danger" id="button-hapus" @click="deleteRow(peminjaman - 1)" v-if="peminjaman > 1">Hapus</button>
                         </div>
-                        <div class="col-12 col-md-6  px-4 py-2">
-                            <label for="inputJabatanPenerima">Jabatan Penerima:<span class="text-danger">*</span></label>
-                            <input id="input_jabatan_penerima" type="text" v-model="list_permintaan_souvenir[peminjaman-1].jabatan_penerima_souvenir" class="form-control" placeholder="e.g. Menteri" >
-                        </div>                    
-                    </div>
-
-                    <div class="form-row">
-                        <div class="col-12 col-md-6  px-4 py-2">
-                            <label for="inputKelas">Kelas:<span class="text-danger">*</span></label>
-                            <select id="input_kelas" @change="onKelasChange(peminjaman-1)" v-model="list_permintaan_souvenir[peminjaman-1].kelas_penerima_souvenir" class="form-control">
-                                <option disabled selected value="">Pilih...</option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                            </select> 
-                            <p class="text-right note-form" @Click="onModalKelas()">Lihat Klasifikasi Kelas</p>
-
+                        <div class="form-row">
+                            <div class="col-12 col-md-6  px-4 py-2">
+                                <label for="inputNamaPenerima">Nama Penerima<span class="text-danger">*</span></label>
+                                <input pattern="[A-Za-z]" id="input_nama_penerima" type="text" v-model="list_permintaan_souvenir[peminjaman-1].nama_penerima_souvenir" class="form-control" placeholder="e.g. Akhmad">
+                            </div>
+                            <div class="col-12 col-md-6  px-4 py-2">
+                                <label for="inputJabatanPenerima">Jabatan Penerima<span class="text-danger">*</span></label>
+                                <input id="input_jabatan_penerima" type="text" v-model="list_permintaan_souvenir[peminjaman-1].jabatan_penerima_souvenir" class="form-control" placeholder="e.g. Menteri" >
+                            </div>                    
                         </div>
-                        <div class="col-12 col-md-6  px-4 py-2">
-                            <label for="inputRegion">Region:<span class="text-danger">*</span></label>
-                            <select id="input_region" @change="onRegionChange(peminjaman-1)" v-model="list_permintaan_souvenir[peminjaman-1].region_penerima_souvenir" class="form-control" >
-                                <option disabled selected value="">Pilih...</option>
-                                <option value="1">Dalam Negeri</option>
-                                <option value="2">Luar Negeri</option>
-                            </select>
-                        </div>                    
-                    </div>
 
-                    <div class="form-row">
-                        <div class="col-12 col-md-6  px-4 py-2">
-                            <label for="inputPilihanSouvenir">Pilihan Souvenir:<span class="text-danger">*</span></label>
-                            <select id="input_souvenir" v-model="list_permintaan_souvenir[peminjaman-1].souvenir" class="form-control">        
-                                <option selected disabled value="">Pilih...</option>
-                                    <option v-for="pilihan_souvenir in list_souvenir_data_filtered[peminjaman-1]" v-bind:key="pilihan_souvenir.id" :value="pilihan_souvenir.id">{{pilihan_souvenir.nama_souvenir}}</option>
-                            </select>
+                        <div class="form-row">
+                            <div class="col-12 col-md-6  px-4 py-2">
+                                <label for="inputKelas">Kelas<span class="text-danger">*</span></label>
+                                <select id="input_kelas" @change="onKelasChange(peminjaman-1)" v-model="list_permintaan_souvenir[peminjaman-1].kelas_penerima_souvenir" class="form-control">
+                                    <option disabled selected value="">Pilih...</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                </select> 
+                                <p class="text-right note-form" @Click="onModalKelas()">Lihat Klasifikasi Kelas</p>
+
+                            </div>
+                            <div class="col-12 col-md-6  px-4 py-2">
+                                <label for="inputRegion">Region<span class="text-danger">*</span></label>
+                                <select id="input_region" @change="onRegionChange(peminjaman-1)" v-model="list_permintaan_souvenir[peminjaman-1].region_penerima_souvenir" class="form-control" >
+                                    <option disabled selected value="">Pilih...</option>
+                                    <option value="1">Dalam Negeri</option>
+                                    <option value="2">Luar Negeri</option>
+                                </select>
+                            </div>                    
                         </div>
-                        <div class="col-12 col-md-6  px-4 py-2">
-                            <label for="inputJumlah">Jumlah:<span class="text-danger">*</span></label>
-                            <input id="input_jumlah"  v-model="list_permintaan_souvenir[peminjaman-1].jumlah" type="number" min="1" class="form-control" placeholder="e.g. 1">
-                        </div>                    
-                    </div>
-                    <div class="text-right">
-                            <button v-if="this.number_of_permintaan_souvenir < 2" type="button" class="btn btn-outline-danger" id="button-reset" @click="resetSouvenir(peminjaman-1)" >Reset Formulir Souvenir</button>
-                    </div>
-                 </template>
+
+                        <div class="form-row">
+                            <div class="col-12 col-md-6  px-4 py-2">
+                                <label for="inputPilihanSouvenir">Pilihan Souvenir<span class="text-danger">*</span></label>
+                                <select id="input_souvenir" v-model="list_permintaan_souvenir[peminjaman-1].souvenir" class="form-control">        
+                                    <option selected disabled value="">Pilih...</option>
+                                        <option v-for="pilihan_souvenir in list_souvenir_data_filtered[peminjaman-1]" v-bind:key="pilihan_souvenir.id" :value="pilihan_souvenir.id">{{pilihan_souvenir.nama_souvenir}}</option>
+                                </select>
+                            </div>
+                            <div class="col-12 col-md-6  px-4 py-2">
+                                <label for="inputJumlah">Jumlah<span class="text-danger">*</span></label>
+                                <input id="input_jumlah"  v-model="list_permintaan_souvenir[peminjaman-1].jumlah" type="number" min="1" class="form-control" placeholder="e.g. 1">
+                            </div>                    
+                        </div>
+                        <!-- <div class="text-right">
+                                <button v-if="this.number_of_permintaan_souvenir < 2" type="button" class="btn btn-outline-danger" id="button-reset" @click="resetSouvenir(peminjaman-1)" >Reset Formulir Souvenir</button>
+                        </div> -->
+                    </div>                
+                    <div class="row-12 row-md-6  px-4 py-2"> 
+                        <hr>
+                        <div class="text-center">
+                            <button @click="addRow" type="button" class="btn tambah-souvenir btn-outline-secondary">Tambah Souvenir</button>
+                        </div> 
+                    </div>  
+                </div>
                 
-                <div class="row-12 row-md-6  px-4 py-2"> 
-                    <hr>
-                     <div class="text-center">
-                        <button @click="addRow" type="button" class="btn tambah-souvenir btn-outline-secondary">Tambah Souvenir</button>
-                    </div> 
-                </div>  
+                <div class="header-perizinan col-12 px-2"> 
+                    <input id="check_protokoler" v-model="protokoler_checked" :value="!protokoler_checked" @Click="resetProtokoler" type="checkbox"> <span class="checkbox-label">Ajukan Permohonan Protokoler</span><br>
+                </div> 
 
-                <div class="col-12col-md-6 px-4"> 
-                    <label> Protokoler</label>
-                     <hr>
-                </div>
-
-                <div class="form-row">
-                    <div class="col-12 col-md-6  px-4 py-2">   
-                        <label for="inputDeskripsiKebutuhan">Deskripsi Kebutuhan: <span class="text-keterangan" id="text-keterangan-small">  (contoh: nama penerima, jumlah pendamping dibutuhkan)</span></label>
-                        <textarea id="input_deskripsi_kebutuhan" v-model="deskripsi_kebutuhan" type="text" class="form-control" placeholder="e.g. Menteri x, jumlah pendamping yang dibutuhkan: 2"></textarea>         
-                    </div>                    
-                </div>
-                <div class="text-right">
-                        <button type="button" class="btn btn-outline-danger" id="button-reset" @click="resetProtokoler" >Reset Formulir Protokoler</button>
+                <div v-show="protokoler_checked" class="border-form">
+                    <div class="form-row">
+                        <div class="col-12 col-md-12  px-4 py-2">   
+                            <label for="inputDeskripsiKebutuhan">Deskripsi Kebutuhan: <span class="text-keterangan" id="text-keterangan-small">  (contoh: nama penerima, jumlah pendamping dibutuhkan)</span></label>
+                            <textarea id="input_deskripsi_kebutuhan" v-model="deskripsi_kebutuhan" type="text" class="form-control" placeholder="e.g. Menteri x, jumlah pendamping yang dibutuhkan: 2"></textarea>         
+                        </div>                    
+                    </div>
                 </div>
             </form>
             <div class="d-flex" style="margin-top:10px">
@@ -163,9 +162,9 @@
                 </div>
                 <div class="modal-footer">
                     <div class="text-center">                
-                                <button  @click="refreshPage" id="button-modal" type="button" class="text-center btn btn-success">
-                                    OK
-                                </button>
+                        <button  @click="refreshPage" id="button-modal" type="button" class="text-center btn btn-success">
+                            OK
+                        </button>
                     </div>
                 </div>
                 </div>
@@ -243,6 +242,9 @@ export default {
     name: 'PermohonanHumas',
     data(){
         return{
+            publikasi_checked: false,
+            souvenir_checked:false,
+            protokoler_checked:false,
             jenis_publikasi_data : [],
             souvenir_data : [],
             pesan_body: "Pengajuan humas berhasil",
@@ -427,20 +429,23 @@ export default {
             this.file_materi_kegiatan = null;
             this.jenis_publikasi = []
         },
-        resetSouvenir(index){
-            document.getElementById("input_nama_penerima").value = '';
-            document.getElementById("input_jabatan_penerima").value = '';
-            document.getElementById("input_kelas").selectedIndex = '';
-            document.getElementById("input_region").selectedIndex = '';
-            document.getElementById("input_souvenir").value = null;
-            document.getElementById("input_jumlah").value = '';
-            this.list_permintaan_souvenir[index].nama_penerima_souvenir = '';
-            this.list_permintaan_souvenir[index].jabatan_penerima_souvenir = '';
-            this.list_permintaan_souvenir[index].kelas_penerima_souvenir = '';
-            this.list_permintaan_souvenir[index].region_penerima_souvenir = '';
-            this.list_permintaan_souvenir[index].souvenir = null;
-            this.list_permintaan_souvenir[index].jumlah = '';
-            this.souvenir_data_filtered = this.souvenir_data;
+        resetSouvenir(){
+            for(var index=0;index<this.number_of_permintaan_souvenir;index++){
+                document.getElementById("input_nama_penerima").value = '';
+                document.getElementById("input_jabatan_penerima").value = '';
+                document.getElementById("input_kelas").selectedIndex = '';
+                document.getElementById("input_region").selectedIndex = '';
+                document.getElementById("input_souvenir").value = null;
+                document.getElementById("input_jumlah").value = '';
+                this.list_permintaan_souvenir[index].nama_penerima_souvenir = '';
+                this.list_permintaan_souvenir[index].jabatan_penerima_souvenir = '';
+                this.list_permintaan_souvenir[index].kelas_penerima_souvenir = '';
+                this.list_permintaan_souvenir[index].region_penerima_souvenir = '';
+                this.list_permintaan_souvenir[index].souvenir = null;
+                this.list_permintaan_souvenir[index].jumlah = '';
+                this.souvenir_data_filtered = this.souvenir_data;
+            }
+            
         },
         resetProtokoler(){
             document.getElementById("input_deskripsi_kebutuhan").value = '';
@@ -467,11 +472,13 @@ export default {
         checkFields(){
             let passed = true
             if(this.jenis_publikasi.length != 0 && (this.tanggal_mulai == '' || this.tanggal_akhir == '')){
-                this.alertFuntion("Harap mengisi seluruh field yang wajib, jika Anda ingin mengajukan perizinan publikasi")
+                this.error_message = "Harap mengisi seluruh field yang wajib, jika Anda ingin mengajukan perizinan publikasi"
+                $('#notification-failed').modal('show')
                 passed = false
             }
             if(this.jenis_publikasi.some(el => el.deskripsi_publikasi === "Lainnya") & this.keterangan == ''){
-                this.alertFuntion("Anda memilih jenis publikasi 'Lainnya', harap mengisi spesifikasi di keterangan")
+                this.error_message = "Anda memilih jenis publikasi 'Lainnya', harap mengisi spesifikasi di keterangan"
+                $('#notification-failed').modal('show')
                 passed = false
             }
             for(var i=0; i < this.number_of_permintaan_souvenir; i++ ){
@@ -489,8 +496,9 @@ export default {
                     ( region !='' && (nama=='' || jabatan =='' || kelas == '' || souvenir == null || jumlah == '') ) ||
                     ( souvenir !=null && (nama=='' || jabatan =='' || kelas == '' || region == '' || jumlah == '')) ||
                     ( jumlah !='' && (nama=='' || jabatan =='' || kelas == '' || region == '' || souvenir == null))              
-                    ) {                           
-                        this.alertFuntion("Harap mengsi serluruh field yang wajib, jika Anda ingin mengajukan permintaan souvenir")
+                    ) {   
+                        this.error_message = "Harap mengsi serluruh field pada form souvenir, jika Anda ingin mengajukan permintaan souvenir"
+                        $('#notification-failed').modal('show')                        
                         passed = false
                 }
             }
@@ -585,6 +593,13 @@ label {
     font-size: 23px;
     color: #FFD505;
     font-weight: 550;
+}
+.border-form{
+    border: 1px solid gray;
+    border-radius: 5px ;
+}
+.header-perizinan{
+     margin-top: 10px;
 }
 .line-header {
     background-color: #BDBDBD ;

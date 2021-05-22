@@ -21,6 +21,36 @@
                         <input type="number" class="form-control" placeholder="e.g. 120" v-model="list_peminjaman_ruangan[peminjaman-1].jumlah_peserta" required>
                     </div>  
                 </div>
+                  <div class="form-row">
+                     <div class="col-12 col-md-6 px-4 py-2">
+                        <label for="ruangan">Ruangan<span class="asterisk">*</span></label>
+                        <select class="form-control" id="daftar-ruangan" v-model="list_peminjaman_ruangan[peminjaman-1].ruangan" required>
+                            <option selected disabled value="">Pilih...</option>
+                            <option v-for="pilihan_ruangan in list_ruangan" v-bind:key="pilihan_ruangan.id" :value="pilihan_ruangan.id">{{pilihan_ruangan.nama}}</option>
+                        </select>
+                     </div>
+                     <div class="col-12 col-md-6 px-4 py-2">
+                        <label for="perulangan">Perulangan<span class="asterisk">*</span></label>
+                        <select class="form-control" id="perulangan" v-model="list_perulangan[peminjaman-1].jenjang" required>
+                            <option selected disabled value="">Pilih...</option>
+                            <option value=1>SEKALI PAKAI</option>
+                            <option value=2>HARIAN</option>
+                            <option value=3>MINGGUAN</option>
+                            <option value=4>BULANAN</option>
+                        </select>
+                     </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-12 col-md-6 px-4 py-2">
+                        <label for="tanggalMulaiPelaksanaan">Tanggal Mulai Pelaksanaan<span class="asterisk">*</span></label>
+                        <input type="date" class="form-control" v-model="list_perulangan[peminjaman -1].tanggal_mulai" required>                        
+                    </div>
+                    <div class="col-12 col-md-6 px-4 py-2">
+                        <label for="tanggalAkhirPelaksanaan">Tanggal Akhir Pelaksanaan<span class="asterisk">*</span></label>
+                        <input type="date" class="form-control" v-model="list_perulangan[peminjaman -1].tanggal_akhir" required>
+                        <p class="note-form">isi dengan tanggal yang sama dengan tanggal mulai pelaksanaan jika memilih "sekali pakai"</p>
+                    </div>  
+                </div>
                 <div class="form-row">
                     <div class="col-12 col-md-6 px-4 py-2">
                         <label for="waktuMulaiPeminjaman">Waktu mulai<span class="asterisk">*</span></label>
@@ -39,31 +69,6 @@
                 </div>
                 <div class="form-row">
                     <div class="col-12 col-md-6 px-4 py-2">
-                        <label for="ruangan">Ruangan<span class="asterisk">*</span></label>
-                        <select class="form-control" id="daftar-ruangan" v-model="list_peminjaman_ruangan[peminjaman-1].ruangan" required>
-                            <option selected disabled value="">Pilih...</option>
-                            <option v-for="pilihan_ruangan in list_ruangan" v-bind:key="pilihan_ruangan.id" :value="pilihan_ruangan.id">{{pilihan_ruangan.nama}}</option>
-                        </select>
-                        <p class="note-ruangan note-form text-right">Lihat daftar ruangan <a href="#">disini</a> </p>
-                        <label for="perulangan">Perulangan<span class="asterisk">*</span></label>
-                        <select class="form-control" id="perulangan" v-model="list_perulangan[peminjaman-1].jenjang" required>
-                            <option selected disabled value="">Pilih...</option>
-                            <option value=1>SEKALI PAKAI</option>
-                            <option value=2>HARIAN</option>
-                            <option value=3>MINGGUAN</option>
-                            <option value=4>BULANAN</option>
-                        </select>
-                    </div>
-
-                    <div class="col-12 col-md-6 px-4 py-2">
-                        <label for="keterangan">Keterangan</label>
-                        <textarea class="form-control" id="textarea-keterangan" rows="4" v-model="list_peminjaman_ruangan[peminjaman-1].catatan" placeholder="e.g. Fasilitas yang akan digunakan"></textarea>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="col-12 col-md-6 px-4 py-2">
-                        <label for="tanggalMulaiPelaksanaan">Tanggal Mulai Pelaksanaan<span class="asterisk">*</span></label>
-                        <input type="date" class="form-control" v-model="list_perulangan[peminjaman -1].tanggal_mulai" required>
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" v-model="list_peminjaman_ruangan[peminjaman-1].terbuka_untuk_umum" id="checkbox-terbuka-untuk-umum">
                             <label class="form-check-label" for="flexCheckDefault">
@@ -71,12 +76,13 @@
                             </label>
                         </div>
                     </div>
+
                     <div class="col-12 col-md-6 px-4 py-2">
-                        <label for="tanggalAkhirPelaksanaan">Tanggal Akhir Pelaksanaan<span class="asterisk">*</span></label>
-                        <input type="date" class="form-control" v-model="list_perulangan[peminjaman -1].tanggal_akhir" required>
-                        <p class="note-form">isi dengan tanggal yang sama dengan tanggal mulai pelaksanaan jika memilih "sekali pakai"</p>
-                    </div>  
+                        <label for="keterangan">Keterangan</label>
+                        <textarea class="form-control" id="textarea-keterangan" rows="4" v-model="list_peminjaman_ruangan[peminjaman-1].catatan" placeholder="e.g. Fasilitas yang akan digunakan"></textarea>
+                    </div>
                 </div>
+               
                     </div>
                     <div class="text-center">
                         <button @click="addRow" type="button" class="btn tambah-ruangan btn-outline-secondary">Tambah Ruangan</button>
@@ -202,7 +208,8 @@ export default {
                         this.pesan_button = "OK"
                         this.path_selanjutnya = '/'
             }
-             $('#notification-success').modal('show')
+            console.log("masuk")
+            $('#notification-success').modal('show')
         },
         submitPost(){
             // console.log(this.izin_kegiatan)
