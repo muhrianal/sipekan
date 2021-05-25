@@ -210,6 +210,9 @@ export default {
                 }
         );
         },
+        addDone() {
+            window.location.href='/ruangan';
+        },
 
     }
 

@@ -68,7 +68,14 @@ class UserService {
     }
 
     putPeminjamanRuangan(id,data) {
-        return axios.get(API_URL + 'api/peminjaman-ruangan/update/'+id+'/',data)
+        return axios.get(API_URL + 'peminjaman-ruangan/update/'+id+'/',data)
+    }
+
+    getAllSouvenir() {
+        return axios.get(API_URL + 'perizinan-humas/list-souvenir')
+    }
+    postSouvenir(data) {
+        return axios.post(API_URL + 'souvenir/', data)
     }
 }
 

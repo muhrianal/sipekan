@@ -92,7 +92,22 @@ def get_list_souvenir(request):
         list_souvenir = Souvenir.objects.all()
         list_souvenir_serialized = SouvenirSerializer(list_souvenir, many=True)
         return JsonResponse(list_souvenir_serialized.data,safe=False)
+
     
     #case for else
+
     return JsonResponse({'message' : 'invalid API method'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
+@api_view(['POST'])
+@permission_classes([permissions.AllowAny,])
+def post_souvenir(request):
+    if request.method == 'POST':
+        souvenir_data = JSONParser().parse(request)
+        souvenir_serializer = SouvenirSerializer(data=souvenir_data)
+        if souvenir_serializer.is_valid():
+            souvenir_serializer.save()
+            return JsonResponse(souvenir_serializer.data, status=status.HTTP_201_CREATED)
+        data = {
+                    'message' : 'invalid API call'
+                }
+    return Response(data=data, status=status.HTTP_400_BAD_REQUEST)

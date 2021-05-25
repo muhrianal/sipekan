@@ -97,6 +97,8 @@ class Souvenir(models.Model):
     region = models.PositiveSmallIntegerField(choices=REGION_CHOICES)
     
     stok = models.IntegerField()
+    tanggal_masuk = models.DateField(default=None, blank=True, null=True)
+    keterangan = models.CharField(max_length=500, default=None, blank=True, null=True)
 
     class Meta:
         app_label = 'main'
