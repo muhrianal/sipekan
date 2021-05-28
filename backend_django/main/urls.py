@@ -11,7 +11,7 @@ from .views.views_peminjaman_ruangan import list_ruangan
 from .views.views_peminjaman_ruangan import detail_ruangan
 from .views.views_status_perizinan import list_perizinan, detail_perizinan
 from .views.views_peminjaman_ruangan import post_peminjaman_ruangan_mahasiswa
-from .views.views_humas import get_post_perizinan_humas,list_perizinan_humas, get_jenis_publikasi, get_list_souvenir, post_perizinan_publikasi
+from .views.views_humas import get_post_perizinan_humas,get_list_perizinan_humas, get_jenis_publikasi, get_list_souvenir, post_perizinan_publikasi, update_permintaan_souvenir_by_id_permintaan_souvenir,  update_permintaan_protokoler_by_id_permintaan_protokoler
 from .views.views_izin_kegiatan_mahasiswa import get_post_izin_kegiatan_mahasiswa, post_izin_kegiatan_detail, post_izin_kegiatan_header
 from .views.views_peminjaman_ruangan import update_peminjaman_ruangan_by_id_peminjaman_ruangan, post_peminjaman_ruangan_unit_kerja, get_list_perizinan_fastur, get_peminjaman_ruangan_by_id_izin_kegiatan
 
@@ -32,7 +32,10 @@ urlpatterns = [
     path('peminjaman-ruangan/mahasiswa/<int:id_izin_kegiatan>/', post_peminjaman_ruangan_mahasiswa),
     path('perizinan-humas/<int:id_izin_kegiatan>/',get_post_perizinan_humas),
     path('perizinan-humas-publikasi/',post_perizinan_publikasi),
-    path('list-perizinan-humas/',list_perizinan_humas),
+    path('perizinan-humas/verifikasi-humas/',get_list_perizinan_humas),
+    path('perizinan-humas/verifikasi-humas/<int:id_izin_kegiatan>/',get_post_perizinan_humas),
+    path('perizinan-humas/update-status-souvenir/<int:id_permintaan>/',update_permintaan_souvenir_by_id_permintaan_souvenir),
+    path('perizinan-humas/update-status-protokoler/<int:id_permintaan>/',update_permintaan_protokoler_by_id_permintaan_protokoler),
     path('perizinan-kegiatan-mahasiswa/',get_post_izin_kegiatan_mahasiswa),
     path('perizinan-kegiatan-header/',post_izin_kegiatan_header),
     path('perizinan-kegiatan-detail/',post_izin_kegiatan_detail),

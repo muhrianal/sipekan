@@ -86,11 +86,11 @@
                                 <label for="inputKelas">Kelas<span class="text-danger">*</span></label>
                                 <select id="input_kelas" @change="onKelasChange(peminjaman-1)" v-model="list_permintaan_souvenir[peminjaman-1].kelas_penerima_souvenir" class="form-control">
                                     <option disabled selected value="">Pilih...</option>
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
+                                    <option value="1">Presiden/ Menteri/ Rektor/ Dekan/ Sederajat</option>
+                                    <option value="2">Pembicara Kuliah Tamu/ Seminar/ Profesional/ CEO/ Partner dari luar</option>
+                                    <option value="3">Penerima bersifat masal (contoh: keperluan seminar, kunjungan mahasiswa)</option>
                                 </select> 
-                                <p class="text-right note-form" @Click="onModalKelas()">Lihat Klasifikasi Kelas</p>
+                                <!-- <p class="text-right note-form" @Click="onModalKelas()">Lihat Klasifikasi Kelas</p> -->
 
                             </div>
                             <div class="col-12 col-md-6  px-4 py-2">
@@ -235,6 +235,7 @@
 import IzinMahasiswaService from '../../services/izinMahasiswa.service';
 import PermintaanSouvenir from '../../models/permintaan_souvenir';
 import izinMahasiswaService from '../../services/izinMahasiswa.service';
+import JenisIzinPublikasi from '../../models/jenis_izin_publikasi';
 // import Souvenir from '../../models/souvenir';
 import $ from 'jquery';
 
@@ -263,9 +264,9 @@ export default {
             jenis_publikasi: [],
             file_materi_kegiatan: null,
             file_flyer_pengumuman: null,
+            jenis_izin_publikasi:[],
             // permintaan souvenir
             list_permintaan_souvenir : [new PermintaanSouvenir('','','','','','',null),],
-            // list_souvenir : [new Souvenir (null,"",null,null,null),],
             number_of_permintaan_souvenir: 1,
             // permintaan protokoler
             deskripsi_kebutuhan: '',
@@ -313,7 +314,6 @@ export default {
     },
     methods:{
         addRow(){
-            // this.list_souvenir.push(new Souvenir(null,"",null,null,null))
             this.list_permintaan_souvenir.push(new PermintaanSouvenir('','','','','','',null));
             this.number_of_permintaan_souvenir++;
             console.log(this.number_of_permintaan_souvenir);
@@ -510,21 +510,28 @@ export default {
             }
             if(this.checkFields()){
                 if(this.jenis_publikasi.length != 0){
-                    console.log(this.jenis_publikasi)
+                    for(var i=0;i<this.jenis_publikasi.length;i++){
+                        this.jenis_izin_publikasi.push(new JenisIzinPublikasi(this.jenis_publikasi[i],this.alasan_penolakan))
+                    }
+                    console.log(this.jenis_izin_publikasi)
                     let formDataPublikasi = new FormData()
-                    formDataPublikasi.append("izin_kegiatan", this.id_izin_kegiatan)
+                    // formDataPublikasi.append("izin_kegiatan", this.id_izin_kegiatan)
+                    formDataPublikasi.append("izin_kegiatan", 70)
                     formDataPublikasi.append("tanggal_mulai", this.tanggal_mulai)
                     formDataPublikasi.append("tanggal_akhir", this.tanggal_akhir)
-                    formDataPublikasi.append("status_perizinan_publikasi", 1) //menunggu persetujuan
-                    formDataPublikasi.append("alasan_penolakan", this.alasan_penolakan_publikasi)
                     formDataPublikasi.append("keterangan", this.keterangan)
-                    formDataPublikasi.append("jenis_publikasi", this.jenis_publikasi)    
+                    formDataPublikasi.append("jenis_izin_publikasi", this.jenis_izin_publikasi)  
+
+
                     if(this.file_materi_kegiatan != null){
                         formDataPublikasi.append("file_materi_kegiatan",this.file_materi_kegiatan)
                     }
                     if(this.file_flyer_pengumuman != null){
                         formDataPublikasi.append("file_flyer_pengumuman", this.file_flyer_pengumuman)
                     }
+                    for (var pair of formDataPublikasi.entries()) {
+                        console.log(pair[0] + " - " + pair[1]);
+                        }
                     izinMahasiswaService.postPerizinanPublikasi(formDataPublikasi).then( 
                         response => {
                             console.log(response.data);

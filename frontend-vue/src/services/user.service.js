@@ -70,6 +70,18 @@ class UserService {
     putPeminjamanRuangan(id,data) {
         return axios.get(API_URL + 'api/peminjaman-ruangan/update/'+id+'/',data)
     }
+    getListPerizinanHumas(){
+        return axios.get(API_URL + 'perizinan-humas/verifikasi-humas')
+    }
+    getPerizinanHumasByIdIzinKegiatan(id){
+        return axios.get(API_URL + 'perizinan-humas/verifikasi-humas/' + id)
+    }
+    putUpdateStatusDanAlasanPermintaanSouvenir(data,id){
+        return axios.put(API_URL + 'perizinan-humas/update-status-souvenir/'+id+'/',data)
+    }
+    putUpdateStatusDanAlasanPermintaanProtokoler(data,id){
+        return axios.put(API_URL + 'perizinan-humas/update-status-protokoler/'+id+'/',data)
+    }
 }
 
 export default new UserService();

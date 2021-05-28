@@ -18,6 +18,8 @@ import DetailPerizinanRuangan from '../pages/AdminFastur/DetailPerizinanRuangan'
 import PerizinanKegiatanMahasiswa from '../pages/Mahasiswa/PerizinanKegiatanMahasiswa.vue';
 import PermohonanHumas from '../pages/Mahasiswa/PermohonanHumas.vue';
 import PeminjamanRuanganMahasiswa from '../pages/Mahasiswa/PeminjamanRuanganMahasiswa.vue';
+import DaftarPerizinanHumas from '../pages/AdminHumas/DaftarPerizinanHumas';
+import DetailPerizinanHumas from '../pages/AdminHumas/DetailPerizinanHumas'
 
 
 
@@ -116,6 +118,16 @@ const routes = [
     component: PeminjamanRuanganMahasiswa,
     props: true
   },
+  {
+    path: "/perizinan-humas/:id",
+    name: "DetailPerizinanHumas",
+    component: DetailPerizinanHumas,
+  },
+  {
+    path:"/perizinan-humas",
+    name:"DaftarPerizinanHumas",
+    component: DaftarPerizinanHumas,
+  },
 ];
 
 
@@ -139,6 +151,7 @@ router.beforeEach((to, from, next) =>{
     '/buat-perizinan/form-ruangan/',
     '/jadwal-tersedia',
     "/perizinan-fastur",
+    '/perizinan-humas',
 
   ];
 
