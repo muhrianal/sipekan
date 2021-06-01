@@ -29,17 +29,12 @@
                 </thead>
                 <tbody>
                     <template v-for="perizinan in list_perizinan" >
-                        <tr v-bind:key="perizinan.id" v-if=" perizinan.permintaan_souvenir.length != 0 | perizinan.permintaan_protokoler != null">
+                        <tr v-bind:key="perizinan.id" v-if="  perizinan.perizinan_publikasi != null | perizinan.permintaan_souvenir.length != 0 | perizinan.permintaan_protokoler != null">
                             <td class="nama-kegiatan">{{perizinan.nama_kegiatan}}</td>
                             <td>{{perizinan.organisasi}}</td>
                             <td>{{perizinan.user.profile.role}}</td>
-                            <!-- <td>{{perizinan.id}}</td> -->
-                            <!-- <td>{{perizinan.perizinan_publikasi}}</td> -->
                             <td>
-                                <router-link :to="{path:'/perizinan-humas/'+perizinan.id, name:DetailPerizinanHumas,params:{permintaan_souvenir:perizinan.permintaan_souvenir,permintaan_protokoler:perizinan.permintaan_protokoler}}" append >
-                                Detail
-                                <!-- <a :href="'/perizinan-humas/' + perizinan.id">Detail</a> -->
-                                </router-link>
+                                <a :href="'/perizinan-humas/' + perizinan.id">Detail</a>
                             </td>
                         </tr>
                     </template>

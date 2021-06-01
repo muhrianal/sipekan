@@ -59,7 +59,7 @@ class JenisIzinPublikasi(models.Model):
         on_delete=models.CASCADE
     )
     
-    jenis_publikasi = models.OneToOneField(
+    jenis_publikasi = models.ForeignKey(
         JenisPublikasi,
         on_delete = models.CASCADE
     )

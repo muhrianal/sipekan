@@ -4,6 +4,87 @@
             <h3 class="header-page" style="font-weight: bold;">Verfikasi Perizinan Kegiatan</h3>
             <hr class="line-header">
         </div>
+        <div v-if="this.perizinan_publikasi != null" class="header-perizinan col-12 px-2"> 
+            Publikasi
+            <hr noshade>
+        </div>  
+        <div v-if="this.perizinan_publikasi != null"  class="formulir m-3">
+               <div class="form-row">
+                   <div class="col-6 col-md-6 px-4 d-flex justify-content-end">
+                   </div>
+                    <div class="col-6 col-md-6 px-4 d-flex justify-content-end">
+                        <label class="status">Dibuat: {{getDate(perizinan_publikasi.created_at)}}</label>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-6 col-md-6"></div>
+                    <div class="col-6 col-md-6 px-4 d-flex justify-content-end">
+                    <label class="status">Disunting: {{getDate(perizinan_publikasi.updated_at)}}</label>
+                    </div>
+                </div>
+            <div class="form-row">
+                <div class="col-12 col-md-6  px-4 py-2">
+                    <label for="inputTanggalMulai">Tanggal Mulai</label>
+                    <input class="form-control readonly-form" :placeholder="this.perizinan_publikasi.tanggal_mulai" readonly >
+                </div>
+                <div class="col-12 col-md-6  px-4 py-2 ">
+                    <label for="inputTanggalAkhir">Tanggal Akhir</label>
+                    <input class="form-control readonly-form" :placeholder="this.perizinan_publikasi.tanggal_akhir" readonly >
+                </div>                                        
+            </div>
+            <div class="form-row">
+                <div v-if="this.perizinan_publikasi.file_materi_kegiatan != null" class="col-12 col-md-6  px-4 py-2">
+                    <label  for="inputMateriKegiatan">Materi Kegiatan / Press Release: </label>
+                    <div ><a @click="this.getFileMateriKegiatan" id="file_materi_kegitan_publikasi" href="{%get_static_prefix%}{{this.perizinan_publikasi.file_materi_kegiatan}}.pdf" download="{{this.perizinan_publikasi.file_materi_kegiatan}}">File</a></div>
+                </div>
+                <div v-if="this.perizinan_publikasi.file_flyer_pengumuman != null" class="col-12 col-md-6  px-4 py-2 ">
+                    <label for="inputFlyerPengumuman">Flyer Pengumuman / Poster Kegiatan:</label>
+                    <!-- {{this.perizinan_publikasi.file_materi_kegiatan}} -->
+                </div> 
+            </div>
+            <div v-if="this.perizinan_publikasi.keterangan != null" class="form-row">
+                <div  class="col-12 col-md-6  px-4 py-2">
+                    <label  for="inputMateriKegiatan">Keterangan: </label>
+                    <textarea class="form-control readonly-form" :placeholder="this.perizinan_publikasi.keterangan" readonly></textarea>
+                </div>
+            </div>
+            <div class="form-row px-4 py-2 ">
+                <label id="label-tabel-publikasi">Jenis Izin Publikasi Diajukan:</label>
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th scope="col"><label> Deskripsi </label></th>
+                        <th scope="col"><label> Jenis </label></th>
+                        <th scope="col"><label> Status</label></th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template v-for="jenis_izin in this.list_jenis_izin_publikasi" v-bind:key="jenis_izin" >
+                        <tr class="tabel-publikasi">
+                            <td >
+                                {{jenis_izin.jenis_publikasi.deskripsi_publikasi}}
+                                <span class="text-keterangan" v-if="jenis_izin.jenis_publikasi.deskripsi_publikasi == 'Lainnya'"><br>(Lihat deskripsi pada field keterangan diatas)</span>
+                            </td>
+                            <td>
+                                <span v-if="jenis_izin.jenis_publikasi.luar_ruangan">Luar Ruangan</span>
+                                <span v-if="!jenis_izin.jenis_publikasi.luar_ruangan">Online</span>
+                            </td>
+                            <td>
+                                <span v-if="jenis_izin.status_perizinan_publikasi==1">Menunggu Persetujuan</span>
+                                <span v-if="jenis_izin.status_perizinan_publikasi==2" style="color: #27AE60;">Disetujui</span>
+                                <span v-if="jenis_izin.status_perizinan_publikasi==3" style="color: #EB5757;">Ditolak</span>
+                                </td>
+                            <td><button class="btn tolak" v-if="jenis_izin.status_perizinan_publikasi == 1" v-on:click="popUpAlasanPenolakan(jenis_izin.id,'publikasi')" style="padding:3px 20px;font-size:16px;">Tolak</button></td>
+                            <td><button class="btn setuju" data-toggle="modal" v-if="jenis_izin.status_perizinan_publikasi == 1" v-on:click="putSetuju(jenis_izin.id,'publikasi')" style="padding:3px 20px;font-size:16px;">Setuju</button></td>
+                        </tr>
+                    </template>
+                </tbody>
+                </table>
+            </div>
+                <hr>
+        </div>             
         <div v-if="this.list_permintaan_souvenir.length > 0" class="header-perizinan col-12 px-2"> 
             Souvenir
             <hr noshade>
@@ -60,7 +141,7 @@
                     </div>
                     <div class="col-12 col-md-6  px-4 py-2">
                         <label for="inputJumlah">Jumlah</label>
-                        <input id="input_jumlah" class="form-control readonly-form" :placeholder="permintaan.jumlah">
+                        <input id="input_jumlah" class="form-control readonly-form" :placeholder="permintaan.jumlah" readonly>
                     </div>                    
                 </div>
             </form>
@@ -70,7 +151,7 @@
                     <button class="btn tolak" v-if="permintaan.status_permintaan_souvenir == 1" v-on:click="popUpAlasanPenolakan(permintaan.id,'souvenir')" style="padding:3px 20px;font-size:16px;">Tolak</button>
                 </div>
                 <div class="p-2 pr-4">
-                    <button class="btn setuju" data-toggle="modal" v-if="permintaan.status_permintaan_souvenir ==1 " v-on:click="putSetujuSouvenir(permintaan.id)" style="padding:3px 20px;font-size:16px;">Setuju</button>
+                    <button class="btn setuju" data-toggle="modal" v-if="permintaan.status_permintaan_souvenir ==1 " v-on:click="putSetuju(permintaan.id,'souvenir')" style="padding:3px 20px;font-size:16px;">Setuju</button>
                 </div>
             </div>
         </div>
@@ -111,7 +192,7 @@
                     <button class="btn tolak" v-if="this.permintaan_protokoler.status_permintaan_protokoler == 1" v-on:click="popUpAlasanPenolakan(this.permintaan_protokoler.id,'protokoler')" style="padding:3px 20px;font-size:16px;">Tolak</button>
                 </div>
                 <div class="p-2 pr-4">
-                    <button class="btn setuju" data-toggle="modal" v-if="this.permintaan_protokoler.status_permintaan_protokoler ==1 " v-on:click="putSetujuProtokoler(this.permintaan_protokoler.id)" style="padding:3px 20px;font-size:16px;">Setuju</button>
+                    <button class="btn setuju" data-toggle="modal" v-if="this.permintaan_protokoler.status_permintaan_protokoler ==1 " v-on:click="putSetuju(this.permintaan_protokoler.id,'protokoler')" style="padding:3px 20px;font-size:16px;">Setuju</button>
                 </div>
             </div>
         </div>
@@ -198,6 +279,8 @@ export default {
             id_izin_kegiatan: null,
             list_permintaan_souvenir: [],
             permintaan_protokoler:null,
+            perizinan_publikasi: null,
+            list_jenis_izin_publikasi: [],
 
             // for put update status
             alasan_penolakan : null,
@@ -215,7 +298,11 @@ export default {
             response => {
                 this.permintaan_protokoler = response.data.permintaan_protokoler;
                 this.list_permintaan_souvenir = response.data.permintaan_souvenir;
-                console.log(this.permintaan_protokoler)
+                this.perizinan_publikasi = response.data.perizinan_publikasi;
+                if(this.perizinan_publikasi != null){
+                    this.list_jenis_izin_publikasi = this.perizinan_publikasi.jenis_izin_publikasi;
+                }
+                console.log(this.perizinan_publikasi)
             },
             error => {
                 console.log(error.message);
@@ -233,13 +320,16 @@ export default {
         getHour : function (date) {
             return moment(date, 'YYYY-MM-DDTHH:mm').format('HH:mm');
         },
-        putSetujuSouvenir(id_permintaan){
+        getFileMateriKegiatan(){
+            document.getElementById("file_materi_kegiatan_publikasi")
+        },
+        putSetuju(id_permintaan,jenis_permintaan){
             const data = {
-                'status_permintaan_souvenir' : 2,
                 'alasan_penolakan' : null
             }
-
-            UserService.putUpdateStatusDanAlasanPermintaanSouvenir(data, id_permintaan).then(
+            if(jenis_permintaan == 'souvenir'){
+                data["status_permintaan_souvenir"] = 2
+                UserService.putUpdateStatusDanAlasanPermintaanSouvenir(data, id_permintaan).then(
                 response => {
                     this.success_message = 'Permintaan humas berhasil disetujui'
                     $('#notification-success').modal('show')
@@ -247,20 +337,14 @@ export default {
                 },
                 error => {
                     this.error_message = error.message
-                    
-
                     $('#notification-failed').modal('show')
                     console.log(error.message);
                 }
             )
-        },
-        putSetujuProtokoler(id_permintaan){
-            const data = {
-                'status_permintaan_protokoler' : 2,
-                'alasan_penolakan' : null
             }
-
-            UserService.putUpdateStatusDanAlasanPermintaanProtokoler(data, id_permintaan).then(
+            else if(jenis_permintaan == 'protokoler'){
+                data["status_permintaan_protokoler"] = 2
+                UserService.putUpdateStatusDanAlasanPermintaanProtokoler(data, id_permintaan).then(
                 response => {
                     this.success_message = 'Permintaan humas berhasil disetujui'
                     $('#notification-success').modal('show')
@@ -268,13 +352,31 @@ export default {
                 },
                 error => {
                     this.error_message = error.message
-                    
-
                     $('#notification-failed').modal('show')
                     console.log(error.message);
                 }
             )
+            }
+            else if(jenis_permintaan == 'publikasi'){
+                console.log("masuk publikasi")
+                data["status_perizinan_publikasi"] = 2
+                data["id_perizinan_publikasi"] = this.perizinan_publikasi.id
+                UserService.putUpdateStatusDanAlasanJenisPerizinanPublikasi(data,id_permintaan).then(
+                    response => {
+                    this.success_message = 'Permintaan humas berhasil disetujui'
+                    $('#notification-success').modal('show')
+                    console.log(response.data);
+                },
+                error => {
+                    this.error_message = error.message
+                    $('#notification-failed').modal('show')
+                    console.log(error.message);
+                }
+                )
+            }
+
         },
+
         putTolak(){
             $('#popup-penolakan').modal('hide')
                 const data = {
@@ -290,14 +392,12 @@ export default {
                 },
                 error => {
                     this.error_message = error.message
-                    
-
                     $('#notification-failed').modal('show')
                     console.log(error.message);
                 }
             )
             }
-            if(this.current_permintaan_untuk_ditolak=='protokoler'){
+            else if(this.current_permintaan_untuk_ditolak=='protokoler'){
                 data["status_permintaan_protokoler"] = 3
                 UserService.putUpdateStatusDanAlasanPermintaanProtokoler(data, this.current_id_untuk_ditolak).then(
                 response => {
@@ -307,25 +407,33 @@ export default {
                 },
                 error => {
                     this.error_message = error.message
-                    
-
                     $('#notification-failed').modal('show')
                     console.log(error.message);
                 }
             )
-
             }
-
-            
+            else if(this.current_permintaan_untuk_ditolak == 'publikasi'){
+                data["status_perizinan_publikasi"] = 3
+                data["id_perizinan_publikasi"] = this.perizinan_publikasi.id
+                UserService.putUpdateStatusDanAlasanJenisPerizinanPublikasi(data,this.current_id_untuk_ditolak).then(
+                    response => {
+                    this.success_message = 'Permintaan humas berhasil ditolak'
+                    $('#notification-success').modal('show')
+                    console.log(response.data);
+                },
+                error => {
+                    this.error_message = error.message
+                    $('#notification-failed').modal('show')
+                    console.log(error.message);
+                }
+                )
+            }            
         },
         popUpAlasanPenolakan(id_permintaan,jenisPermintaan){
             this.current_id_untuk_ditolak = id_permintaan
             this.current_permintaan_untuk_ditolak = jenisPermintaan
-
             $('#popup-penolakan').modal('show')
-
         },
-
         refreshPage(){
             location.reload()
         }
@@ -334,7 +442,6 @@ export default {
 </script>
 
 <style>
-
 .setuju {
     color: white;
     border-color: #27AE60;
@@ -357,7 +464,12 @@ export default {
     border-color: #EB5757;
     background-color:#EB5757!important;
 }
-
+.tabel-publikasi{
+    font-size:11pt;
+}
+#label-tabel-publikasi{
+    margin-bottom: 5px;
+}
 /* ::placeholder {
     color:  #5f5f5f;
 } */

@@ -38,7 +38,7 @@ def get_post_izin_kegiatan_mahasiswa(request):
         return JsonResponse(list_izin_kegiatan_mahasiwa_serialized.data, safe=False)
 
     #case for else
-        return JsonResponse({'message' : 'invalid API method'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+    return JsonResponse({'message' : 'invalid API method'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
 #untuk izin kegiatan dengan file
 @api_view(['POST'])
@@ -51,6 +51,9 @@ def post_izin_kegiatan_header(request):
             perizinan_data_serialized.save()
             return JsonResponse(perizinan_data_serialized.data,status=status.HTTP_201_CREATED,safe=False)
         return JsonResponse(perizinan_data_serialized.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    #case for else
+    return JsonResponse({'message' : 'invalid API method'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
 @api_view(['POST'])
 @permission_classes([permissions.AllowAny,]) 
@@ -62,3 +65,6 @@ def post_izin_kegiatan_detail(request):
             perizinan_data_serialized.save()
             return JsonResponse(perizinan_data_serialized.data,status=status.HTTP_201_CREATED,safe=False)
         return JsonResponse(perizinan_data_serialized.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    #case for else
+    return JsonResponse({'message' : 'invalid API method'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)

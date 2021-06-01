@@ -16,34 +16,39 @@ class JenisPublikasiSerializer(serializers.ModelSerializer):
         model = JenisPublikasi
         fields = '__all__'
 
-class JenisIzinPublikasiSerializer(serializers.ModelSerializer):
-    jenis_publikasi = JenisPublikasiSerializer(read_only = True)
+class JenisIzinPublikasiHumasSerializer(serializers.ModelSerializer): # untuk verifikasi perizinan publikasi oleh admin humas
+    jenis_publikasi = JenisPublikasiSerializer(read_only=True)
     class Meta:
         model = JenisIzinPublikasi
-        fields = '__all__'
+        fields = '__all__'  
+
+class JenisIzinPublikasiSerializer(serializers.ModelSerializer): # untuk post perizinan publikasi oleh mahasiswa
+    class Meta:
+        model = JenisIzinPublikasi
+        fields = ('jenis_publikasi','status_perizinan_publikasi','alasan_penolakan')
+    
+    def update(self, perizinan_publikasi, validated_data):
+        JenisIzinPublikasi.objects.create(perizinan_publikasi=perizinan_publikasi, **validated_data)
+        return perizinan_publikasi
  
-class PerizinanPublikasiSerializer(serializers.ModelSerializer):
-    jenis_izin_publikasi= JenisIzinPublikasiSerializer( many=True)
+class PerizinanPublikasiHumasSerializer(serializers.ModelSerializer): # untuk verifikasi perizinan publikasi oleh admin humas
+    jenis_izin_publikasi = JenisIzinPublikasiHumasSerializer(read_only=True,many=True)
     class Meta:
         model = PerizinanPublikasi
-        fields = ('id','tanggal_mulai', 'tanggal_akhir', 'jenis_izin_publikasi','keterangan', 'file_materi_kegiatan', 'file_flyer_pengumuman','izin_kegiatan')
-    
-    def create(self,validated_data):
-        print(validated_data)
-        jenis_izin_publikasi_data = validated_data.pop('jenis_izin_publikasi')
-        perizinan_publikasi = PerizinanPublikasi.objects.create(**validated_data)
-        for jenis_izin in jenis_izin_publikasi_data:
-            JenisIzinPublikasi.objects.create(perizinan_publikasi=perizinan_publikasi, **jenis_izin)
-        return perizinan_publikasi        
+        fields = '__all__'
 
-class PermintaanSouvenirHumasSerializer(serializers.ModelSerializer):
+class PerizinanPublikasiSerializer(serializers.ModelSerializer): # untuk post perizinan publikasi oleh mahasiswa
+    class Meta:
+        model = PerizinanPublikasi
+        fields = ('id','tanggal_mulai', 'tanggal_akhir','keterangan', 'file_materi_kegiatan', 'file_flyer_pengumuman','izin_kegiatan')
+        
+class PermintaanSouvenirHumasSerializer(serializers.ModelSerializer): # untuk verifikasi permintaan souvenir oleh admin humas
     souvenir = SouvenirSerializer(read_only=True)
     class Meta:
         model = PermintaanSouvenir
-        fields =  fields = ('id','alasan_penolakan', 'status_permintaan_souvenir', 'jumlah', 'souvenir', 
-        'nama_penerima_souvenir', 'kelas_penerima_souvenir', 'region_penerima_souvenir', 'jabatan_penerima_souvenir','created_at','updated_at' )
+        fields = '__all__'
 
-class PermintaanSouvenirSerializer(serializers.ModelSerializer):
+class PermintaanSouvenirSerializer(serializers.ModelSerializer): # untuk post permintaan souvenir oleh mahasiswa
     class Meta:
         model = PermintaanSouvenir
         fields = ('id','alasan_penolakan', 'status_permintaan_souvenir', 'jumlah', 'souvenir', 
@@ -54,7 +59,7 @@ class PermintaanProtokolerSerializer(serializers.ModelSerializer):
         model = PermintaanProtokoler
         fields = ('id','deskripsi_kebutuhan','status_permintaan_protokoler','alasan_penolakan','created_at','updated_at')
 
-class PerizinanKegiatanSerializer(serializers.ModelSerializer):
+class PerizinanKegiatanSerializer(serializers.ModelSerializer): # untuk post permintaan protokoler dan permintaan souvenir oleh mahasiswa
     permintaan_protokoler = PermintaanProtokolerSerializer(required = False)
     permintaan_souvenir = PermintaanSouvenirSerializer(many=True, required= False)
     
@@ -76,9 +81,9 @@ class PerizinanKegiatanSerializer(serializers.ModelSerializer):
         
         return izin_kegiatan    
 
-class  IzinKegiatanHumasSerializer(serializers.ModelSerializer):
+class PerizinKegiatanHumasSerializer(serializers.ModelSerializer): # untuk list izin kegiatan (publikasi, protokoler, souvenir) oleh admin humas
     user = UserSerializer()
-    perizinan_publikasi = PerizinanPublikasiSerializer(required=False)
+    perizinan_publikasi = PerizinanPublikasiHumasSerializer(required=False)
     permintaan_protokoler = PermintaanProtokolerSerializer(required = False)
     permintaan_souvenir =PermintaanSouvenirHumasSerializer(many=True, required= False)
 

@@ -16,20 +16,20 @@
                             <label for="inputPublikasiLuarRuangan">Publikasi Luar Ruangan</label>
                             <hr noshade >
                             <span v-for="publikasi in publikasi_luar_ruangan" v-bind:key="publikasi.id">
-                                <input id="input_publikasi" v-model="jenis_publikasi" type="checkbox" :value="publikasi"> <span class="checkbox-label">{{publikasi.deskripsi_publikasi}}</span><br>
+                                <input id="input_publikasi" v-model="jenis_publikasi" type="checkbox" :value="publikasi.id"> <span class="checkbox-label">{{publikasi.deskripsi_publikasi}}</span><br>
                             </span>
                         </div>
                         <div class="col-12 col-md-6  px-4 py-2">
                             <label for="inputPublikasi">Publikasi</label>
                             <hr noshade >
                             <span v-for="publikasi in publikasi" v-bind:key="publikasi.id">
-                                <input id="input_publikasi" v-model="jenis_publikasi" type="checkbox" :value="publikasi"> <span class="checkbox-label">{{publikasi.deskripsi_publikasi}}</span><br>
+                                <input id="input_publikasi" v-model="jenis_publikasi" type="checkbox" :value="publikasi.id"> <span class="checkbox-label">{{publikasi.deskripsi_publikasi}}</span><br>
                             </span>
                         </div>                    
                     </div>            
                     <div class="form-row">
                         <div class="col-12 col-md-6  px-4 py-2">
-                            <label for="inputKeterangan">Jenis dan Lokasi <span class="text-keterangan"> (untuk jenis Publikasi  “Lainnya”)</span></label>
+                            <label for="inputKeterangan">Keterangan <span class="text-keterangan">(Harap isi jenis dan lokasi publikasi disini, jika memilih "Lainnya"</span></label>
                             <textarea id="input_keterangan" type="text" v-model="keterangan" class="form-control" placeholder="e.g. Baliho di Depan Gedung x ukuran (axb)"></textarea>
                         </div>   
                         <div class="col-12 col-md-6  px-4 py-2"> 
@@ -497,7 +497,7 @@ export default {
                     ( souvenir !=null && (nama=='' || jabatan =='' || kelas == '' || region == '' || jumlah == '')) ||
                     ( jumlah !='' && (nama=='' || jabatan =='' || kelas == '' || region == '' || souvenir == null))              
                     ) {   
-                        this.error_message = "Harap mengsi serluruh field pada form souvenir, jika Anda ingin mengajukan permintaan souvenir"
+                        this.error_message = "Harap mengsi seluruh field pada form souvenir, jika Anda ingin mengajukan permintaan souvenir"
                         $('#notification-failed').modal('show')                        
                         passed = false
                 }
@@ -516,7 +516,7 @@ export default {
                     console.log(this.jenis_izin_publikasi)
                     let formDataPublikasi = new FormData()
                     // formDataPublikasi.append("izin_kegiatan", this.id_izin_kegiatan)
-                    formDataPublikasi.append("izin_kegiatan", 70)
+                    formDataPublikasi.append("izin_kegiatan", 93)
                     formDataPublikasi.append("tanggal_mulai", this.tanggal_mulai)
                     formDataPublikasi.append("tanggal_akhir", this.tanggal_akhir)
                     formDataPublikasi.append("keterangan", this.keterangan)
