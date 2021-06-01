@@ -10,6 +10,10 @@
             </div>
 
             <ul class="list-unstyled components">
+
+                <li v-if="isLoggedIn && (currentUser.role == 'MAHASISWA' || currentUser.role == 'UNIT KERJA')" v-bind:class="{active : isInHomePage}" >
+                    <a class="sidebar-child" href="/pengumuman">Pengumuman</a>
+                </li>
                 
                 <li v-if="isLoggedIn && (currentUser.role == 'MAHASISWA' || currentUser.role == 'UNIT KERJA')" v-bind:class="{active : isInHomePage}" >
                     <a class="sidebar-child" href="/perizinan">Status Perizinan</a>

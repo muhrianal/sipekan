@@ -32,13 +32,14 @@ class UserService {
         return axios.get(API_URL + 'peminjaman-ruangan/verifikasi-fastur/' + id + '/')
     }
 
+    getJadwalPeminjamanRuangan(){
+        return axios.get(API_URL + 'peminjaman-ruangan/')
+    }
+
     putUpdateStatusDanAlasanPenolakanPeminjamanRuangan(data, id){
         return axios.put(API_URL + 'peminjaman-ruangan/update-status/' + id + '/', data)
     }
 
-    getAllRuanganKalender(){
-        return axios.get(API_URL + 'api/ruangan');
-    }
     getRuangan(id){
         return axios.get(API_URL + 'api/ruangan/' + id)
     }
