@@ -20,6 +20,7 @@ import PermohonanHumas from '../pages/Mahasiswa/PermohonanHumas.vue';
 import PeminjamanRuanganMahasiswa from '../pages/Mahasiswa/PeminjamanRuanganMahasiswa.vue';
 import BuatPengumuman from '../pages/AdminAll/BuatPengumuman.vue';
 import EditPengumuman from '../pages/AdminAll/EditPengumuman.vue';
+import Pengumuman from '../pages/Mahasiswa/Pengumuman.vue';
 
 const routes = [
   {
@@ -126,6 +127,11 @@ const routes = [
     component: PeminjamanRuanganMahasiswa,
     props: true
   },
+  {
+    path: "/pengumuman/",
+    name: "Pengumuman",
+    component: Pengumuman,
+  },
 ];
 
 
@@ -149,6 +155,7 @@ router.beforeEach((to, from, next) =>{
     '/buat-perizinan/form-ruangan/',
     '/jadwal-tersedia',
     "/perizinan-fastur",
+    '/pengumuman',
 
   ];
 
