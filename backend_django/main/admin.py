@@ -2,6 +2,7 @@ from django.contrib import admin
 
 from .models.profile import Profile
 from .models.izin_kegiatan import IzinKegiatan, DetailKegiatan
+from .models.pengumuman import Pengumuman
 
 from .models.peminjaman_ruangan import PeminjamanRuangan, Ruangan, Perulangan
 from .models.humas import PerizinanPublikasi, PermintaanProtokoler, PermintaanSouvenir, Souvenir, JenisPublikasi
@@ -28,3 +29,4 @@ admin.site.register(Perulangan)
 
 admin.site.register(Souvenir)
 admin.site.register(JenisPublikasi)
+admin.site.register(Pengumuman)

@@ -14,6 +14,7 @@ from .views.views_peminjaman_ruangan import post_peminjaman_ruangan_mahasiswa
 from .views.views_humas import get_post_perizinan_humas,list_perizinan_humas, get_jenis_publikasi, get_list_souvenir, post_perizinan_publikasi
 from .views.views_izin_kegiatan_mahasiswa import get_post_izin_kegiatan_mahasiswa, post_izin_kegiatan_detail, post_izin_kegiatan_header
 from .views.views_peminjaman_ruangan import update_peminjaman_ruangan_by_id_peminjaman_ruangan, post_peminjaman_ruangan_unit_kerja, get_list_perizinan_fastur, get_peminjaman_ruangan_by_id_izin_kegiatan
+from .views.views_pengumuman import get_all_pengumuman, post_new_pengumuman, get_pengumuman_by_id, put_pengumuman
 
 urlpatterns = [
     path('login/', login),
@@ -42,4 +43,8 @@ urlpatterns = [
     path('peminjaman-ruangan/unit-kerja/', post_peminjaman_ruangan_unit_kerja),
     path('peminjaman-ruangan/verifikasi-fastur/', get_list_perizinan_fastur),
     path('peminjaman-ruangan/verifikasi-fastur/<int:id_izin_kegiatan>/', get_peminjaman_ruangan_by_id_izin_kegiatan),   
+    path('pengumuman/', get_all_pengumuman),
+    path('pengumuman/create', post_new_pengumuman),
+    path('pengumuman/<int:id_pengumuman>', get_pengumuman_by_id),
+    path('pengumuman/edit/<int:id_pengumuman>', put_pengumuman),
 ]
