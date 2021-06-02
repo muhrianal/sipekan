@@ -18,12 +18,12 @@ class PerulanganSerializer(serializers.ModelSerializer):
 
 
 
-class PeminjamanRuanganSerializer(serializers.ModelSerializer):
+# class PeminjamanRuanganSerializer(serializers.ModelSerializer):
     
-    class Meta:
-        model = PeminjamanRuangan
+#     class Meta:
+#         model = PeminjamanRuangan
 
-        fields = '__all__'
+#         fields = '__all__'
 
 
 class PeminjamanRuanganUnitKerjaSerializer(serializers.ModelSerializer):
@@ -51,9 +51,12 @@ class PeminjamanRuanganUnitKerjaSerializer(serializers.ModelSerializer):
 
 class PeminjamanRuanganSerializer(serializers.ModelSerializer):
 
+    perulangan = PerulanganSerializer(read_only=True)
+
     class Meta:
         model = PeminjamanRuangan
-        fields = '__all__'
+        fields = ('id', 'judul_peminjaman', 'jumlah_peserta','status_peminjaman_ruangan',
+        'alasan_penolakan', 'waktu_mulai','waktu_akhir','catatan','ruangan','terbuka_untuk_umum','perulangan')
 
 class RuanganSerializer(serializers.ModelSerializer):
 

@@ -1,7 +1,7 @@
 <template>
     <div class="root-class">
         <div class="header">
-            <h3 class="header-page" style="font-weight: bold;">Tambah Souvenir</h3>
+            <h3 class="header-page" style="font-weight: bold;">Ubah Souvenir</h3>
             <hr class="line-header">
         </div>
 
@@ -70,12 +70,12 @@
                             <div class="p-2 pr-4">
 
                                 <button class="btn simpan" id="btnValidate" style="padding:3px 20px;font-size:16px;"
-                                        v-on:click="postCreateSouvenir"
+                                        v-on:click="putSouvenir"
                                         > Simpan</button>
                             </div>
                         </div>
  <!-- Modal: Notif Sukses -->
-    <div class="modal fade" id="notification-success" tabindex="-1" role="dialog" aria-labelledby="sukses-setuju-modal" aria-hidden="true">
+    <div class="modal fade" id="ubahModal" tabindex="-1" role="dialog" aria-labelledby="sukses-setuju-modal" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
 
@@ -83,12 +83,12 @@
                 <div class="text-center">
                     <img src="../../assets/images/icon_ceklis.png" alt="icon-sukses">
                 <h2 style="margin:20px 0px 15px 0px">Sukses</h2>
-                <p style="margin:0px 0px -15px 0px">Souvenir berhasil disimpan</p>
+                <p style="margin:0px 0px -15px 0px">Perubahan souvenir berhasil disimpan</p>
                 </div>
             </div>
             <div class="modal-footer">
                 <div class="text-center">
-                    <button type="button" class="btn btn-success" data-dismiss="modal" v-on:click="addDone" style="width:80px; height:36px;">OK</button>
+                    <button type="button" class="btn btn-success" data-dismiss="modal" v-on:click="ubahDone" style="width:80px; height:36px;">OK</button>
                 </div>
             </div>
             </div>
@@ -115,6 +115,7 @@
         </div>
     </div>
 
+
         </div>
 
 
@@ -127,25 +128,37 @@ import UserService from '../../services/user.service';
 import $ from 'jquery';
 
 export default {
-    name: 'AddSouvenir',
+    name: 'EditSouvenir',
     data() {
         return {
-            souvenir: [],
+            souvenir: "",
             error_messase: "",
+            
         }
     },
     created(){
         console.log("masuk created daftar")
-        
+        UserService.getSouvenir(this.$route.params.id).then(
+            response => {
+                this.souvenir = response.data;
+            },
+            error => {
+                this.error_message = (error.response && error.response.data) || error.message || error.toString();
+            }
+        )
     },
     mounted(){
         console.log(this.souvenir);
-        
+        console.log(this.error_message);
+                
     },
     methods: {
-        postCreateSouvenir() {
-            console.log("masuk post souvenir")
-            const souvenir_post = {
+        putSouvenir() {
+            console.log("masuk put souvenir");
+            console.log(this.$route.params.id);
+
+            const data_put = {
+                id: this.$route.params.id,
                 nama_souvenir: this.nama_souvenir,
                 region: this.region,
                 kelas: this.kelas,
@@ -153,55 +166,24 @@ export default {
                 stok_minimum: this.stok_minimum,
                 tanggal_masuk: this.tanggal_masuk,
                 keterangan: this.keterangan,
-
+                
             };
-            console.log(souvenir_post);
-            UserService.postSouvenir(souvenir_post).then(
+            console.log(data_put);
+            UserService.putSouvenir(this.$route.params.id, data_put).then(
                 response => {
                     console.log(response.data);
-                    $('#notification-success').modal('show')
+                    $('#ubahModal').modal('toggle')
+
                 },
                 error => {
-                    console.log(souvenir_post);
-                    this.error_message = error.message
-                    $('#notification-failed').modal('show')
                     console.log(error.message);
+                    $('#notification-failed').modal('show')
                 }
         );
         },
-        addDone() {
-            window.location.href='/souvenir';
-        },
-
+        ubahDone() {
+            window.location.href="/souvenir/";
+        }
     }
-
 }
 </script>
-
-<style>
-.root-class {
-    background-color: white;
-    border-color: #BDBDBD;
-    border-style: solid;
-    border-width: 1px;
-    border-radius: 5px;
-    padding: 20px 20px 20px 20px ;
-}
-label {
-    font-size: 14px;
-}
-.header-page {
-    /* padding: 15px 0px 3px 15px; */
-    font-size: 23px;
-    color: #FFD505;
-}
-.line-header {
-    background-color: #BDBDBD ;
-}
-input, select{
-    border-radius: 10px !important;
-}
-.fontg3{
-    color: #828282 !important;
-}
-</style>

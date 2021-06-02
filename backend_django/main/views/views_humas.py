@@ -111,3 +111,75 @@ def post_souvenir(request):
                     'message' : 'invalid API call'
                 }
     return Response(data=data, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET','PUT', 'DELETE'])
+@permission_classes([permissions.AllowAny,])
+def detail_souvenir(request,pk):
+    try:
+        souvenir = Souvenir.objects.get(pk=pk)
+    except Souvenir.DoesNotExist:
+        return JsonResponse({'message': 'Souvenir tidak ada'}, status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        souvenir_serialized = SouvenirSerializer(souvenir)
+        return JsonResponse(souvenir_serialized.data, safe=False)
+#     data = {
+#             'message' : 'invalid API call'
+#         }
+#     return Response(data=data, status=status.HTTP_400_BAD_REQUEST)
+    elif request.method == 'PUT':
+            souvenir_data = JSONParser().parse(request)
+            souvenir_serializer = SouvenirSerializer(souvenir, data=souvenir_data)
+            if souvenir_serializer.is_valid():
+                souvenir_serializer.save()
+                return JsonResponse(souvenir_serializer.data)
+            return JsonResponse(souvenir_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    elif request.method == 'DELETE':
+        souvenir.delete()
+        return JsonResponse({'message': 'Souvenir berhasil dihapus'}, status=status.HTTP_204_NO_CONTENT)
+#         #do something untuk request DELETE, misal hapus izin kegiatan yang sudah ada
+    return JsonResponse({'message' : 'invalid API method'}, status=status.HTTP_405_METHOD_NOT_ALLOWED) 
+
+@api_view(['GET','PUT'])
+@permission_classes([permissions.AllowAny,])
+def detail_permintaan_protokoler(request,pk):
+    try:
+        permintaan_protokoler = PermintaanProtokoler.objects.get(pk=pk)
+    except PermintaanProtokoler.DoesNotExist:
+        return JsonResponse({'message': 'Permintaan protokoler tidak ada'}, status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        permintaan_protokoler_serialized = PermintaanProtokolerSerializer(permintaan_protokoler)
+        return JsonResponse(permintaan_protokoler_serialized.data, safe=False)
+    # data = {
+    #         'message' : 'invalid API call'
+    #     }
+    elif request.method == 'PUT':
+            permintaan_protokoler_data = JSONParser().parse(request)
+            permintaan_protokoler_serializer = PermintaanProtokolerSerializer(permintaan_protokoler, data=permintaan_protokoler_data)
+            if permintaan_protokoler_serializer.is_valid():
+                permintaan_protokoler_serializer.save()
+                return JsonResponse(permintaan_protokoler_serializer.data)
+            return JsonResponse(permintaan_protokoler_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+#         #do something untuk request DELETE, misal hapus izin kegiatan yang sudah ada
+    return JsonResponse({'message' : 'invalid API method'}, status=status.HTTP_405_METHOD_NOT_ALLOWED) 
+
+@api_view(['GET','PUT'])
+@permission_classes([permissions.AllowAny,])
+def detail_permintaan_souvenir(request,pk):
+    try:
+        permintaan_souvenir = PermintaanSouvenir.objects.get(pk=pk)
+    except PermintaanSouvenir.DoesNotExist:
+        return JsonResponse({'message': 'Ruangan tidak ada'}, status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        permintaan_souvenir_serialized = PermintaanSouvenirSeriliazer(permintaan_souvenir)
+        return JsonResponse(permintaan_souvenir_serialized.data, safe=False)
+    elif request.method == 'PUT':
+        permintaan_souvenir_data = JSONParser().parse(request)
+        permintaan_souvenir_serializer = PermintaanSouvenirSeriliazer(permintaan_souvenir, data=permintaan_souvenir_data)
+        if permintaan_souvenir_serializer.is_valid():
+            permintaan_souvenir_serializer.save()
+            return JsonResponse(permintaan_souvenir_serializer.data)
+        return JsonResponse(permintaan_souvenir_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    return JsonResponse({'message' : 'invalid API method'}, status=status.HTTP_405_METHOD_NOT_ALLOWED) 

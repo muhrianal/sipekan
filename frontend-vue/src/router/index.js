@@ -20,7 +20,8 @@ import PermohonanHumas from '../pages/Mahasiswa/PermohonanHumas.vue';
 import PeminjamanRuanganMahasiswa from '../pages/Mahasiswa/PeminjamanRuanganMahasiswa.vue';
 import Souvenir from '../pages/AdminHumas/Souvenir';
 import AddSouvenir from '../pages/AdminHumas/AddSouvenir';
-
+import UbahSouvenir from '../pages/AdminHumas/UbahSouvenir';
+import UbahPermintaanProtokoler from '../pages/Mahasiswa/UbahPermintaanProtokoler';
 
 
 const routes = [
@@ -128,6 +129,16 @@ const routes = [
     name: "AddSouvenir",
     component: AddSouvenir
   },
+  {
+    path: "/souvenir/ubah/:id",
+    name: "UbahSouvenir",
+    component: UbahSouvenir
+  },
+  {
+    path: "/perizinan/:id/permintaan-protokoler/ubah/:id2",
+    name: "UbahPermintaanProtokoler",
+    component: UbahPermintaanProtokoler,
+  }
   
 ];
 

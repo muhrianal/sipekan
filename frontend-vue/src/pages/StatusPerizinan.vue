@@ -19,7 +19,8 @@
     </div>
 
     <div class="m-1">
-    <div class="card m-2 kotakstatus"  v-for="izin in perizinan" v-bind:key="izin.id">
+    <template v-for="izin in perizinan" v-bind:key="izin.id">
+    <div class="card m-2 kotakstatus"  v-if="izin.user==currentUser.id_user" >
 
     <div class="d-flex bd-highlight">
       <div class="p-2 flex-grow-1 bd-highlight">
@@ -33,7 +34,7 @@
        <div class="progress m-2" style="height:8px">
        <template v-if="izin.status_perizinan_kegiatan!=3">
           <div v-if="izin.status_perizinan_kegiatan==1" class="progress-bar kuning" role="progressbar" style="width:20%"  aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
-          <div class="progress-bar hijau" role="progressbar" style="width:20%"  aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
+          <div v-if="izin.status_perizinan_kegiatan==2" class="progress-bar hijau" role="progressbar" style="width:20%"  aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
 
           <div class="progress-bar putih" role="progressbar" style="width:0.1%"  aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
 
@@ -103,6 +104,7 @@
     </div>
     </div>
     </div>
+    </template>
     </div>
 
     </div>
@@ -133,6 +135,14 @@ export default {
     mounted(){
         console.log(this.perizinan);
         console.log(this.error_message);
+    },
+    computed: {
+        isLoggedIn() {
+            return this.$store.state.auth.status.loggedIn;
+        },
+        currentUser() {
+            return this.$store.state.auth.user;
+        }
     },
 }
 

@@ -7,7 +7,7 @@ from ..models.izin_kegiatan import IzinKegiatan
 class SouvenirSerializer(serializers.ModelSerializer):
     class Meta:
         model = Souvenir
-        fields = ('id', 'nama_souvenir','region','kelas', 'stok')
+        fields = '__all__'
 
 class JenisPublikasiSerializer(serializers.ModelSerializer):
     class Meta:

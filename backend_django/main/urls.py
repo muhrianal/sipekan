@@ -3,7 +3,7 @@ from .views.auth import login, test_api_unrestricted
 from .views.auth_sso import login_with_sso
 
 from .views.views_peminjaman_ruangan import list_peminjaman_ruangan
-from .views.views_izin_kegiatan import list_izin_kegiatan, update_izin_kegiatan_by_id_perizinan, detail_izin_kegiatan
+from .views.views_izin_kegiatan import list_izin_kegiatan, update_izin_kegiatan_by_id_perizinan, detail_izin_kegiatan, detail_kegiatan, izin_kegiatan_detail
 
 from .views.views_peminjaman_ruangan import list_jadwal
 from .views.views_ruangan import list_ruangan
@@ -11,9 +11,9 @@ from .views.views_peminjaman_ruangan import list_ruangan
 from .views.views_peminjaman_ruangan import detail_ruangan
 from .views.views_status_perizinan import list_perizinan, detail_perizinan
 from .views.views_peminjaman_ruangan import post_peminjaman_ruangan_mahasiswa
-from .views.views_humas import get_post_perizinan_humas,list_perizinan_humas, get_jenis_publikasi, get_list_souvenir, post_perizinan_publikasi, post_souvenir
-from .views.views_izin_kegiatan_mahasiswa import get_post_izin_kegiatan_mahasiswa, post_izin_kegiatan_detail, post_izin_kegiatan_header
-from .views.views_peminjaman_ruangan import update_peminjaman_ruangan_by_id_peminjaman_ruangan, post_peminjaman_ruangan_unit_kerja, get_list_perizinan_fastur, get_peminjaman_ruangan_by_id_izin_kegiatan
+from .views.views_humas import get_post_perizinan_humas,list_perizinan_humas, get_jenis_publikasi, get_list_souvenir, post_perizinan_publikasi, post_souvenir, detail_souvenir, detail_permintaan_protokoler, detail_permintaan_souvenir
+from .views.views_izin_kegiatan_mahasiswa import get_post_izin_kegiatan_mahasiswa, post_izin_kegiatan_detail, post_izin_kegiatan_header, put_izin_kegiatan_header
+from .views.views_peminjaman_ruangan import update_peminjaman_ruangan_by_id_peminjaman_ruangan, post_peminjaman_ruangan_unit_kerja, get_list_perizinan_fastur, get_peminjaman_ruangan_by_id_izin_kegiatan, detail_peminjaman_ruangan, perulangan
 
 urlpatterns = [
     path('login/', login),
@@ -43,5 +43,13 @@ urlpatterns = [
     path('peminjaman-ruangan/verifikasi-fastur/', get_list_perizinan_fastur),
     path('peminjaman-ruangan/verifikasi-fastur/<int:id_izin_kegiatan>/', get_peminjaman_ruangan_by_id_izin_kegiatan),
     path('souvenir/', post_souvenir),
+    path('souvenir/<int:pk>/', detail_souvenir),
+    path('permintaan-protokoler/<int:pk>/', detail_permintaan_protokoler),
+    path('permintaan-souvenir/<int:pk>/', detail_permintaan_souvenir),
+    path('peminjaman-ruangan/<int:pk>/', detail_peminjaman_ruangan),
+    path('detail-kegiatan/<int:pk>/', put_izin_kegiatan_header),
+    path('izin-kegiatan-detail/<int:pk>/', izin_kegiatan_detail),
+    path('perulangan/<int:pk>/', perulangan)
+
 
 ]

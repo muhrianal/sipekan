@@ -17,7 +17,7 @@ from ..permissions import AllowOnlyAdminFASTUR, AllowOnlyAdminHUMAS, AllowOnlyAd
 
 from ..models.izin_kegiatan import DetailKegiatan, IzinKegiatan
 
-from ..serializers.izin_kegiatan_serializer import IzinKegiatanSerializerSimplified, DetailKegiatanSerializer, IzinKegiatanMahasiswaSerializer
+from ..serializers.izin_kegiatan_serializer import IzinKegiatanSerializerSimplified, DetailKegiatanSerializer, IzinKegiatanMahasiswaSerializer, DetailKegiatanSerializer, DetailIzinKegiatanSerializer
 
 
 from django.http.response import JsonResponse
@@ -90,7 +90,9 @@ def list_izin_kegiatan(request):
         'message' : 'invalid API call'
     }
     return Response(data=data, status=status.HTTP_400_BAD_REQUEST)
-    
+
+@api_view(['GET'])
+@permission_classes([permissions.AllowAny,])  
 def detail_izin_kegiatan(request,pk):
     try:
         izin_kegiatan = IzinKegiatan.objects.get(pk=pk)
@@ -104,3 +106,44 @@ def detail_izin_kegiatan(request,pk):
             'message' : 'invalid API call'
         }
     return Response(data=data, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET','PUT'])
+@permission_classes([permissions.AllowAny,])
+def detail_kegiatan(request,pk):
+    try:
+        detail_kegiatan = IzinKegiatan.objects.get(pk=pk)
+    except IzinKegiatan.DoesNotExist:
+        return JsonResponse({'message': 'Peminjaman Ruangan tidak ada'}, status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        detail_kegiatan_serialized = DetailIzinKegiatanSerializer(detail_kegiatan)
+        return JsonResponse(detail_kegiatan_serialized.data, safe=False)
+    elif request.method == 'PUT':
+        detail_kegiatan_data = JSONParser().parse(request)
+        detail_kegiatan_serializer = DetailIzinKegiatanSerializer(detail_kegiatan, data=detail_kegiatan_data)
+        if detail_kegiatan_serializer.is_valid():
+            detail_kegiatan_serializer.save()
+            return JsonResponse(detail_kegiatan_serializer.data)
+        return JsonResponse(detail_kegiatan_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    return JsonResponse({'message' : 'invalid API method'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+@api_view(['GET','PUT'])
+@permission_classes([permissions.AllowAny,])
+def izin_kegiatan_detail(request,pk):
+    try:
+        detail_kegiatan = DetailKegiatan.objects.get(pk=pk)
+    except DetailKegiatan.DoesNotExist:
+        return JsonResponse({'message': 'Peminjaman Ruangan tidak ada'}, status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        detail_kegiatan_serialized = DetailKegiatanSerializer(detail_kegiatan)
+        return JsonResponse(detail_kegiatan_serialized.data, safe=False)
+    elif request.method == 'PUT':
+        detail_kegiatan_data = JSONParser().parse(request)
+        detail_kegiatan_serializer = DetailKegiatanSerializer(detail_kegiatan, data=detail_kegiatan_data)
+        if detail_kegiatan_serializer.is_valid():
+            detail_kegiatan_serializer.save()
+            return JsonResponse(detail_kegiatan_serializer.data)
+        return JsonResponse(detail_kegiatan_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    return JsonResponse({'message' : 'invalid API method'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+

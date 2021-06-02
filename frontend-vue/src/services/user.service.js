@@ -67,16 +67,50 @@ class UserService {
         return axios.get(API_URL + 'api/perizinan/' + id)
     }
 
-    putPeminjamanRuangan(id,data) {
-        return axios.get(API_URL + 'peminjaman-ruangan/update/'+id+'/',data)
-    }
+    // putPeminjamanRuangan(id,data) {
+    //     return axios.get(API_URL + 'peminjaman-ruangan/update/'+id+'/',data)
+    // }
 
     getAllSouvenir() {
         return axios.get(API_URL + 'perizinan-humas/list-souvenir')
     }
+
     postSouvenir(data) {
         return axios.post(API_URL + 'souvenir/', data)
     }
+
+    getSouvenir(id) {
+        return axios.get(API_URL + 'souvenir/' +id)
+    }
+
+    deleteSouvenir(id) {
+        return axios.delete(API_URL + 'souvenir/' +id)
+    }
+
+    putSouvenir(id, data) {
+        return axios.put(API_URL + 'souvenir/' + id +'/', data)
+    }
+
+    putPermintaanProtokoler(id, data) {
+        return axios.put(API_URL + 'permintaan-protokoler/' + id+'/', data)
+    }
+
+    putPermintaanSouvenir(id, data) {
+        return axios.put(API_URL + 'permintaan-souvenir/' + id+'/', data)
+    }
+
+    putPeminjamanRuangan(id, data) {
+        return axios.put(API_URL + 'peminjaman-ruangan/' + id+'/', data)
+    }
+
+    putPerulangan(id, data) {
+        return axios.put(API_URL + 'perulangan/' + id +'/', data)
+    }
+
+    putDetailIzinKegiatan(id, data) {
+        return axios.put(API_URL + 'izin-kegiatan/' + id+'/', data)
+    }
+
 }
 
 export default new UserService();

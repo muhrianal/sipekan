@@ -27,22 +27,63 @@
             <th scope="row" class="text-center" >{{ index+1+"." }} </th>
             <td>{{ souv.nama_souvenir }}</td>
             <td class="text-center">{{ souv.stok }}</td>
-            <td class="text-center">-</td>            
-            <td class="text-center">-</td>           
-            <td class="text-center"><a href="/" class="btn simpan mr-2" style="padding:3px 6px;font-size:14px;">Ubah</a>
-            <a href="/" class="btn batal" style="padding:3px 6px;font-size:14px;">Hapus</a>
+            <td class="text-center">{{ souv.tanggal_masuk }}</td>            
+            <td class="text-center">{{ souv.keterangan }}</td>           
+            <td class="text-center"><a :href="'/souvenir/ubah/'+souv.id" class="btn simpan mr-2" style="padding:3px 6px;font-size:14px;">Ubah</a>
+            <a href="/" class="btn batal" data-toggle="modal" data-target="#deleteModal" style="padding:3px 6px;font-size:14px;">Hapus</a>
             </td>
+            <!-- Modal: Konfirmasi Hapus -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="sukses-setuju-modal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+
+            <div class="modal-body">
+                <div class="text-center d-flex ml-5">
+                 <img src="../../assets/images/icon_ceklis.png" alt="icon-sukses" class="my-4" style="width:7%;height:7%;margin-right:2%;">
+                <p class="my-4">Ingin menghapus Souvenir?</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+
+                        <button type="button" class="btn batal" data-dismiss="modal">Batal</button>
+                        <button type="button" class="btn simpan" v-on:click="hapusSouvenir(souv.id)">Hapus</button>
+
+            </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal: Notif Berhasil Dihapus -->
+    <div class="modal fade" id="deleteSuksesModal" tabindex="-1" role="dialog" aria-labelledby="gagal-submit-modal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+
+            <div class="modal-body">
+                <div class="text-center">
+                    <img src="../../assets/images/icon_ceklis.png" alt="icon-error">
+                <p class="my-2">Souvenir {{ souv.nama_souvenir }} berhasil dihapus</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="text-center">
+                    <button type="button" class="btn simpan" data-dismiss="modal" v-on:click="deleteDone" style="width:80px; height:36px;">OK</button>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
         </tr>
 
       </tbody>
     </table>
     </div>
     </div>
+    
 </template>
 
 
 <script>
 import UserService from '../../services/user.service';
+import $ from 'jquery';
 
 
 export default {
@@ -84,6 +125,21 @@ export default {
             isInHomePageFunc(value){
                 this.isInHomePage = value;
             },
+            hapusSouvenir(id) {
+            UserService.deleteSouvenir(id).then(
+                response => {
+                    console.log(response.data);
+                    console.log("souvenir berhasil dihapus");
+                    $('#deleteSuksesModal').modal('show')
+                },
+                error => {
+                    console.log(error.message);
+                }
+            );
+        },
+        deleteDone() {
+            window.location.href='/souvenir';
+        },
         },
 
 }

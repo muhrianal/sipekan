@@ -33,6 +33,17 @@ class IzinMahasiswaService {
     getRuangan(){
         return axios.get(API_URL + 'api/ruangan/');
     }
+
+    putIzinKegiatanHeader(id, data){
+        return axios.put(API_URL + 'detail-kegiatan/' + id +'/', data)
+    }
+
+    putIzinKegiatanDetail(id, data){
+        return axios.put(API_URL + 'izin-kegiatan-detail/' + id +'/', data,{
+            headers:{
+            'Content-Type': 'multipart/form-data'
+        }})
+    }
   
 }
 
