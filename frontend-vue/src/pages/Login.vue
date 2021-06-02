@@ -25,7 +25,14 @@
         </div>
       </form>
     </div>
+    
+    <div class="container">
+      <a href="http://localhost:8000/login-sso/" class="btn btn-primary">
+        Login SSO
+      </a>
+    </div>
   </div>
+  
 </template>
 
 <script>
@@ -48,11 +55,26 @@ export default {
     }
   },
   created() {
+
     if (this.loggedIn) {
       this.$router.push('/profile');
     }
+
+    if (!this.loggedIn){
+      window.addEventListener('message', this.receiveMessage);
+    }
   },
   methods: {
+    receiveMessage(event){
+      console.log(event.data)
+      console.log(event.origin)
+        if (['http://localhost:8000', ].includes(event.origin)){
+          if (event.data != undefined){
+            localStorage.setItem('user', event.data);
+          }
+        }
+      }
+    ,
     handleLogin() {
       this.loading = true;
       if (this.user.username && this.user.password) {

@@ -18,11 +18,21 @@ import DetailPerizinanRuangan from '../pages/AdminFastur/DetailPerizinanRuangan'
 import PerizinanKegiatanMahasiswa from '../pages/Mahasiswa/PerizinanKegiatanMahasiswa.vue';
 import PermohonanHumas from '../pages/Mahasiswa/PermohonanHumas.vue';
 import PeminjamanRuanganMahasiswa from '../pages/Mahasiswa/PeminjamanRuanganMahasiswa.vue';
+import BuatPengumuman from '../pages/AdminAll/BuatPengumuman.vue';
+import EditPengumuman from '../pages/AdminAll/EditPengumuman.vue';
 import Pengumuman from '../pages/Mahasiswa/Pengumuman.vue';
 
-
-
 const routes = [
+  {
+    path: "/pengumuman/create",
+    name: "BuatPengumuman",
+    component: BuatPengumuman,
+  },
+  {
+    path: "/pengumuman/edit/:id",
+    name: "EditPengumuman",
+    component: EditPengumuman,
+  },
   {
     path: "/perizinan-fastur/:id",
     name: "DetailPerizinanRuangan",

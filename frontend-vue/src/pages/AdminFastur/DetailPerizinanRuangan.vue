@@ -97,72 +97,74 @@
 
         <hr class="line-header">
         </template>
-    </div>
 
-    <!-- Modal: Notif Sukses -->
-    <div class="modal fade" id="notification-success" tabindex="-1" role="dialog" aria-labelledby="sukses-setuju-modal" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
+         <!-- Modal: Notif Sukses -->
+        <div class="modal fade" id="notification-success" tabindex="-1" role="dialog" aria-labelledby="sukses-setuju-modal" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
 
-            <div class="modal-body">
-                <div class="text-center">
-                    <img src="../../assets/images/icon_ceklis.png" alt="icon-sukses">
-                <h2 style="margin:20px 0px 15px 0px">Sukses</h2>
-                <p style="margin:0px 0px -15px 0px">{{success_message}}</p>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <div class="text-center">
-                    <button type="button" class="btn btn-success" data-dismiss="modal" v-on:click="refreshPage" style="width:80px; height:36px;">OK</button>
-                </div>
-            </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal: Notif Gagal -->
-    <div class="modal fade" id="notification-failed" tabindex="-1" role="dialog" aria-labelledby="gagal-submit-modal" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-
-            <div class="modal-body">
-                <div class="text-center">
-                    <img src="../../assets/images/icon_silang.png" alt="icon-error">
-                <h2 style="margin:20px 0px 15px 0px">Error</h2>
-                <p style="margin:0px 0px -15px 0px">{{error_message}}</p>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <div class="text-center">
-                    <button type="button" class="btn btn-success" data-dismiss="modal" style="width:80px; height:36px;">OK</button>
-                </div>
-            </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal: Popup Alasan Penolakan -->
-    <div class="modal fade" id="popup-penolakan" tabindex="-1" role="dialog" aria-labelledby="popup-penolakan" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-
-            <form v-on:submit.prevent="putTolak">
                 <div class="modal-body">
-                    <label for="keterangan">Tambah alasan penolakan<span class="asterisk">*</span></label>
-                    <textarea class="form-control" id="textarea-keterangan" rows="6" v-model="alasan_penolakan" placeholder="e.g. Pilih ruangan lain yang lebih kecil" required></textarea>
+                    <div class="text-center">
+                        <img src="../../assets/images/icon_ceklis.png" alt="icon-sukses">
+                    <h2 style="margin:20px 0px 15px 0px">Sukses</h2>
+                    <p style="margin:0px 0px -15px 0px">{{success_message}}</p>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <div class="text-center">
-                        <button class="btn btn-outline-secondary" data-dismiss="modal" style="width:80px; height:36px;">Batal</button>
-                    </div>
-                    <div class="text-center">
-                        <button class="btn btn-success" type="submit" style="width:80px; height:36px;">Selesai</button>
+                        <button type="button" class="btn btn-success" data-dismiss="modal" v-on:click="refreshPage" style="width:80px; height:36px;">OK</button>
                     </div>
                 </div>
-            </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal: Notif Gagal -->
+        <div class="modal fade" id="notification-failed" tabindex="-1" role="dialog" aria-labelledby="gagal-submit-modal" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+
+                <div class="modal-body">
+                    <div class="text-center">
+                        <img src="../../assets/images/icon_silang.png" alt="icon-error">
+                    <h2 style="margin:20px 0px 15px 0px">Error</h2>
+                    <p style="margin:0px 0px -15px 0px">{{error_message}}</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="text-center">
+                        <button type="button" class="btn btn-success" data-dismiss="modal" style="width:80px; height:36px;">OK</button>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal: Popup Alasan Penolakan -->
+        <div class="modal fade" id="popup-penolakan" tabindex="-1" role="dialog" aria-labelledby="popup-penolakan" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+
+                <form v-on:submit.prevent="putTolak">
+                    <div class="modal-body">
+                        <label for="keterangan">Tambah alasan penolakan<span class="asterisk">*</span></label>
+                        <textarea class="form-control" id="textarea-keterangan" rows="6" v-model="alasan_penolakan" placeholder="e.g. Pilih ruangan lain yang lebih kecil" required></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="text-center">
+                            <button class="btn btn-outline-secondary" data-dismiss="modal" style="width:80px; height:36px;">Batal</button>
+                        </div>
+                        <div class="text-center">
+                            <button class="btn btn-success" type="submit" style="width:80px; height:36px;">Selesai</button>
+                        </div>
+                    </div>
+                </form>
+                </div>
             </div>
         </div>
     </div>
+
+   
 
 </template>
 

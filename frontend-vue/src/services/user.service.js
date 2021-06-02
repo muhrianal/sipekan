@@ -71,6 +71,18 @@ class UserService {
     putPeminjamanRuangan(id,data) {
         return axios.get(API_URL + 'api/peminjaman-ruangan/update/'+id+'/',data)
     }
+
+    postPengumuman(data){
+        return axios.post(API_URL + 'pengumuman/create', data)
+    }
+
+    getPengumumanById(id){
+        return axios.get(API_URL + 'pengumuman/' + id)
+    }
+
+    putPengumumanById(id, data){
+        return axios.put(API_URL + 'pengumuman/edit/' + id, data)
+    }
 }
 
 export default new UserService();
