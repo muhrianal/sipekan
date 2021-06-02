@@ -52,8 +52,7 @@
                             </thead>
                             <tbody id="app">
                                 <tr v-for="(kegiatan) in kegiatan_disetujui" v-bind:key="kegiatan.id">
-                                    <th scope="row" class="text-center" >{{ index+1+"." }} </th>
-                                    <td>{{ kegiatan.waktu_mulai }}</td>
+                                    <td>{{kegiatan.detail_kegiatan}}</td>
                                     <!-- keterangan waktu gaada di model kegiatan, adanya di detail tapi kayaknya masih belum bisa ditembak API ya? -->
                                     <td>{{ kegiatan.nama_kegiatan }}</td>
                                 </tr>
@@ -76,6 +75,7 @@
 
 <script>
 import UserService from "../../services/user.service";
+import moment from 'moment';
 
 export default {
 		name: 'Pengumuman',
@@ -83,12 +83,12 @@ export default {
 		data: function() {
 		
         return {
-            kegiatan_disetujui: [],
+            kegiatan_disetujui: [[]],
             }
         },
 
         created(){
-                UserService.getAllPerizinan().then (
+                UserService.getAllIzinKegiatan().then (
                 response => {
                     var tmp = response.data;
                     for (let i = 0; i < tmp.length; i++){
@@ -97,13 +97,22 @@ export default {
                             console.log(tmp[i]);                        
                         }
                     }
+                    this.kegiatan_disetujui.shift();
+                    console.log(this.kegiatan_disetujui);
 
                 },
                 error => {
                     this.error_message = (error.response && error.response.data) || error.message || error.toString();
                 }
             );
-        }
+        },
+
+        method:{
+            getDateDef : function (date) {
+                return moment(date, 'YYYY-MM-DDTHH:mm').format('D MMMM YYYY');
+            },
+        },
+        
 
     }
 </script>
