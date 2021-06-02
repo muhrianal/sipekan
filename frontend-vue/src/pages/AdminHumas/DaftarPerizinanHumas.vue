@@ -28,8 +28,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <template v-for="perizinan in list_perizinan" >
-                        <tr v-bind:key="perizinan.id" v-if="  perizinan.perizinan_publikasi != null | perizinan.permintaan_souvenir.length != 0 | perizinan.permintaan_protokoler != null">
+                    <template v-for="perizinan in this.list_perizinan_filtered" >
+                        <tr v-bind:key="perizinan.id" v-if="perizinan.perizinan_publikasi != null | perizinan.permintaan_souvenir.length != 0 | perizinan.permintaan_protokoler != null">
                             <td class="nama-kegiatan">{{perizinan.nama_kegiatan}}</td>
                             <td>{{perizinan.organisasi}}</td>
                             <td>{{perizinan.user.profile.role}}</td>
@@ -62,9 +62,9 @@ export default{
     created(){
         UserService.getListPerizinanHumas().then(
             response => {
-                this.list_perizinan = response.data
-                 console.log(response.data) 
-                // this.list_perizinan_filtered = response.data
+                console.log(response.data) 
+                this.list_perizinan= response.data
+                this.list_perizinan_filtered = this.list_perizinan
             },
             error => {
                 console.log(error.message) // untuk sementara, nanti handle ini
@@ -78,20 +78,60 @@ export default{
             }
             else {
                 this.list_perizinan_filtered = []
-                
+                console.log("--------masuk else-------")
+                console.log(this.choice)
                 for (let i = 0; i < this.list_perizinan.length; i++){
-                    for (let j = 0; j<this.list_perizinan[i].peminjaman_ruangan.length; j++){
-                        if (this.list_perizinan[i].peminjaman_ruangan[j].status_peminjaman_ruangan == this.choice){
-                            this.list_perizinan_filtered.push(this.list_perizinan[i]);
-                            break;
+                    let include_perizinan = false
+                    console.log(this.list_perizinan[i].nama_kegiatan)
+                    if(this.list_perizinan[i].permintaan_protokoler != null){
+                        console.log("--------masuk protokoler-----------")
+                        if(this.list_perizinan[i].permintaan_protokoler.status_permintaan_protokoler == this.choice){
+                            include_perizinan = true
+                        }else{
+                           include_perizinan = false;
                         }
                     }
+                    if(!include_perizinan && this.list_perizinan[i].perizinan_publikasi != null){
+                        let publikasi_found = this.filterPerizinanPublikasi(this.list_perizinan[i].perizinan_publikasi)
+                        include_perizinan = publikasi_found
+                    }
+                    if(!include_perizinan && this.list_perizinan[i].permintaan_souvenir.length >0){
+                        console.log("masuk souvenir")
+                        let souvenir_found = this.filterPermintaanSouvenir(this.list_perizinan[i].permintaan_souvenir)
+                        include_perizinan = souvenir_found
+                    }
+                    if(include_perizinan){
+                        this.list_perizinan_filtered.push(this.list_perizinan[i])
+                    }
                 }
-
             }
+        },
+        filterPerizinanPublikasi(perizinan_publikasi){
+            let list_jenis_izin_publikasi = perizinan_publikasi.jenis_izin_publikasi;
+            let found = false;
+            let index = 0;
+            while(!found && index<list_jenis_izin_publikasi.length){
+                if(list_jenis_izin_publikasi[index].status_perizinan_publikasi == this.choice){
+                    found = true;
+                }else{
+                    index +=1;
+                }
+            }
+            return found;
+        },
+        filterPermintaanSouvenir(list_permintaan_souvenir){
+            let found = false;
+            let index = 0;
+            while(!found && index<list_permintaan_souvenir.length){
+                if(list_permintaan_souvenir[index].status_permintaan_souvenir == this.choice){
+                    found = true;
+                }else{
+                    index+=1;
+                }
+            }
+            return found;
+        },
 
-
-        }
     }
 }
 </script>

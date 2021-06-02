@@ -18,15 +18,22 @@
                 </div>
 
                 <div class="form-row">
-                    <div class="col-12 col-md-6  px-4 py-2">
-                        <label for="inputTanggalMulai">Tanggal Mulai<span class="text-danger">*</span></label>
-                        <input type=datetime-local class=form-control v-model="waktu_tanggal_mulai" required>
+                    <div class="col-6 col-md-3 py-2 tanggal-class">
+                        <label for="inputTanggalMulai">Tanggal dan Waktu Mulai<span class="text-danger">*</span></label>
+                        <input type=date class=form-control v-model="tanggal_mulai">
                     </div>
-
-                    <div class="col-12 col-md-6  px-4 py-2 ">
-                        <label for="inputTanggalAkhir">Tanggal Akhir<span class="text-danger">*</span></label>
-                        <input type=datetime-local class=form-control v-model="waktu_tanggal_akhir" required>
+                    <div class="col-6 col-md-3  py-3 waktu-class ">
+                        <label></label>
+                        <input type=time class=form-control v-model="waktu_mulai">
+                    </div>
+                    <div class="col-6 col-md-3 py-2 tanggal-class">
+                        <label for="inputTanggalAkhir">Tanggal dan Waktu Akhir<span class="text-danger">*</span></label>
+                        <input type=date class=form-control v-model="tanggal_akhir">
                     </div>  
+                    <div class="col-6 col-md-3 py-3 waktu-class">
+                        <label></label>
+                        <input type=time class=form-control v-model="waktu_akhir">
+                    </div>
                 </div>
 
                 <div class="form-row">
@@ -77,7 +84,7 @@
                     <div class="col-12 col-md-6  px-4 py-2">
                         <label for="inputUploadDokumen">Upload Dokumen<span class="text-danger">*</span><span class="text-keterangan">  (contoh: TOR-JGTC.pdf; Dokumen-JGTC.zip)</span></label>
                         <input id="file_info" class="form-control-file" type="file" ref="file" @change="onFileChange" required>
-                        <p v-if="this.file_info_kegiatan !=null" class="text-right note-form" @Click="deleteFileInfo()">Hapus File</p>
+                        <p v-if="this.file_info_kegiatan !=null" class="text-right note-field" @Click="deleteFileInfo()">Hapus File</p>
 
                     </div>                    
                 </div>
@@ -149,7 +156,7 @@
 </template>
 
 <script>
-import IzinMahasiswaService from '../../services/izinMahasiswa.service';
+import UserService from '../../services/user.service';
 import $ from 'jquery';
 
 export default{
@@ -161,8 +168,6 @@ export default{
             organisasi: '',
             user: this.$store.state.auth.user.id_user, 
             status_perizinan_kegiatan: 1,
-            waktu_tanggal_mulai: '',
-            waktu_tanggal_akhir: '',
             email_pic: '',
             nama_pic: '',
             hp_pic: '',
@@ -180,6 +185,11 @@ export default{
             nama_path:'',
             params_path : null,
             error_message: '',
+            tanggal_mulai: '',
+            waktu_mulai: '',
+            tanggal_akhir:'',
+            waktu_akhir:''
+
         }
     },
     methods: {
@@ -187,6 +197,16 @@ export default{
         mounted(){
         console.log(this.user);
         console.log(this.error_message);
+        },
+        tanggalCheck(){
+            console.log(this.tanggal_mulai)
+            console.log(this.tanggal_mulai+'T'+this.waktu_mulai)
+        },
+        waktuCheck(){
+            console.log(this.waktu_mulai)
+        },
+        tanggalAkhirCheck(){
+            console.log(this.waktu_tanggal_akhir)
         },
         onFileChange(){
             this.file_info_kegiatan = this.$refs.file.files[0];
@@ -206,13 +226,15 @@ export default{
                 status_perizinan_kegiatan :this.status_perizinan_kegiatan,
             }
             console.log(this.kebutuhan)
-                IzinMahasiswaService.postIzinKegiatanHeader(data_kegiatan).then(
+                UserService.postIzinKegiatanHeader(data_kegiatan).then(
                     response =>{
-                        this.respon_kegiatan = response.data;
+                        this.respon_kegiatan = response.data;            
                         let formDataDetail = new FormData()
                         formDataDetail.append("izin_kegiatan",this.respon_kegiatan.id)
-                        formDataDetail.append("waktu_tanggal_mulai",this.waktu_tanggal_mulai)
-                        formDataDetail.append("waktu_tanggal_akhir",this.waktu_tanggal_akhir)
+                        let waktu_tanggal_mulai= this.tanggal_mulai + 'T' + this.waktu_mulai
+                        formDataDetail.append("waktu_tanggal_mulai",waktu_tanggal_mulai)
+                        let waktu_tanggal_akhir = this.tanggal_akhir + 'T' + this.waktu_akhir
+                        formDataDetail.append("waktu_tanggal_akhir",waktu_tanggal_akhir)
                         formDataDetail.append("email_pic",this.email_pic)
                         console.log(this.email_pic)
                         formDataDetail.append("nama_pic",this.nama_pic)
@@ -227,7 +249,7 @@ export default{
                             formDataDetail.append("file_info_kegiatan",this.file_info_kegiatan)
                         }
                         console.log(formDataDetail)
-                        IzinMahasiswaService.postIzinKegiatanDetail(formDataDetail).then(
+                        UserService.postIzinKegiatanDetail(formDataDetail).then(
                             response =>{
                                 console.log(response.data);
                                 if(this.kebutuhan.length == 0){
@@ -273,6 +295,13 @@ export default{
 }
 label {
     font-size: 14px;
+}
+.tanggal-class{
+   padding-left: 1.5rem !important;
+}
+.waktu-class{
+    padding-right: 1.5rem !important;
+    padding-left: 1px;
 }
 .header-page {
     /* padding: 15px 0px 3px 15px; */

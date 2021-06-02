@@ -35,11 +35,11 @@
             <div class="form-row">
                 <div v-if="this.perizinan_publikasi.file_materi_kegiatan != null" class="col-12 col-md-6  px-4 py-2">
                     <label  for="inputMateriKegiatan">Materi Kegiatan / Press Release: </label>
-                    <div ><a @click="this.getFileMateriKegiatan" id="file_materi_kegitan_publikasi" href="{%get_static_prefix%}{{this.perizinan_publikasi.file_materi_kegiatan}}.pdf" download="{{this.perizinan_publikasi.file_materi_kegiatan}}">File</a></div>
+                    <div ><a  :href="'http://localhost:8000'+this.perizinan_publikasi.file_materi_kegiatan" :download="this.perizinan_publikasi.file_materi_kegiatan">{{this.perizinan_publikasi.file_materi_kegiatan}}</a></div>
                 </div>
                 <div v-if="this.perizinan_publikasi.file_flyer_pengumuman != null" class="col-12 col-md-6  px-4 py-2 ">
                     <label for="inputFlyerPengumuman">Flyer Pengumuman / Poster Kegiatan:</label>
-                    <!-- {{this.perizinan_publikasi.file_materi_kegiatan}} -->
+                    <div ><a  :href="'http://localhost:8000'+this.perizinan_publikasi.file_flyer_pengumuman" :download="this.perizinan_publikasi.file_flyer_pengumuman">{{this.perizinan_publikasi.file_flyer_pengumuman}}</a></div>
                 </div> 
             </div>
             <div v-if="this.perizinan_publikasi.keterangan != null" class="form-row">
@@ -182,7 +182,7 @@
                <div class="form-row">
                     <div class="col-12 col-md-12  px-4 py-2">   
                         <label for="inputDeskripsiKebutuhan">Deskripsi Kebutuhan: <span class="text-keterangan" id="text-keterangan-small">  (contoh: nama penerima, jumlah pendamping dibutuhkan)</span></label>
-                        <textarea  class="form-control readonly-form" :placeholder="this.permintaan_protokoler.deskripsi_kebutuhan" readonly></textarea>         
+                        <textarea  class="form-control readonly-form" :placeholder="this.permintaan_protokoler.deskripsi_kebutuhan" readonly></textarea>   
                     </div>                    
                 </div>   
             </form>
@@ -288,6 +288,7 @@ export default {
             current_permintaan_untuk_ditolak: '',
             error_message : '',
             success_message: '',
+            deskripsi_kebutuhan:'',
 
         }
     },
@@ -319,9 +320,6 @@ export default {
         },
         getHour : function (date) {
             return moment(date, 'YYYY-MM-DDTHH:mm').format('HH:mm');
-        },
-        getFileMateriKegiatan(){
-            document.getElementById("file_materi_kegiatan_publikasi")
         },
         putSetuju(id_permintaan,jenis_permintaan){
             const data = {

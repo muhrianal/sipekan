@@ -123,12 +123,9 @@ def update_jenis_izin_publikasi_by_id_jenis_izin_publikasi(request, id_jenis_izi
             jenis_izin_publikasi_serialized = JenisIzinPublikasiHumasSerializer(jenis_izin_publikasi)
             try:
                 perizinan_publikasi = PerizinanPublikasi.objects.get(pk=perizinan_data['id_perizinan_publikasi'])
-                print(perizinan_publikasi)
-                print(perizinan_publikasi.updated_at)
-                print(timezone.now())
                 perizinan_publikasi.updated_at= timezone.now()
+                perizinan_publikasi.save()
             except:
-                print("MASUK ERROR")
                 pass
             return JsonResponse(JenisIzinPublikasiHumasSerializer(jenis_izin_publikasi).data, safe=False)
         except:
@@ -148,8 +145,10 @@ def post_perizinan_publikasi(request):
             perizinan_data_serialized.save()
             
             # menyimpan jenis_izin_publikasi dari list jenis_publikasi
-            jenis_publikasi_string = request.data['jenis_publikasi'][1:-1]
-            if jenis_publikasi_string.length>0:
+            jenis_publikasi_string = request.data['jenis_publikasi']
+            print(request.data['jenis_publikasi'])
+            print(jenis_publikasi_string)
+            if jenis_publikasi_string != '':
                 jenis_publikasi_list = [data.strip() for data in jenis_publikasi_string.split(',')]
                 for jenis_publikasi in jenis_publikasi_list: # menyimpan setiap jenis_izin_publikasi
                     jenis_izin_publikasi_data = {

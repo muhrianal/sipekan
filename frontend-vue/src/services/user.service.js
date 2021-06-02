@@ -47,9 +47,9 @@ class UserService {
         return axios.post(API_URL + 'api/ruangan/', data);
     }
 
-    postIzinKegiatanHeader(data){
-        return axios.post(API_URL + 'api/ruangan/', data)
-    }
+    // postIzinKegiatanHeader(data){
+    //     return axios.post(API_URL + 'api/ruangan/', data)
+    // }
 
     putRuangan(id, data) {
         return axios.put(API_URL + 'api/ruangan/' + id +'/', data)
@@ -69,6 +69,33 @@ class UserService {
 
     putPeminjamanRuangan(id,data) {
         return axios.get(API_URL + 'api/peminjaman-ruangan/update/'+id+'/',data)
+    }
+    getJenisPublikasi() {
+        return axios.get(API_URL + 'perizinan-humas/jenis-publikasi');
+    }
+    getListSouvenir(){
+        return axios.get(API_URL + 'perizinan-humas/list-souvenir');
+    }
+    postIzinKegiatanHeader(data){
+        return axios.post(API_URL + 'perizinan-kegiatan-header/',data)
+    }
+    postIzinKegiatanDetail(data){
+        return axios.post(API_URL + 'perizinan-kegiatan-detail/', data,{
+            headers:{
+            'Content-Type': 'multipart/form-data'
+        }})
+    }
+    postPeminjamanRuanganMahasiswa(id,data){
+        return axios.post(API_URL + 'peminjaman-ruangan/mahasiswa/' + id + '/' , data)
+    }
+    postPermohonanHumas(id,data){
+        return axios.post(API_URL + 'perizinan-humas/'+ id +'/',data)
+    }
+    postPerizinanPublikasi(data){
+        return axios.post(API_URL+ 'perizinan-humas-publikasi/', data ,{
+            headers:{
+            'Content-Type': 'multipart/form-data'
+        }})
     }
     getListPerizinanHumas(){
         return axios.get(API_URL + 'perizinan-humas/verifikasi-humas')
