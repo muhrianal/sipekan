@@ -67,7 +67,7 @@
                         <div class="form-row">
                             <div class="col-12 col-md-6  px-4 py-2">
                                 <label for="inputNamaPenerima">Nama Penerima<span class="text-danger">*</span></label>
-                                <input pattern="[A-Za-z]" id="input_nama_penerima" type="text" v-model="list_permintaan_souvenir[peminjaman-1].nama_penerima_souvenir" class="form-control" placeholder="e.g. Akhmad">
+                                <input pattern="^(?![\s.]+$)[a-zA-Z\s.]*$" id="input_nama_penerima" type="text" v-model="list_permintaan_souvenir[peminjaman-1].nama_penerima_souvenir" class="form-control" placeholder="e.g. Akhmad">
                             </div>
                             <div class="col-12 col-md-6  px-4 py-2">
                                 <label for="inputJabatanPenerima">Jabatan Penerima<span class="text-danger">*</span></label>
@@ -99,9 +99,9 @@
                             <div class="col-12 col-md-6  px-4 py-2">
                                 <label for="inputPilihanSouvenir">Pilihan Souvenir<span class="text-danger">*</span></label>
                                 <label v-if="list_souvenir_data_filtered[peminjaman-1].length == 0">Souvenir untuk kelas/region tersebut tidak tersedia</label>
-                                <select v-if="list_souvenir_data_filtered[peminjaman-1].length >0 " id="input_souvenir" v-model="list_permintaan_souvenir[peminjaman-1].souvenir" class="form-control">        
+                                <select  id="input_souvenir" v-show="list_souvenir_data_filtered[peminjaman-1].length >0 " v-model="list_permintaan_souvenir[peminjaman-1].souvenir" class="form-control">        
                                     <option disabled selected value="">Pilih...</option>
-                                        <option v-for="pilihan_souvenir in list_souvenir_data_filtered[peminjaman-1]" v-bind:key="pilihan_souvenir.id" :value="pilihan_souvenir.id">{{pilihan_souvenir.nama_souvenir}}</option>
+                                    <option v-for="pilihan_souvenir in list_souvenir_data_filtered[peminjaman-1]" v-bind:key="pilihan_souvenir.id" :value="pilihan_souvenir.id">{{pilihan_souvenir.nama_souvenir}}</option>
                                 </select>
                             </div>
                             <div class="col-12 col-md-6  px-4 py-2">
@@ -134,7 +134,7 @@
             <div class="d-flex" style="margin-top:10px">
             <div class="mr-auto"> </div>
              <div class="text-right">
-                <button  type="button" class="btn btn-outline-danger rounded" @Click="batalPermohonan" id="button-batal"> Batal Mengajukan Permohonan</button>
+                <button  type="button" class="btn btn-outline-danger rounded" @Click="cancelPermohonan" id="button-batal"> Batal Mengajukan Permohonan</button>
                 <button @click="postPermohonanHumas" class="btn btn-success btn-simpan">Simpan</button>
             </div>
         </div>
@@ -242,7 +242,7 @@ export default {
         this.kebutuhan = this.$route.params.kebutuhan
         // console.log(this.id_izin_kegiatan)
         // console.log(this.kebutuhan)
-        this.id_izin_kegiatan=96
+        // this.id_izin_kegiatan=96
         // this.kebutuhan = ["ruangan","humas"]
         UserService.getJenisPublikasi().then(
             response =>{
@@ -281,7 +281,7 @@ export default {
             this.list_permintaan_souvenir.splice(index,1);
             this.list_souvenir_data_filtered.splice(index,1);
         },
-        batalPermohonan(){
+        cancelPermohonan(){
             this.pesan_body = "Anda telah membatalkan pengajuan permohonan humas" 
              $('#notification-success').modal('show')
         },
@@ -405,17 +405,35 @@ export default {
                 this.deskripsi_kebutuhan = '';
             }            
         },
+        checkDate(){
+            let tanggal_akhir = new Date(this.tanggal_akhir)
+            let tanggal_mulai = new Date(this.tanggal_mulai)
+            let passed = true
+            if(tanggal_akhir<tanggal_mulai){
+                console.log("masuk")
+                this.error_message = "Tanggal yang Anda masukkan salah. Tanggal mulai kegiatan harus lebih dulu dari tanggal akhir kegiatan"
+                $('#notification-failed').modal('show')
+                passed = false
+            }
+            return passed
+        },
         checkFields(){
             let passed = true
             if(this.jenis_publikasi.length != 0 && (this.tanggal_mulai == '' || this.tanggal_akhir == '')){
                 this.error_message = "Harap mengisi seluruh field yang wajib, jika Anda ingin mengajukan perizinan publikasi"
                 $('#notification-failed').modal('show')
                 passed = false
+                return passed
             }
             if(this.jenis_publikasi.some(el => el.deskripsi_publikasi == "Lainnya") & this.keterangan == ''){
                 this.error_message = "Anda memilih jenis publikasi 'Lainnya', harap mengisi spesifikasi di keterangan"
                 $('#notification-failed').modal('show')
                 passed = false
+                return passed
+            }
+            if(this.jenis_publikasi.length != 0  && !this.checkDate()){
+                passed = false
+                return passed
             }
             for(var i=0; i < this.number_of_permintaan_souvenir; i++ ){
                 let nama = this.list_permintaan_souvenir[i].nama_penerima_souvenir
@@ -432,57 +450,17 @@ export default {
                     ( souvenir !=null && (nama=='' || jabatan =='' || kelas == '' || region == '' || jumlah == '')) ||
                     ( jumlah !='' && (nama=='' || jabatan =='' || kelas == '' || region == '' || souvenir == null))              
                     ) {   
-                        this.error_message = "Harap mengsi seluruh field pada form souvenir, jika Anda ingin mengajukan permintaan souvenir"
+                        this.error_message = "Harap mengisi seluruh field pada form souvenir, jika Anda ingin mengajukan permintaan souvenir"
                         $('#notification-failed').modal('show')                        
                         passed = false
+                        return passed
                 }
             }
             return passed;
         },
-        postPermohonanHumas(){
-            const data = {
-                id : this.id_izin_kegiatan
-            }
-            if(this.checkFields()){
-                if(this.jenis_publikasi.length != 0){
-                    // for(var i=0;i<this.jenis_publikasi.length;i++){
-                    //     this.jenis_izin_publikasi.push(new JenisIzinPublikasi(this.jenis_publikasi[i],this.alasan_penolakan))
-                    // }
-                    // console.log(this.jenis_izin_publikasi)
-                    let formDataPublikasi = new FormData()
-                    // formDataPublikasi.append("izin_kegiatan", 96)
-                    formDataPublikasi.append("izin_kegiatan",this.id_izin_kegiatan)
-                    formDataPublikasi.append("tanggal_mulai", this.tanggal_mulai)
-                    formDataPublikasi.append("tanggal_akhir", this.tanggal_akhir)
-                    formDataPublikasi.append("keterangan", this.keterangan)
-                    let list_jenis_publikasi =[];
-                    for(let i=0;i<this.jenis_publikasi.length;i++){
-                        list_jenis_publikasi.push(this.jenis_publikasi[i].id)
-                    }
-                    formDataPublikasi.append("jenis_publikasi", list_jenis_publikasi)  
-                    if(this.file_materi_kegiatan != null){
-                        formDataPublikasi.append("file_materi_kegiatan",this.file_materi_kegiatan)
-                    }
-                    if(this.file_flyer_pengumuman != null){
-                        formDataPublikasi.append("file_flyer_pengumuman", this.file_flyer_pengumuman)
-                    }
-                    UserService.postPerizinanPublikasi(formDataPublikasi).then( 
-                        response => {
-                            console.log(response.data);
-                            $('#notification-success').modal('show')
-                        },
-                        error => {
-                            console.log(error.message);
-                            this.error_message = error.message
-                            $('#notification-failed').modal('show')
-                        }                     
-                    )
-                }
-                let ada_souvenir_protokoler = false
-                if(this.list_permintaan_souvenir[0].nama_penerima_souvenir.length !=0){                    
-                    // for (let i = 0; i < this.number_of_permintaan_souvenir; i++){
-                    //     this.list_permintaan_souvenir[i].setSouvenir(this.list_souvenir[i])
-                    // }   
+        postSouvenirAndProtokoler(data){
+            let ada_souvenir_protokoler = false
+                if(this.list_permintaan_souvenir[0].nama_penerima_souvenir.length !=0){                      
                     ada_souvenir_protokoler = true
                     data["permintaan_souvenir"] = this.list_permintaan_souvenir
                 }
@@ -507,8 +485,46 @@ export default {
                             $('#notification-failed').modal('show')
                         }
                     )
-                }    
-             
+                }  
+        },
+        postPermohonanHumas(){
+            const data = {
+                id : this.id_izin_kegiatan
+            }
+            if(this.checkFields()){
+                if(this.jenis_publikasi.length != 0){
+                    let formDataPublikasi = new FormData()
+                    // formDataPublikasi.append("izin_kegiatan", 96)
+                    formDataPublikasi.append("izin_kegiatan",this.id_izin_kegiatan)
+                    formDataPublikasi.append("tanggal_mulai", this.tanggal_mulai)
+                    formDataPublikasi.append("tanggal_akhir", this.tanggal_akhir)
+                    formDataPublikasi.append("keterangan", this.keterangan)
+                    let list_jenis_publikasi =[];
+                    for(let i=0;i<this.jenis_publikasi.length;i++){
+                        list_jenis_publikasi.push(this.jenis_publikasi[i].id)
+                    }
+                    formDataPublikasi.append("jenis_publikasi", list_jenis_publikasi)  
+                    if(this.file_materi_kegiatan != null){
+                        formDataPublikasi.append("file_materi_kegiatan",this.file_materi_kegiatan)
+                    }
+                    if(this.file_flyer_pengumuman != null){
+                        formDataPublikasi.append("file_flyer_pengumuman", this.file_flyer_pengumuman)
+                    }
+                    UserService.postPerizinanPublikasi(formDataPublikasi).then( 
+                        response => {
+                            this.postSouvenirAndProtokoler(data)
+                            console.log(response.data);
+                            $('#notification-success').modal('show')
+                        },
+                        error => {
+                            console.log(error.message);
+                            this.error_message = error.message
+                            $('#notification-failed').modal('show')
+                        }                     
+                    )
+                }else{
+                    this.postSouvenirAndProtokoler(data)
+                }
             }
         }
     }

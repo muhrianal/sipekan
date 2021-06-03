@@ -2,10 +2,15 @@
     <div class="root-class">
         <div class="header">
             <div class="row">
-                <div class="col-12 col-md-9">
+                <div class="col-12 col-md-4">
                     <h3 class="header-page" style="font-weight: bold;">Daftar Perizinan</h3>
                 </div>
-                <div class="col-12 col-md-3">
+                <div class="col-12 col-md-4">
+                    <div class="search-wrapper panel-heading col-sm-12">
+                        <input class="form-control" type="text" v-model="searchQuery" placeholder="Search" />
+                    </div>                        
+                </div>
+                <div class="col-12 col-md-4">
                     <select class="form-control" v-model="choice" @change="filterPerizinan">
                         <option selected disabled value=-1>Pilih status</option>
                         <option value=-5>Semua</option>
@@ -18,7 +23,7 @@
             <hr class="line-header line-title">
         </div>
         <div class="content-perizinan">
-            <table class="table table-striped">
+            <table class="table table-striped table-responsive-sm">
                 <thead>
                     <tr>
                         <th scope="col">Nama Kegiatan</th>
@@ -28,7 +33,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <template v-for="perizinan in this.list_perizinan_filtered" >
+                    <template v-for="perizinan in resultQuery" >
                         <tr v-bind:key="perizinan.id" v-if="perizinan.perizinan_publikasi != null | perizinan.permintaan_souvenir.length != 0 | perizinan.permintaan_protokoler != null">
                             <td class="nama-kegiatan">{{perizinan.nama_kegiatan}}</td>
                             <td>{{perizinan.organisasi}}</td>
@@ -56,7 +61,19 @@ export default{
             list_perizinan : [],
             choice : -1,
             list_perizinan_filtered : [],
+            searchQuery: null
 
+        };
+    },
+    computed : {
+        resultQuery(){
+            if(this.searchQuery){
+                return this.list_perizinan_filtered.filter((item)=>{
+                    return this.searchQuery.toLowerCase().split(' ').every(v => item.nama_kegiatan.toLowerCase().includes(v))
+                })
+            }else{
+                return this.list_perizinan_filtered
+            }
         }
     },
     created(){
@@ -78,13 +95,9 @@ export default{
             }
             else {
                 this.list_perizinan_filtered = []
-                console.log("--------masuk else-------")
-                console.log(this.choice)
                 for (let i = 0; i < this.list_perizinan.length; i++){
                     let include_perizinan = false
-                    console.log(this.list_perizinan[i].nama_kegiatan)
                     if(this.list_perizinan[i].permintaan_protokoler != null){
-                        console.log("--------masuk protokoler-----------")
                         if(this.list_perizinan[i].permintaan_protokoler.status_permintaan_protokoler == this.choice){
                             include_perizinan = true
                         }else{
@@ -96,7 +109,6 @@ export default{
                         include_perizinan = publikasi_found
                     }
                     if(!include_perizinan && this.list_perizinan[i].permintaan_souvenir.length >0){
-                        console.log("masuk souvenir")
                         let souvenir_found = this.filterPermintaanSouvenir(this.list_perizinan[i].permintaan_souvenir)
                         include_perizinan = souvenir_found
                     }

@@ -41,7 +41,6 @@ def get_post_perizinan_humas_by_id_izin_kegiatan(request,id_izin_kegiatan):
     try: 
         izin_kegiatan =IzinKegiatan.objects.get(pk=id_izin_kegiatan)
     except:
-        print("masuk 404")
         return JsonResponse({'message': 'Izin kegiatan tidak ada'}, status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'POST':

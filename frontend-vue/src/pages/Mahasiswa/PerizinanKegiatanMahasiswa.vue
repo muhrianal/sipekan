@@ -20,19 +20,19 @@
                 <div class="form-row">
                     <div class="col-6 col-md-3 py-2 tanggal-class">
                         <label for="inputTanggalMulai">Tanggal dan Waktu Mulai<span class="text-danger">*</span></label>
-                        <input type=date class=form-control v-model="tanggal_mulai">
+                        <input type=date class=form-control v-model="tanggal_mulai" required>
                     </div>
                     <div class="col-6 col-md-3  py-3 waktu-class ">
                         <label></label>
-                        <input type=time class=form-control v-model="waktu_mulai">
+                        <input type=time class=form-control v-model="waktu_mulai" required>
                     </div>
                     <div class="col-6 col-md-3 py-2 tanggal-class">
                         <label for="inputTanggalAkhir">Tanggal dan Waktu Akhir<span class="text-danger">*</span></label>
-                        <input type=date class=form-control v-model="tanggal_akhir">
+                        <input type=date class=form-control v-model="tanggal_akhir" required>
                     </div>  
                     <div class="col-6 col-md-3 py-3 waktu-class">
                         <label></label>
-                        <input type=time class=form-control v-model="waktu_akhir">
+                        <input type=time class=form-control v-model="waktu_akhir" required>
                     </div>
                 </div>
 
@@ -46,7 +46,7 @@
                  <div class="form-row">
                     <div class="col-12 col-md-6  px-4 py-2">
                         <label for="inputKetuaOrganisasi">Nama Ketua Organisasi<span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" placeholder="e.g. Yobelio" required v-model="nama_ketua_organisasi">
+                        <input type="text" pattern="^(?![\s.]+$)[a-zA-Z\s.]*$" class="form-control" placeholder="e.g. Yobelio" required v-model="nama_ketua_organisasi">
                     </div>
                     <div class="col-12 col-md-6  px-4 py-2">
                         <label for="inputNpmKetuaOrganisasi">NPM Ketua Organisasi<span class="text-danger">*</span>:</label>
@@ -57,7 +57,7 @@
                 <div class="form-row">
                     <div class="col-12 col-md-6  px-4 py-2">
                         <label for="inputPicKegiatan">Nama PIC Kegiatan<span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" placeholder="e.g. Akhmad" required v-model="nama_pic"> 
+                        <input type="text" pattern="^(?![\s.]+$)[a-zA-Z\s.]*$" class="form-control" placeholder="e.g. Akhmad" required v-model="nama_pic"> 
                     </div>
                     <div class="col-12 col-md-6  px-4 py-2">
                         <label for="inputNpmPic">NPM PIC<span class="text-danger">*</span>:</label>
@@ -195,18 +195,8 @@ export default{
     methods: {
        
         mounted(){
-        console.log(this.user);
-        console.log(this.error_message);
-        },
-        tanggalCheck(){
-            console.log(this.tanggal_mulai)
-            console.log(this.tanggal_mulai+'T'+this.waktu_mulai)
-        },
-        waktuCheck(){
-            console.log(this.waktu_mulai)
-        },
-        tanggalAkhirCheck(){
-            console.log(this.waktu_tanggal_akhir)
+            console.log(this.user);
+            console.log(this.error_message);
         },
         onFileChange(){
             this.file_info_kegiatan = this.$refs.file.files[0];
@@ -218,6 +208,35 @@ export default{
         onCloseModal(id){
             $(id).modal('hide')
         },
+        checkEmail(){
+            let passed;
+            let email = this.email_pic
+            if(this.email_pic!=''){
+                if ((/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/.test(email))){
+                    console.log("masuk not passed")
+                    passed = true
+                    
+                }else{
+                    passed = false
+                    this.error_message = "Email tidak valid"
+                    $('#notification-failed').modal('show')
+                }
+                return passed
+            }
+        },
+        checkDate(){
+            let tanggal_akhir = new Date(this.tanggal_akhir+'T'+this.waktu_akhir)
+            let tanggal_mulai = new Date(this.tanggal_mulai+'T'+this.waktu_mulai)
+            let passed = true
+            console.log(tanggal_akhir)
+            console.log(tanggal_mulai)
+            if(tanggal_akhir<tanggal_mulai){
+                this.error_message = "Tanggal atau waktu yang Anda masukkan salah. Tanggal dan waktu mulai kegiatan harus lebih dulu dari tanggal dan waktu akhir kegiatan"
+                $('#notification-failed').modal('show')
+                passed = false
+            }
+            return passed
+        },
         postIzinKegiatan(){
             const data_kegiatan = {
                 nama_kegiatan: this.nama_kegiatan,
@@ -226,6 +245,7 @@ export default{
                 status_perizinan_kegiatan :this.status_perizinan_kegiatan,
             }
             console.log(this.kebutuhan)
+            if(this.checkDate() && this.checkEmail()){
                 UserService.postIzinKegiatanHeader(data_kegiatan).then(
                     response =>{
                         this.respon_kegiatan = response.data;            
@@ -236,7 +256,6 @@ export default{
                         let waktu_tanggal_akhir = this.tanggal_akhir + 'T' + this.waktu_akhir
                         formDataDetail.append("waktu_tanggal_akhir",waktu_tanggal_akhir)
                         formDataDetail.append("email_pic",this.email_pic)
-                        console.log(this.email_pic)
                         formDataDetail.append("nama_pic",this.nama_pic)
                         formDataDetail.append("hp_pic",this.hp_pic)
                         formDataDetail.append("npm_pic",this.npm_pic)
@@ -278,7 +297,8 @@ export default{
                 error =>{
                     console.log(error.message);
                 }
-                );            
+                );
+            }            
         }
     }
 }

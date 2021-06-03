@@ -25,11 +25,11 @@
             <div class="form-row">
                 <div class="col-12 col-md-6  px-4 py-2">
                     <label for="inputTanggalMulai">Tanggal Mulai</label>
-                    <input class="form-control readonly-form" :placeholder="this.perizinan_publikasi.tanggal_mulai" readonly >
+                    <input class="form-control readonly-form" :placeholder="getDateOnly(this.perizinan_publikasi.tanggal_mulai)" readonly >
                 </div>
                 <div class="col-12 col-md-6  px-4 py-2 ">
                     <label for="inputTanggalAkhir">Tanggal Akhir</label>
-                    <input class="form-control readonly-form" :placeholder="this.perizinan_publikasi.tanggal_akhir" readonly >
+                    <input class="form-control readonly-form" :placeholder="getDateOnly(this.perizinan_publikasi.tanggal_akhir)" readonly >
                 </div>                                        
             </div>
             <div class="form-row">
@@ -42,7 +42,7 @@
                     <div ><a  :href="'http://localhost:8000'+this.perizinan_publikasi.file_flyer_pengumuman" :download="this.perizinan_publikasi.file_flyer_pengumuman">{{this.perizinan_publikasi.file_flyer_pengumuman}}</a></div>
                 </div> 
             </div>
-            <div v-if="this.perizinan_publikasi.keterangan != null" class="form-row">
+            <div v-if="this.perizinan_publikasi.keterangan != ''" class="form-row">
                 <div  class="col-12 col-md-6  px-4 py-2">
                     <label  for="inputMateriKegiatan">Keterangan: </label>
                     <textarea class="form-control readonly-form" :placeholder="this.perizinan_publikasi.keterangan" readonly></textarea>
@@ -50,7 +50,7 @@
             </div>
             <div class="form-row px-4 py-2 ">
                 <label id="label-tabel-publikasi">Jenis Izin Publikasi Diajukan:</label>
-                <table class="table table-striped">
+                <table class="table table-striped table-responsive-sm">
                     <thead>
                     <tr>
                         <th scope="col"><label> Deskripsi </label></th>
@@ -93,7 +93,7 @@
         <div class="formulir m-3">    
             <form>
                 <div class="form-row">
-                    <div class="col-6 col-md-6">
+                    <div class="col-6 col-md-6  px-4">
                         <label v-if="permintaan.status_permintaan_souvenir==1" class="status">Status Sekarang: <span class="status-span" style="color: #828282;">Menunggu Persetujuan</span></label>
                         <label v-if="permintaan.status_permintaan_souvenir==2" class="status">Status Sekarang: <span class="status-span" style="color: #27AE60;">Disetujui</span></label>
                         <label v-if="permintaan.status_permintaan_souvenir==3" class="status">Status Sekarang: <span class="status-span" style="color: #EB5757;">Ditolak</span></label>
