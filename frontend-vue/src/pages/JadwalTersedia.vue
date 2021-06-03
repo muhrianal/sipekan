@@ -10,13 +10,9 @@
                 <div class="form-row">
                     <div class="col-12 col-md-6">
                         <label for="exampleFormControlSelect1">Ruangan*:</label>
-                        <select class="form-control" id="exampleFormControlSelect1" v-model="ruangan" @click="listAll">
+                        <select class="form-control" id="exampleFormControlSelect1" v-model="ruangan" @click="daftar()" @change="cari(ruangan)">
                             <option selected disabled value="">Pilih...</option>
-                            <option>Ruangan A</option>
-                            <template v-for="i in ruangan" v-bind:key="i.id" >
-                                <option v-bind:value="i.nama">{{i.nama}}</option>
-                            </template>
-                            
+                            <option v-for="ruang in ruangan" v-bind:key="ruang.id" :value="ruang.id">{{ruang.nama}}</option>
                         </select>
 
                     </div>
@@ -60,8 +56,6 @@
                         <template #header="{ headerProps }">
                             <calendar-view-header
                                 :header-props="headerProps"
-                                
-                                
                                 @input="setShowDate" />
                         </template>
                         
@@ -79,25 +73,23 @@ import { CalendarView, CalendarViewHeader } from "vue-simple-calendar";
 import "vue-simple-calendar/dist/style.css";
 
 import UserService from "../services/user.service";
+import IzinMahasiswaService from '../services/izinMahasiswa.service';
 
 export default {
 		name: 'JadwalTersedia',
+        
 		data: function() {
 		
         return { showDate: this.thisMonth(1),
             ruangan: [],
-            jadwal: [],
 			selectionStart: null,
 			selectionEnd: null,
             displayPeriodUom: "month",
 			theme: "gcal",
-			// items: Array(25)
-			// 	.fill()
-			// 	.map((_, i) => this.getRandomEvent(i)),
             items: [
         {
           id: "e0",
-          startDate: "2020-01-05",
+          startDate: "2021-05-25",
         },
         {
           id: "e1",
@@ -107,8 +99,8 @@ export default {
         },
         {
           id: "e2",
-          startDate: new Date(2020, 11, 1),
-          endDate: new Date(2020, 11, 10),
+          startDate: new Date(2021, 5, 1),
+          endDate: new Date(2021, 5, 10),
           title: "Multi-day item with a long title and times",
         },
       ],
@@ -183,16 +175,47 @@ export default {
 				endDate: Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), endDay),
             }
         },
-        listAll(){
-            UserService.getAllRuanganKalender().then (
+        daftar(){
+            IzinMahasiswaService.getRuangan().then(
+            response =>{
+                // console.log(response.data);
+                this.ruangan = response.data               
+            },
+            error => {
+                this.error_call_api = (error.response && error.response.data) || error.message || error.toString();
+            }
+        )
+        },
+
+        cari(ruang){
+            console.log('tes');
+            console.log(ruang);
+            UserService.getJadwalPeminjamanRuangan().then (
                 response => {
-                    this.ruangan = response.data;
+                    this.items =[];
+                    var tmp = response.data;
+                    for (let i = 0; i < tmp.length; i++){
+                        if (ruang == tmp[i].ruangan.id){
+                            var id = tmp[i].ruangan.id;
+                            var startDate= tmp[i].waktu_mulai;
+                            var endDate= tmp[i].waktu_akhir;
+                            var title= tmp[i].judul_peminjaman;
+                            this.items.push(new Array(id, startDate, endDate, title));
+                            console.log(tmp[i]);                        
+                        }
+                    }
+                    console.log(this.items);
+
                 },
                 error => {
                     this.error_message = (error.response && error.response.data) || error.message || error.toString();
                 }
             )
         },
+
+        daftar_kegiatan(data){
+            console.log(data);
+        }
     },
 	}
 </script>
