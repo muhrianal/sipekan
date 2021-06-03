@@ -44,14 +44,31 @@ class PerizinanPublikasi(models.Model):
     izin_kegiatan = models.OneToOneField(
         IzinKegiatan,
         related_name = 'perizinan_publikasi',
-        
         on_delete=models.CASCADE
     )
     tanggal_mulai = models.DateField()
     tanggal_akhir = models.DateField()
+    
+    keterangan = models.CharField(max_length=500, default=None, blank=True, null=True)
+    file_materi_kegiatan = models.FileField(upload_to='file_materi_kegiatan', blank=True)
+    file_flyer_pengumuman = models.FileField(upload_to='file_flyer_pengumuman',blank=True)
 
-    jenis_publikasi = models.ManyToManyField(
-        JenisPublikasi
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(default=timezone.now)
+    
+    class Meta:
+        app_label = 'main'
+    
+class JenisIzinPublikasi(models.Model):
+    perizinan_publikasi = models.ForeignKey(
+        PerizinanPublikasi,
+        related_name = 'jenis_izin_publikasi',
+        on_delete=models.CASCADE
+    )
+    
+    jenis_publikasi = models.ForeignKey(
+        JenisPublikasi,
+        on_delete = models.CASCADE
     )
     
     STATUS_CHOICES = (
@@ -62,15 +79,6 @@ class PerizinanPublikasi(models.Model):
 
     status_perizinan_publikasi = models.PositiveSmallIntegerField(choices=STATUS_CHOICES)
     alasan_penolakan = models.CharField(max_length=500, default=None, blank=True, null=True)
-    keterangan = models.CharField(max_length=500, default=None, blank=True, null=True)
-    file_materi_kegiatan = models.FileField(upload_to='file_materi_kegiatan', blank=True)
-    file_flyer_pengumuman = models.FileField(upload_to='file_flyer_pengumuman',blank=True)
-
-    created_at = models.DateTimeField(default=timezone.now)
-    updated_at = models.DateTimeField(default=timezone.now)
-    
-    class Meta:
-        app_label = 'main'
     
 
 

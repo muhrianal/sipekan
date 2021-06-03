@@ -139,7 +139,7 @@ def put_izin_kegiatan_detail(request, pk):
 
     if request.method == 'PUT': 
         detail_kegiatan_serialized = DetailKegiatanMahasiswaSerializer(detail_kegiatan, data=request.data)
-        print(detail_kegiatan_serialized.errors)
+        
         if detail_kegiatan_serialized.is_valid():
             detail_kegiatan_serialized.save()
             return JsonResponse(detail_kegiatan_serialized.data,status=status.HTTP_201_CREATED,safe=False)

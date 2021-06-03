@@ -131,7 +131,7 @@
                                     <button class="btn btn-outline-secondary" data-dismiss="modal" style="width:80px; height:36px;">Batal</button>
                                 </div>
                                 <div class="text-center">
-                                    <button class="btn btn-success" type="submit" style="width:80px; height:36px;" v-on:click="editIzinKegiatan(perizinan.id);editDetailIzinKegiatan(perizinan.detail_kegiatan.id)">Simpan {{perizinan.id}}</button>
+                                    <button class="btn btn-success" type="submit" style="width:80px; height:36px;" v-on:click="editIzinKegiatan(perizinan.id);editDetailIzinKegiatan(perizinan.detail_kegiatan.id, perizinan.id)">Simpan {{perizinan.id}}</button>
                                 </div>
                             </div>
                         </div>
@@ -634,10 +634,10 @@ export default {
                         }
                     );            
             },
-            editDetailIzinKegiatan(id_detail){
+            editDetailIzinKegiatan(id_detail, id_izin_kegiatan){
                 console.log("masuk edit detail")
                 let formDataDetail = new FormData()
-                formDataDetail.append("izin_kegiatan",1)
+                formDataDetail.append("izin_kegiatan", id_izin_kegiatan)
                 formDataDetail.append("waktu_tanggal_mulai",this.waktu_tanggal_mulai)
                 formDataDetail.append("waktu_tanggal_akhir",this.waktu_tanggal_akhir)
                 formDataDetail.append("email_pic",this.email_pic)
@@ -656,10 +656,10 @@ export default {
                 for (var value of formDataDetail.values()) {
                 console.log(value);
 }           
-                IzinMahasiswaService.putIzinKegiatanDetail(id_detail,formDataDetail).then(
+                IzinMahasiswaService.putIzinKegiatanDetail(id_detail, formDataDetail).then(
                     response =>{
                         console.log(response.data);                                                            
-                        $('#notification-success').modal('show')
+                        $('#ubahModal').modal('show')
                     },
                     error =>{
                         console.log(error.message);
