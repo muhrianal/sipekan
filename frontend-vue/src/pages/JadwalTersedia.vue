@@ -70,6 +70,7 @@
 <script>
 import { CalendarView, CalendarViewHeader } from "vue-simple-calendar";
 import "vue-simple-calendar/dist/style.css";
+import moment from "moment";
 
 import UserService from "../services/user.service";
 import IzinMahasiswaService from '../services/izinMahasiswa.service';
@@ -142,22 +143,70 @@ export default {
             this.showDate = d;
         },
 
+        convert(str) {
+            var mnths = {Jan: "01", Feb: "02", Mar: "03", Apr: "04", May: "05", Jun: "06", Jul: "07", Aug: "08",
+                Sep: "09", Oct: "10", Nov: "11", Dec: "12"},
+            date = str.split(" ");
+
+            return [date[3], mnths[date[1]], date[2]].join("-");
+        },
+
        
         cari(ruang){
             UserService.getJadwalPeminjamanRuangan().then (
                 response => {
                     this.items =[];
+                    var loncatan = 0;
+                    var periodePerulangan = "";
                     var tmp = response.data;
+                    var id = "";
+                    var startDate = "";
+                    var endDate = "";
+                    var title = "";
+                    var agenda = "";
                     
                     for (let i = 0; i < tmp.length; i++){
                         if (ruang == tmp[i].ruangan.id){
-                            var id = tmp[i].ruangan.id;
-                            var startDate= tmp[i].perulangan.tanggal_mulai;
-                            var endDate= tmp[i].perulangan.tanggal_akhir;
-                            var title= tmp[i].judul_peminjaman + "\n" + "(" + tmp[i].waktu_mulai.slice(11,16) + " - " + tmp[i].waktu_akhir.slice(11,16) + ")";
-                            var agenda = {"id":id, "startDate":startDate, "endDate":endDate, "title":title};
-                            this.items.push(agenda);         
-                        }
+                            if(tmp[i].perulangan.jenjang == 1){
+                                id = tmp[i].ruangan.id;
+                                startDate= tmp[i].perulangan.tanggal_mulai;
+                                endDate= tmp[i].perulangan.tanggal_akhir;
+                                title= tmp[i].judul_peminjaman + "\n" + "(" + tmp[i].waktu_mulai.slice(11,16) + " - " + tmp[i].waktu_akhir.slice(11,16) + ")";
+                                agenda = {"id":id, "startDate":startDate, "endDate":endDate, "title":title};
+                                this.items.push(agenda);
+                            } else{
+                                // awal peminjaman ruangan
+                                id = tmp[i].ruangan.id;
+                                startDate= tmp[i].perulangan.tanggal_mulai;
+                                endDate= tmp[i].perulangan.tanggal_mulai;
+                                title= tmp[i].judul_peminjaman + "\n" + "(" + tmp[i].waktu_mulai.slice(11,16) + " - " + tmp[i].waktu_akhir.slice(11,16) + ")";
+                                agenda = {"id":id, "startDate":startDate, "endDate":endDate, "title":title};
+                                this.items.push(agenda);
+                                // masuk mekanisme perulangan
+                                var tanggalanAwal = Date.parse(tmp[i].perulangan.tanggal_mulai);
+                                var tanggalanAkhir = Date.parse(tmp[i].perulangan.tanggal_akhir);
+                                while(tanggalanAwal < moment(tanggalanAkhir).add(1,"d")){
+                                    id = tmp[i].ruangan.id;
+                                    startDate= this.convert(tanggalanAwal.toString());
+                                    endDate= this.convert(tanggalanAwal.toString());
+                                    title= tmp[i].judul_peminjaman + "\n" + "(" + tmp[i].waktu_mulai.slice(11,16) + " - " + tmp[i].waktu_akhir.slice(11,16) + ")";
+                                    agenda = {"id":id, "startDate":startDate, "endDate":endDate, "title":title};
+                                    this.items.push(agenda);
+                                    if(tmp[i].perulangan.jenjang == 2){
+                                        loncatan = 1;
+                                        periodePerulangan = "days";
+                                    } else if(tmp[i].perulangan.jenjang == 3){
+                                        loncatan = 7;
+                                        periodePerulangan = "days";
+                                    } else{
+                                        loncatan = 1;
+                                        periodePerulangan = "months";
+                                    }
+                                    tanggalanAwal = moment(tanggalanAwal).add(loncatan, periodePerulangan);
+                                }   
+                                    
+                            }         
+                        } 
                     }
 
                 },
