@@ -5,7 +5,6 @@
             <h4 class="judul p-1 align-middle" style="font-weight: 500;">Daftar Perizinan</h4>
         </div>
       <div class="p-3">
-          <a href="/ruangan/add" class="btn tambah" style="padding:3px 6px;font-size:14px;"> Tambah Perizinan</a>
       </div>
     </div>
     <hr class="line-header" style="margin:0px;">
@@ -37,7 +36,7 @@
           <td>Status</td>
           <td v-if="perizinan.status_perizinan_kegiatan==1">Menunggu Persetujuan</td>
           <td v-if="perizinan.status_perizinan_kegiatan==2">Disetujui</td>
-          <td v-if="perizinan.status_perizinan_kegiatan==3">Ditolak <a data-toggle="modal" data-target="#popup-izin-kegiatan">edit</a>
+          <td v-if="perizinan.status_perizinan_kegiatan==3">Ditolak <a data-toggle="modal" class="btn tambah" style="padding:1px 3px;font-size:12px;"  data-target="#popup-izin-kegiatan">edit</a>
           </td>
           <!-- Modal: Popup Edit izin_kegiatan -->
                   <template v-if="perizinan.detail_kegiatan!=null">
@@ -48,14 +47,14 @@
                         <div class="form-row">
                     <div class="col-12 col-md-6 px-4 py-2">
                         <label for="inputNamaKegiatan">Nama Kegiatan<span class="text-danger">*</span>:</label>
-                        <input type="text" class="form-control" placeholder="e.g. Open House FEB UI" required :value="perizinan.nama_kegiatan"
-                        @input="nama_kegiatan = $event.target.value">
+                        <input type="text" class="form-control" placeholder="e.g. Open House FEB UI" required 
+                        v-model="nama_kegiatan">
                     </div>
                     <div class="col-12 col-md-6  px-4 py-2">
                         <label for="inputTempatPelaksanaan">Tempat Pelaksanaan<span class="text-danger">*</span>: <span class="text-keterangan">  (jika kegiatan online, isi: "Online")</span></label>
                         <template v-if="perizinan.detail_kegiatan!=null">
 
-                        <input type="text" class="form-control" placeholder="e.g. FEB UI"  :value="perizinan.detail_kegiatan.tempat_pelaksanaan" @input="tempat_pelaksanaan = $event.target.value" required>
+                        <input type="text" class="form-control" placeholder="e.g. FEB UI"   v-model="tempat_pelaksanaan" required>
                         </template>
 
                     </div>                    
@@ -76,47 +75,47 @@
                 <div class="form-row">
                     <div class="col-12 col-md-6  px-4 py-2">
                         <label for="inputOrganisasi">Organisasi Penanggungjawab<span class="text-danger">*</span>:</label>
-                        <input type="text" class="form-control" placeholder="e.g. BEM FEB UI"  :value="perizinan.organisasi" @input="organisasi= $event.target.value" required>
+                        <input type="text" class="form-control" placeholder="e.g. BEM FEB UI"  v-model="organisasi" required>
                     </div>                         
                 </div>
 
                  <div class="form-row">
                     <div class="col-12 col-md-6  px-4 py-2">
                         <label for="inputKetuaOrganisasi">Nama Ketua Organisasi<span class="text-danger">*</span>:</label>
-                        <input type="text" class="form-control" placeholder="e.g. Yobelio"  :value="perizinan.detail_kegiatan.nama_ketua_organisasi" @input="nama_ketua_organisasi= $event.target.value" required>
+                        <input type="text" class="form-control" placeholder="e.g. Yobelio"  v-model="nama_ketua_organisasi" required>
                     </div>
                     <div class="col-12 col-md-6  px-4 py-2">
                         <label for="inputNpmKetuaOrganisasi">NPM Ketua Organisasi<span class="text-danger">*</span>:</label>
-                        <input type="text" class="form-control" placeholder="e.g. 1806123456" :value="perizinan.detail_kegiatan.npm_ketua_organisasi" @input="npm_ketua_organisasi= $event.target.value"  required>
+                        <input type="text" class="form-control" placeholder="e.g. 1806123456" v-model="npm_ketua_organisasi" required>
                     </div>                    
                 </div>
 
                 <div class="form-row">
                     <div class="col-12 col-md-6  px-4 py-2">
                         <label for="inputPicKegiatan">Nama PIC Kegiatan<span class="text-danger">*</span>:</label>
-                        <input type="text" class="form-control" placeholder="e.g. Akhmad"  :value="perizinan.detail_kegiatan.nama_pic" @input="nama_pic = $event.target.value" required> 
+                        <input type="text" class="form-control" placeholder="e.g. Akhmad"  v-model="nama_pic" required> 
                     </div>
                     <div class="col-12 col-md-6  px-4 py-2">
                         <label for="inputNpmPic">NPM PIC<span class="text-danger">*</span>:</label>
-                        <input type="text" class="form-control" placeholder="e.g. 1806123456" :value="perizinan.detail_kegiatan.npm_pic" @input="npm_pic = $event.target.value"  required>
+                        <input type="text" class="form-control" placeholder="e.g. 1806123456" v-model="npm_pic"  required>
                     </div>                    
                 </div>
 
                 <div class="form-row">
                     <div class="col-12 col-md-6  px-4 py-2">
                         <label for="inputEmailPic">Email PIC<span class="text-danger">*</span>:</label>
-                        <input type="email" class="form-control" placeholder="e.g. akhmad@ui.ac.id" :value="perizinan.detail_kegiatan.email_pic" @input="email_pic = $event.target.value" required>
+                        <input type="email" class="form-control" placeholder="e.g. akhmad@ui.ac.id" v-model="email_pic" required>
                     </div>
                     <div class="col-12 col-md-6  px-4 py-2">
                         <label for="inputHpPic">HP PIC<span class="text-danger">*</span>:</label>
-                        <input type="text" pattern="^[0-9]+$" class="form-control" placeholder="e.g. 08151234567" :value="perizinan.detail_kegiatan.hp_pic" @input="hp_pic = $event.target.value"  required>
+                        <input type="text" pattern="^[0-9]+$" class="form-control" placeholder="e.g. 08151234567" v-model="hp_pic"  required>
                     </div>                    
                 </div>
 
                  <div class="form-row">
                     <div class="col-12 col-md-6  px-4 py-2">
                         <label for="inputSumberPendanaan">Sumber Pendanaan<span class="text-danger">*</span>:</label>
-                        <input type="text" class="form-control" placeholder="e.g. Sponsor"  :value="perizinan.detail_kegiatan.sumber_pendanaan" @input="sumber_pendanaan= $event.target.value" required>
+                        <input type="text" class="form-control" placeholder="e.g. Sponsor"  v-model="sumber_pendanaan" required>
                     </div>
                     <div class="col-12 col-md-6  px-4 py-2">
                         <label for="inputUploadDokumen">Upload Dokumen<span class="text-danger">*</span>:<span class="text-keterangan">  (contoh: TOR-JGTC.pdf; Dokumen-JGTC.zip)</span></label>
@@ -151,6 +150,8 @@
             <tr style="border-radius: 10px;">
               <th scope="col" colspan="6" class="text-center" style="border-radius: 5px 5px 0px 0px;">Informasi Peminjaman Ruangan</th>
             </tr>
+    
+          
           </thead>
           <tbody class="fsmall">
             <tr>
@@ -161,64 +162,65 @@
               <td class="text-center abu2">Pengulangan</td>
               <td class="text-center abu2">Status</td>
             </tr>
-            <template v-for="pinjam in perizinan.peminjaman_ruangan" v-bind:key="pinjam.id"> 
-            <tr>
-              <td class="text-center">{{pinjam.judul_peminjaman}} </td>
-              <td class="text-center">{{pinjam.ruangan}}</td>
-              <template v-if="pinjam.perulangan!=null">
-              <td class="text-center">{{getDateDef(pinjam.perulangan.tanggal_mulai)}}</td>
-              </template>
+            <template v-for="peminjaman in list_peminjaman_ruangan.length" v-bind:key="peminjaman.id"> 
+                <tr>
+                    <td class="text-center">{{list_peminjaman_ruangan[peminjaman-1].judul_peminjaman}} </td>   
+                    <td class="text-center" >{{list_peminjaman_ruangan[peminjaman-1].ruangan}}</td>
+                    <template v-if="peminjaman.perulangan==null">
+                        <td class="text-center"> - </td>
+                    </template>
+                    <template v-if="peminjaman.perulangan!=null">
+                        <td class="text-center">{{getDateDef(list_peminjaman_ruangan[peminjaman-1].perulangan.tanggal_mulai)}}</td>
+                    </template>       
+                    <td class="text-center">{{getHour(list_peminjaman_ruangan[peminjaman-1].waktu_mulai)}} - {{getHour(list_peminjaman_ruangan[peminjaman-1].waktu_akhir)}}</td> 
+                        <template v-if="list_peminjaman_ruangan[peminjaman-1].perulangan.jenjang==1">
+                        <td class="text-center" > Sekali Pakai </td>
+                        </template>
+                        <template  v-if="list_peminjaman_ruangan[peminjaman-1].perulangan.jenjang==2">
+                        <td class="text-center"> Harian </td>
+                        </template>
+                        <template  v-if="list_peminjaman_ruangan[peminjaman-1].perulangan.jenjang==3">
+                        <td class="text-center"> Mingguan </td>
+                        </template>
+                        <template v-if="list_peminjaman_ruangan[peminjaman-1].perulangan.jenjang==4">
+                        <td class="text-center"> Bulanan </td>  
+                        </template>     
+                    <td class="text-center" v-if="list_peminjaman_ruangan[peminjaman-1].status_peminjaman_ruangan==1">Menunggu Persetujuan</td>
+                    <td class="text-center text-success" v-if="list_peminjaman_ruangan[peminjaman-1].status_peminjaman_ruangan==2">Disetujui</td>
+                    <td class="text-center text-danger" v-if="list_peminjaman_ruangan[peminjaman-1].status_peminjaman_ruangan==3">Ditolak <button  class="btn tambah" style="padding:1px 3px;font-size:12px;" @click="openModal(peminjaman-1)" >edit</button></td>
+                    
+                </tr>
 
-              <td class="text-center">{{getHour(pinjam.waktu_mulai)}} - {{getHour(pinjam.waktu_akhir)}}</td>                
-              
+            </template>
+            <!-- INI MODALNYA NAZILA -->
+            <div v-if="indexPeminjamanRuangan!=null">
 
-              <template v-if="pinjam.perulangan!=null">
-                <template v-if="pinjam.perulangan.jenjang==1">
-                <td class="text-center" > Sekali Pakai </td>
-                </template>
-                <template  v-if="pinjam.perulangan.jenjang==2">
-                <td class="text-center"> Harian </td>
-                </template>
-                <template  v-if="pinjam.perulangan.jenjang==3">
-                <td class="text-center"> Mingguan </td>
-                </template>
-                <template v-if="pinjam.perulangan.jenjang==4">
-                <td class="text-center"> Bulanan </td>  
-                </template>             
-              </template>
-              <template v-if="pinjam.perulangan==null">
-                <td class="text-center"> - </td>
-              </template>
-              <td class="text-center" v-if="pinjam.status_peminjaman_ruangan==1">Menunggu Persetujuan</td>
-              <td class="text-center" v-if="pinjam.status_peminjaman_ruangan==2">Disetujui</td>
-              <td class="text-center" v-if="pinjam.status_peminjaman_ruangan==3">Ditolak <button  data-toggle="modal" data-target="#popup-peminjaman-ruangan" >edit</button>
-              <!-- Modal: Popup Edit Peminjaman Ruangan -->
-              <div class="modal fade" id="popup-peminjaman-ruangan" tabindex="-1" role="dialog" aria-labelledby="popup-penolakan" aria-hidden="true" :no-enforce-focus="true">
+            <div class="modal fade" id="popup-peminjaman-ruangan" tabindex="-1" role="dialog" aria-labelledby="popup-penolakan" aria-hidden="true" :no-enforce-focus="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
                       <form>             
-                
+    
                       <div class="form-row">
                           <div class="col-12 col-md-6 px-4 py-2">
                               <label for="inputSubkegiatan">Nama Subkegiatan<span class="asterisk">*</span></label>
-                              <input type="text" class="form-control" placeholder="e.g. Administrasi Bisnis - B"  v-model="judul_peminjaman">
+                              <input type="text" class="form-control" placeholder="e.g. Administrasi Bisnis - B" v-model="list_peminjaman_ruangan[indexPeminjamanRuangan].judul_peminjaman">
                           </div>
                           <div class="col-12 col-md-6 px-4 py-2">
                               <label for="inputJumlahPeserta">Jumlah Peserta<span class="asterisk">*</span></label>
-                              <input type="number" class="form-control" placeholder="e.g. 120" v-model="jumlah_peserta">
+                              <input type="number" class="form-control" placeholder="e.g. 120" v-model="list_peminjaman_ruangan[indexPeminjamanRuangan].jumlah_peserta">
                           </div>  
                       </div>
                       <div class="form-row">
                           <div class="col-12 col-md-6 px-4 py-2">
                               <label for="waktuMulaiPeminjaman">Waktu mulai<span class="asterisk">*</span></label>
-                              <select class="form-control" id="waktuMulaiPeminjaman" v-model="waktu_mulai">
+                              <select class="form-control" id="waktuMulaiPeminjaman" v-model="list_peminjaman_ruangan[indexPeminjamanRuangan].waktu_mulai">
                                   <option selected disabled value="">Pilih...</option>
                                   <option v-for="option in option_waktu" v-bind:key="option" v-bind:value="option.value">{{option.text}}</option>
                               </select>
                           </div>
                           <div class="col-12 col-md-6 px-4 py-2">
                               <label for="waktuAkhirPeminjaman">Waktu akhir<span class="asterisk">*</span></label>
-                              <select class="form-control" id="waktuAkhirPeminjaman" v-model="waktu_akhir">
+                              <select class="form-control" id="waktuAkhirPeminjaman" v-model="list_peminjaman_ruangan[indexPeminjamanRuangan].waktu_akhir">
                                   <option selected disabled value="">Pilih...</option>
                                   <option v-for="option in option_waktu" v-bind:key="option" v-bind:value="option.value">{{option.text}}</option>
                               </select>
@@ -227,13 +229,13 @@
                       <div class="form-row">
                           <div class="col-12 col-md-6 px-4 py-2">
                               <label for="ruangan">Ruangan<span class="asterisk">*</span></label>
-                              <select class="form-control" id="daftar-ruangan" v-model="ruangan">
+                              <select class="form-control" id="daftar-ruangan" v-model="list_peminjaman_ruangan[indexPeminjamanRuangan].ruangan">
                                   <option selected disabled value="">Pilih...</option>
                                   <option v-for="pilihan_ruangan in list_ruangan" v-bind:key="pilihan_ruangan.id" :value="pilihan_ruangan.id">{{pilihan_ruangan.nama}}</option>
                               </select>
                               <p class="note-ruangan note-form text-right">Lihat daftar ruangan <a href="#">disini</a> </p>
                               <label for="perulangan">Perulangan<span class="asterisk">*</span></label>
-                              <select class="form-control" id="perulangan" v-model="jenjang">
+                              <select class="form-control" id="perulangan" v-model="list_peminjaman_ruangan[indexPeminjamanRuangan].perulangan.jenjang">
                                   <option selected disabled value="">Pilih...</option>
                                   <option value=1>SEKALI PAKAI</option>
                                   <option value=2>HARIAN</option>
@@ -243,15 +245,15 @@
                           </div>
                           <div class="col-12 col-md-6 px-4 py-2">
                               <label for="keterangan">Keterangan</label>
-                              <textarea class="form-control" id="textarea-keterangan" rows="4" v-model="catatan" placeholder="e.g. Fasilitas yang akan digunakan"></textarea>
+                              <textarea class="form-control" id="textarea-keterangan" rows="4" v-model="list_peminjaman_ruangan[indexPeminjamanRuangan].catatan" placeholder="e.g. Fasilitas yang akan digunakan"></textarea>
                           </div>
                       </div>
                       <div class="form-row">
                           <div class="col-12 col-md-6 px-4 py-2">
                               <label for="tanggalMulaiPelaksanaan">Tanggal Mulai Pelaksanaan<span class="asterisk">*</span></label>
-                              <input type="date" class="form-control" v-model="tanggal_mulai">
+                              <input type="date" class="form-control" v-model="list_peminjaman_ruangan[indexPeminjamanRuangan].perulangan.tanggal_mulai">
                               <div class="form-check">
-                                  <input class="form-check-input" type="checkbox" v-model="terbuka_untuk_umum" id="checkbox-terbuka-untuk-umum">
+                                  <input class="form-check-input" type="checkbox" v-model="list_peminjaman_ruangan[indexPeminjamanRuangan].terbuka_untuk_umum" id="checkbox-terbuka-untuk-umum">
                                   <label class="form-check-label" for="flexCheckDefault">
                                       Terbuka untuk umum
                                   </label>
@@ -259,7 +261,7 @@
                           </div>
                           <div class="col-12 col-md-6 px-4 py-2">
                               <label for="tanggalAkhirPelaksanaan">Tanggal Akhir Pelaksanaan<span class="asterisk">*</span></label>
-                              <input type="date" class="form-control" v-model="tanggal_akhir">
+                              <input type="date" class="form-control"  v-model="list_peminjaman_ruangan[indexPeminjamanRuangan].perulangan.tanggal_akhir">
                               <p class="note-form">isi dengan tanggal yang sama dengan tanggal mulai pelaksanaan jika memilih "sekali pakai"</p>
                           </div>  
                       </div>
@@ -270,18 +272,16 @@
                                     <button class="btn btn-outline-secondary" data-dismiss="modal" style="width:80px; height:36px;">Batal</button>
                                 </div>
                                 <div class="text-center">
-                                    <button class="btn btn-success" type="submit" style="width:80px; height:36px;" v-on:click="editPeminjamanRuangan(pinjam.id);editPerulangan(pinjam.perulangan.id);">Simpan</button>
+                                    <button class="btn btn-success" type="submit" style="width:80px; height:36px;" v-on:click="editPeminjamanRuangan(list_peminjaman_ruangan[indexPeminjamanRuangan].id);editPerulangan(list_peminjaman_ruangan[indexPeminjamanRuangan].perulangan.id);">Simpan</button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-              </td>
-            </tr>
-            </template>
 
+</div>
           </tbody>
-        </table>
+ </table>
         </div>
         </div>
 
@@ -301,13 +301,11 @@
 
           </div>
           <template v-if="perizinan.perizinan_publikasi.jenis_izin_publikasi!=null">
-          <template v-for="i in perizinan.perizinan_publikasi.jenis_izin_publikasi" v-bind:key="i.id">
-          <template v-if="i.status_perizinan_publikasi==3">
+          
           <div class="ml-auto">
-            <a data-toggle="modal" data-target="#popup-perizinan-publikasi">edit</a>
+            <a data-toggle="modal" class="btn tambah" style="padding:1px 3px;font-size:12px;"  data-target="#popup-perizinan-publikasi">edit</a>
           </div>
-          </template>
-          </template>
+          
           </template>
         </div>
         <table v-if="perizinan.perizinan_publikasi==null" class="table table-sm table-bordered mt-2 fsmall" style="border-radius: 10px 10px 0px 0px;">
@@ -458,7 +456,7 @@
             <td>{{souv.jumlah}}</td>
             <td class="text-center" v-if="souv.status_permintaan_souvenir==1">Menunggu Persetujuan</td>
             <td class="text-center" v-if="souv.status_permintaan_souvenir==2">Disetujui</td>
-            <td class="text-center" v-if="souv.status_permintaan_souvenir==3">Ditolak <a data-toggle="modal" data-target="#popup-permintaan-souvenir">edit</a>
+            <td class="text-center" v-if="souv.status_permintaan_souvenir==3">Ditolak <a data-toggle="modal" class="btn tambah" style="padding:1px 3px;font-size:12px;"  data-target="#popup-permintaan-souvenir">edit</a>
             <!-- Modal: Popup Edit Permintaan Souvenir -->
             <div class="modal fade" id="popup-permintaan-souvenir" tabindex="-1" role="dialog" aria-labelledby="popup-penolakan" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -557,7 +555,7 @@
                 <td>{{perizinan.permintaan_protokoler.deskripsi_kebutuhan}}</td>
                 <td class="text-center" v-if="perizinan.permintaan_protokoler.status_permintaan_protokoler==1">Menunggu Persetujuan</td>
                 <td class="text-center" v-if="perizinan.permintaan_protokoler.status_permintaan_protokoler==2">Disetujui</td>
-                <td class="text-center" v-if="perizinan.permintaan_protokoler.status_permintaan_protokoler==3">Ditolak <a data-toggle="modal" data-target="#popup-permintaan-protokoler" >edit</a></td>
+                <td class="text-center" v-if="perizinan.permintaan_protokoler.status_permintaan_protokoler==3">Ditolak <a data-toggle="modal" class="btn tambah" style="padding:1px 3px;font-size:12px;" data-target="#popup-permintaan-protokoler" >edit</a></td>
                 <!-- Modal: Popup Edit Permintaan Protokoler -->
                 <div class="modal fade" id="popup-permintaan-protokoler" tabindex="-1" role="dialog" aria-labelledby="popup-protokoler" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -565,7 +563,7 @@
                         <form>
                             <div class="modal-body">
                                 <label >Deskripsi Kebutuhan<span style="color:#EB5757;">*</span></label>
-                                <textarea class="form-control" id="textarea-keterangan" rows="6" :value="perizinan.permintaan_protokoler.deskripsi_kebutuhan" @input="deskripsi_kebutuhan = $event.target.value" placeholder="e.g. Waktu terlalu dekat"></textarea>
+                                <textarea class="form-control" id="textarea-keterangan" rows="6" v-model="deskripsi_kebutuhan" placeholder="e.g. Waktu terlalu dekat"></textarea>
                             </div>                       
                         </form>
                         <div class="modal-footer">
@@ -666,38 +664,75 @@ export default {
     data() {
         return {
             perizinan: "",
-            permintaan_protokoler: "",
-            permintaan_souvenir : "",
-            souvenir_data : [],
-            error_message : "",
-            judul_peminjaman: "",
-            souvenir_data_filtered: [],
-            kelas_penerima_souvenir: "",
-            region_penerima_souvenir: "",
-            list_ruangan: [],
-            peminjaman_ruangan: "",
+            //izin_kegiatan
+            nama_kegiatan: "",
+            organisasi: "",
+            //detail_kegiatan:"",
+            waktu_tanggal_mulai:"",
+            waktu_tanggal_akhir:"",
+            email_pic:"",
+            nama_pic:"",
+            hp_pic:"",
+            npm_pic:"",
+            npm_ketua_organisasi:"",
+            nama_ketua_organisasi:"",
+            tempat_pelaksanaan:"",
+            sumber_pendanaan:"",
+            file_info_kegiatan:null,
+
+            //peminjaman_ruangan
+            peminjaman_ruangan:[],
+            judul_peminjaman:"",
+            jumlah_peserta:"",
+            waktu_mulai:"",
+            waktu_akhir:"",
+            catatan:"",
+            ruangan:"",
+            terbuka_untuk_umum:"",
             perulangan: "",
-            detail_kegiatan:"",
-            user: this.$store.state.auth.user.id_user, 
-            file_info_kegiatan: null,
-            respon_kegiatan: null,
-            
+            jenjang: "",
+            tanggal_mulai_peminjaman:"",
+            tanggal_akhir_peminjaman:"",
+            list_peminjaman_ruangan: [],
+            //number_of_peminjaman:"",
+
+            //permintaan_protokoler           
+            permintaan_protokoler: "",
+            deskripsi_kebutuhan:"",
+
             // perizinan publikasi
             jenis_publikasi_data: [],
             tanggal_mulai: '',
             tanggal_akhir: '',
             status_perizinan_publikasi: 1,
             alasan_penolakan_publikasi: '',
-            keterangan: '',
+            keterangan: '',            
             jenis_publikasi: [],
             file_materi_kegiatan: null,
             file_flyer_pengumuman: null,
+
+            permintaan_souvenir : "",
+            souvenir_data : [],
+            error_message : "",
+            souvenir_data_filtered: [],
+            kelas_penerima_souvenir: "",
+            region_penerima_souvenir: "",
+            list_ruangan: [],
+            user: this.$store.state.auth.user.id_user, 
+            respon_kegiatan: null,
+            indexPeminjamanRuangan: null,
+            list_permintaan_souvenir:[],
+
 
 
 
         }
     },
     methods: {
+            openModal(index){ // INI METHODNYA NAZILA
+                this.indexPeminjamanRuangan = index
+                $('#popup-peminjaman-ruangan').modal('show')
+            },
              getDateDef : function (date) {
                  return moment(date, 'YYYY-MM-DDTHH:mm').format('D MMMM YYYY');
              },
@@ -791,12 +826,16 @@ export default {
               console.log(data_put);
               UserService.putPeminjamanRuangan(id, data_put).then(
                   response => {
-                      console.log(response.data);
+                        console.log(response.data);
+                        console.log(response.data);                                                            
+                        $('#ubahModal').modal('show')
 
 
                   },
                   error => {
                       console.log(error.message);
+                       $('#notification-failed').modal('show')
+
 
                   }
 
@@ -920,7 +959,7 @@ export default {
         );
         },
         ubahDone() {
-            window.location.href="/perizinan";
+            window.location.reload();
         },
         onKelasChange(){
             console.log("masuk onkelaschange")
@@ -1033,6 +1072,62 @@ export default {
         )
     },
     mounted(){
+        UserService.getPerizinan(this.$route.params.id).then(
+            response =>{
+                this.nama_kegiatan=response.data.nama_kegiatan;
+                this.organisasi=response.data.organisasi;
+                //detail_kegiatan:""
+                this.waktu_tanggal_mulai= response.data.detail_kegiatan.waktu_tanggal_mulai;
+                this.waktu_tanggal_akhir= response.data.detail_kegiatan.waktu_tanggal_akhir;
+                this.email_pic= response.data.detail_kegiatan.email_pic;
+                this.nama_pic= response.data.detail_kegiatan.nama_pic;
+                this.hp_pic= response.data.detail_kegiatan.hp_pic;
+                this.npm_pic= response.data.detail_kegiatan.npm_pic;
+                this.npm_ketua_organisasi= response.data.detail_kegiatan.npm_ketua_organisasi;
+                this.nama_ketua_organisasi= response.data.detail_kegiatan.nama_ketua_organisasi;
+                this.tempat_pelaksanaan= response.data.detail_kegiatan.tempat_pelaksanaan;
+                this.sumber_pendanaan= response.data.detail_kegiatan.sumber_pendanaan;
+                //this.file_info_kegiatan= response.data.detail_kegiatan.file_info_kegiatan;
+
+                let r;
+                this.list_peminjaman_ruangan = response.data.peminjaman_ruangan;
+                this.list_permintaan_souvenir = response.data.permintaan_souvenir;
+                //this.number_of_peminjaman = response.data.peminjaman_ruangan.length;
+                for(r = 0; r<response.data.peminjaman_ruangan.length; r++){
+                    this.list_peminjaman_ruangan[r]=response.data.peminjaman_ruangan[r];
+                    this.judul_peminjaman = response.data.peminjaman_ruangan[r].judul_peminjaman;
+                    console.log(this.judul_peminjaman)
+                    this.jumlah_peserta = response.data.peminjaman_ruangan[r].jumlah_peserta;
+                    this.waktu_mulai = response.data.peminjaman_ruangan[r].waktu_mulai;
+                    this.waktu_akhir = response.data.peminjaman_ruangan[r].waktu_akhir;
+                    this.catatan = response.data.peminjaman_ruangan[r].catatan;
+                    this.ruangan = response.data.peminjaman_ruangan[r].ruangan;
+                    this.terbuka_untuk_umum = response.data.peminjaman_ruangan[r].terbuka_untuk_umum;
+                    if (response.data.peminjaman_ruangan[r].perulangan!=null) {
+                        this.jenjang = response.data.peminjaman_ruangan[r].perulangan.jenjang;
+                        this.tanggal_mulai_peminjaman = response.data.peminjaman_ruangan[r].perulangan.tanggal_mulai;
+                        this.tanggal_akhir_peminjaman = response.data.peminjaman_ruangan[r].perulangan.tanggal_akhir;
+                    }
+                    console.log(this.list_peminjaman_ruangan)
+                let s;
+                for(s = 0; s<response.data.permintaan_souvenir.length; s++) {
+                    this.jumlah= response.data.permintaan_souvenir[s].jumlah;
+                    this.souvenir= response.data.permintaan_souvenir[s].souvenir;
+                    this.nama_penerima_souvenir= response.data.permintaan_souvenir[s].nama_penerima_souvenir;
+                    this.kelas_penerima_souvenir= response.data.permintaan_souvenir[s].kelas_penerima_souvenir;
+                    this.region_penerima_souvenir= response.data.permintaan_souvenir[s].region_penerima_souvenir;
+                    this.jabatan_penerima_souvenir= response.data.permintaan_souvenir[s].jabatan_penerima_souvenir;
+                    }
+                  this.deskripsi_kebutuhan = response.data.permintaan_protokoler.deskripsi_kebutuhan;
+                  
+
+                  //this.tanggal_mulai
+                }               
+            },
+            error => {
+                console.log(error.message);
+            }
+        );
         console.log(this.perizinan);
         console.log(this.error_message);
         //create daftar waktu
