@@ -11,4 +11,4 @@ class KalenderSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = PeminjamanRuangan
-        fields = ('judul_peminjaman', 'ruangan', 'perulangan')
+        fields = ('judul_peminjaman', 'ruangan', 'perulangan', 'waktu_mulai', 'waktu_akhir')

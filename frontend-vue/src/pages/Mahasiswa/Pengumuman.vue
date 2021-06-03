@@ -5,64 +5,82 @@
             <hr class="line-header">
         </div>
         
-        <div class="formulir">
+        <div class="container-fluid">
             <form>
                 <div class="form-row">
                     <div class="col-12 col-md-8">
                         <br>
-                        <div>
-                            <div>
-                                <div class="form-row">
-                                    <div class="search-container">
-                                        <form action="">
-                                        <input type="text" placeholder="Search.." name="search">
-                                        <button type="submit"><i class="fa fa-search"></i></button>
-                                        </form>
-                                    </div>
+                        <div>          
+                                <div class="input-group rounded">
+                                    <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
+                                        aria-describedby="search-addon" />
+                                    <span class="input-group-text border-0" id="search-addon">
+                                        <i class="fas fa-search"></i>
+                                    </span>
+                                </div>
+                            
+                            <br>
+                            <div class="card w-100">
+                                <div class="card-body">
+                                    <h5 class="card-title">Judul</h5>
+                                    <p class="card-text">isinya Lorem Ipsum apa yak gitu dah</p>
+                                    <a href="#">link download file</a>
                                 </div>
                             </div>
                             <br>
-                            <div>
-                                <textarea />
+                            <div class="pagination">               
+                                <ul class="pagination">
+                                    <li class="page-item">
+                                    <a class="page-link" href="#" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                        <span class="sr-only">Previous</span>
+                                    </a>
+                                    </li>
+                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                    <li class="page-item">
+                                    <a class="page-link" href="#" aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                        <span class="sr-only">Next</span>
+                                    </a>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                         
 
                     </div>
                    
-                    <div class="col-12 col-md-4">
+                    <div class="col-12 col-md-4 border">
                         <div>
                             <h6 class="header-page2">Kegiatan Yang Akan Datang</h6>
-                            <hr class="line-header">
+                        
                         </div>
                         <br>
-                        <div class="search-container">
-                            <form action="">
-                            <input type="text" placeholder="Search.." name="search">
-                            <button type="submit"><i class="fa fa-search"></i></button>
-                            </form>
+                        <div class="input-group rounded">
+                            <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
+                                aria-describedby="search-addon" />
+                            <span class="input-group-text border-0" id="search-addon">
+                                <i class="fas fa-search"></i>
+                            </span>
                         </div>
+                        <br>
                         <div class="table-responsive">
-                            <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                <th scope="col" class="text-center" > Tanggal</th>
-                                <th scope="col" class="text-center">Kegiatan</th>
-                                </tr>
-                            </thead>
-                            <tbody id="app">
+                            <table class="table table-striped table-sm table-bordered">
+                            <tbody id="app" class="fsmall mt-2 ">
                                 <tr v-for="(kegiatan) in kegiatan_disetujui" v-bind:key="kegiatan.id">
-                                    <td>{{kegiatan.detail_kegiatan}}</td>
-                                    <!-- keterangan waktu gaada di model kegiatan, adanya di detail tapi kayaknya masih belum bisa ditembak API ya? -->
-                                    <td>{{ kegiatan.nama_kegiatan }}</td>
+                                    <td>{{kegiatan.detail_kegiatan.waktu_tanggal_mulai}}</td>
+                                    <td>{{ kegiatan.nama_kegiatan }}
+                                        <p>{{ kegiatan.organisasi}} </p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                             </table>
                         </div>
-                    </div>
-
-                    
-                </div>
+                        </div>
+                    </div>    
+               
                 <br>
                 <br>
 
@@ -83,6 +101,7 @@ export default {
 		data: function() {
 		
         return {
+            banyak_pengumuman: 1,
             kegiatan_disetujui: [[]],
             }
         },
@@ -93,8 +112,7 @@ export default {
                     var tmp = response.data;
                     for (let i = 0; i < tmp.length; i++){
                         if (tmp[i].status_perizinan_kegiatan == 2){
-                            this.kegiatan_disetujui.push(tmp[i]);
-                            console.log(tmp[i]);                        
+                            this.kegiatan_disetujui.push(tmp[i]);                       
                         }
                     }
                     this.kegiatan_disetujui.shift();
@@ -132,12 +150,9 @@ export default {
     border-style: solid;
     border-width: 1px;
     border-radius: 5px;
-    padding: 20px 20px 20px 20px ;
+    padding: 20px 0px 20px 20px ;
 }
 
-label {
-    font-size: 14px;
-}
 
 .header-page {
     /* padding: 15px 0px 3px 15px; */

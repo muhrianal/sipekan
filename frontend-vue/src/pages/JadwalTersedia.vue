@@ -29,7 +29,7 @@
                 </div>
                 <br>
                 <br>
-                <div id="app">
+                <div class="container-fluid" id="app">
                     <calendar-view
                         :show-date="showDate"
                         :events="events"
@@ -141,7 +141,8 @@ export default {
             this.message = `Changing calendar view to ${d.toLocaleDateString()}`;
             this.showDate = d;
         },
-        
+
+       
         cari(ruang){
             UserService.getJadwalPeminjamanRuangan().then (
                 response => {
@@ -152,11 +153,10 @@ export default {
                         if (ruang == tmp[i].ruangan.id){
                             var id = tmp[i].ruangan.id;
                             var startDate= tmp[i].perulangan.tanggal_mulai;
-                            var endDate= tmp[i].perulangan.tanggal_mulai;
-                            var title= tmp[i].judul_peminjaman;
+                            var endDate= tmp[i].perulangan.tanggal_akhir;
+                            var title= tmp[i].judul_peminjaman + "\n" + "(" + tmp[i].waktu_mulai.slice(11,16) + " - " + tmp[i].waktu_akhir.slice(11,16) + ")";
                             var agenda = {"id":id, "startDate":startDate, "endDate":endDate, "title":title};
-                            this.items.push(agenda);
-                 
+                            this.items.push(agenda);         
                         }
                     }
 
