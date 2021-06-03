@@ -66,6 +66,7 @@ REST_FRAMEWORK = {
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -73,8 +74,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
-    
+   
 ]
 
 ROOT_URLCONF = 'backend_django.urls'
@@ -172,6 +172,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:8080",
     "http://192.168.43.145:8080",
     "http://192.168.43.145:8081",
+    "https://sipekan.netlify.app",
 ]
 
 # Activate Django-Heroku.
