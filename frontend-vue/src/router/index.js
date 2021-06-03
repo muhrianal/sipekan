@@ -128,7 +128,7 @@ const routes = [
     props: true
   },
   {
-    path: "/pengumuman/",
+    path: "/pengumuman",
     name: "Pengumuman",
     component: Pengumuman,
   },

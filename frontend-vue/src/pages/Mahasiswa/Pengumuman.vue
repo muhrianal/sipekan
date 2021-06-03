@@ -30,7 +30,7 @@
 
                     </div>
                    
-                    <div class="col-12 col-md-4">
+                    <div class="col-12 col-md-4 overflow-auto">
                         <div>
                             <h6 class="header-page2">Kegiatan Yang Akan Datang</h6>
                             <hr class="line-header">
