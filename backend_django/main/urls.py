@@ -11,9 +11,12 @@ from .views.views_peminjaman_ruangan import list_ruangan
 from .views.views_peminjaman_ruangan import detail_ruangan
 from .views.views_status_perizinan import list_perizinan, detail_perizinan
 from .views.views_peminjaman_ruangan import post_peminjaman_ruangan_mahasiswa
-from .views.views_humas import get_post_perizinan_humas,list_perizinan_humas, get_jenis_publikasi, get_list_souvenir, post_perizinan_publikasi, post_souvenir, detail_souvenir, detail_permintaan_protokoler, detail_permintaan_souvenir
-from .views.views_izin_kegiatan_mahasiswa import get_post_izin_kegiatan_mahasiswa, post_izin_kegiatan_detail, post_izin_kegiatan_header, put_izin_kegiatan_header, put_izin_kegiatan_detail
+from .views.views_humas import get_post_perizinan_humas_by_id_izin_kegiatan, get_jenis_publikasi, get_list_souvenir, post_perizinan_publikasi, post_souvenir, detail_souvenir, detail_permintaan_protokoler, detail_permintaan_souvenir
+from .views.views_izin_kegiatan_mahasiswa import  post_izin_kegiatan_detail, post_izin_kegiatan_header, put_izin_kegiatan_header, put_izin_kegiatan_detail
 from .views.views_peminjaman_ruangan import update_peminjaman_ruangan_by_id_peminjaman_ruangan, post_peminjaman_ruangan_unit_kerja, get_list_perizinan_fastur, get_peminjaman_ruangan_by_id_izin_kegiatan, detail_peminjaman_ruangan, perulangan
+from .views.views_humas import get_post_perizinan_humas_by_id_izin_kegiatan,get_list_perizinan_humas, get_jenis_publikasi, get_list_souvenir, post_perizinan_publikasi, update_permintaan_souvenir_by_id_permintaan_souvenir,  update_permintaan_protokoler_by_id_permintaan_protokoler, update_jenis_izin_publikasi_by_id_jenis_izin_publikasi, put_perizinan_publikasi
+from .views.views_izin_kegiatan_mahasiswa import post_izin_kegiatan_detail, post_izin_kegiatan_header
+from .views.views_peminjaman_ruangan import update_peminjaman_ruangan_by_id_peminjaman_ruangan, post_peminjaman_ruangan_unit_kerja, get_list_perizinan_fastur, get_peminjaman_ruangan_by_id_izin_kegiatan
 
 urlpatterns = [
     path('login/', login),
@@ -30,10 +33,13 @@ urlpatterns = [
     path('api/perizinan/<int:pk>', detail_perizinan),
     path('peminjaman-ruangan/update/<int:id_peminjaman>/', update_peminjaman_ruangan_by_id_peminjaman_ruangan),
     path('peminjaman-ruangan/mahasiswa/<int:id_izin_kegiatan>/', post_peminjaman_ruangan_mahasiswa),
-    path('perizinan-humas/<int:id_izin_kegiatan>/',get_post_perizinan_humas),
+    path('perizinan-humas/<int:id_izin_kegiatan>/',get_post_perizinan_humas_by_id_izin_kegiatan),
     path('perizinan-humas-publikasi/',post_perizinan_publikasi),
-    path('list-perizinan-humas/',list_perizinan_humas),
-    path('perizinan-kegiatan-mahasiswa/',get_post_izin_kegiatan_mahasiswa),
+    path('perizinan-humas/verifikasi-humas/',get_list_perizinan_humas),
+    path('perizinan-humas/verifikasi-humas/<int:id_izin_kegiatan>/',get_post_perizinan_humas_by_id_izin_kegiatan),
+    path('perizinan-humas/update-status-souvenir/<int:id_permintaan>/',update_permintaan_souvenir_by_id_permintaan_souvenir),
+    path('perizinan-humas/update-status-protokoler/<int:id_permintaan>/',update_permintaan_protokoler_by_id_permintaan_protokoler),
+    path('perizinan-humas/update-status-jenis-izin-publikasi/<int:id_jenis_izin_publikasi>/',update_jenis_izin_publikasi_by_id_jenis_izin_publikasi),
     path('perizinan-kegiatan-header/',post_izin_kegiatan_header),
     path('perizinan-kegiatan-detail/',post_izin_kegiatan_detail),
     path('perizinan-humas/jenis-publikasi', get_jenis_publikasi),
@@ -49,7 +55,8 @@ urlpatterns = [
     path('peminjaman-ruangan/<int:pk>/', detail_peminjaman_ruangan),
     path('detail-kegiatan/<int:pk>/', put_izin_kegiatan_header),
     path('izin-kegiatan-detail/<int:pk>/', put_izin_kegiatan_detail),
-    path('perulangan/<int:pk>/', perulangan)
+    path('perulangan/<int:pk>/', perulangan),
+    path('perizinan-publikasi/<int:pk>', put_perizinan_publikasi)
 
 
 ]

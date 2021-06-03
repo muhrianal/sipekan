@@ -20,26 +20,6 @@ from django.http.response import JsonResponse
 from rest_framework.decorators import parser_classes
 from rest_framework.parsers import MultiPartParser, FormParser
 
-@api_view(['POST', 'GET'])
-@permission_classes([permissions.AllowAny,]) #nanti diganti jadi mahasiswa
-def get_post_izin_kegiatan_mahasiswa(request):
-    if request.method == 'POST': # untuk izin kegiatan tanpa file
-        # perizinan_data = MultiPartParser().parse(request)
-        perizinan_data = JSONParser().parse(request)
-        perizinan_data_serialized = IzinKegiatanMahasiswaSerializer(data=perizinan_data)
-        if perizinan_data_serialized.is_valid():
-            perizinan_data_serialized.save()
-            return JsonResponse(perizinan_data_serialized.data,status=status.HTTP_201_CREATED,safe=False)
-        return JsonResponse(perizinan_data_serialized.errors, status=status.HTTP_400_BAD_REQUEST)
-    
-    if request.method == 'GET':
-        list_izin_kegiatan_mahasiwa = IzinKegiatan.objects.all()
-        list_izin_kegiatan_mahasiwa_serialized = IzinKegiatanMahasiswaSerializer(list_izin_kegiatan_mahasiwa, many=True)
-        return JsonResponse(list_izin_kegiatan_mahasiwa_serialized.data, safe=False)
-
-    #case for else
-        return JsonResponse({'message' : 'invalid API method'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
-
 #untuk izin kegiatan dengan file
 @api_view(['POST'])
 @permission_classes([permissions.AllowAny,]) 
@@ -51,6 +31,9 @@ def post_izin_kegiatan_header(request):
             perizinan_data_serialized.save()
             return JsonResponse(perizinan_data_serialized.data,status=status.HTTP_201_CREATED,safe=False)
         return JsonResponse(perizinan_data_serialized.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    #case for else
+    return JsonResponse({'message' : 'invalid API method'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
 @api_view(['POST'])
 @permission_classes([permissions.AllowAny,]) 
@@ -148,3 +131,6 @@ def put_izin_kegiatan_detail(request, pk):
 
 
 
+    
+    #case for else
+    return JsonResponse({'message' : 'invalid API method'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)

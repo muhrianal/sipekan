@@ -10,7 +10,7 @@ from ..models.profile import Profile
 from ..models.izin_kegiatan import IzinKegiatan
 from ..models.izin_kegiatan import DetailKegiatan
 from ..models.peminjaman_ruangan import PeminjamanRuangan, Perulangan
-from ..models.humas import PermintaanProtokoler, PerizinanPublikasi, PermintaanSouvenir
+from ..models.humas import PermintaanProtokoler, PerizinanPublikasi, PermintaanSouvenir, JenisPublikasi, JenisIzinPublikasi
 
 #Nama kelas dibawah ini di rename, yang terkati dengan kelas ini harus diperbarui
 class IzinKegiatanSerializerSimplified(serializers.ModelSerializer):
@@ -44,11 +44,37 @@ class PermintaanProtokolerSerializer(serializers.ModelSerializer):
         model = PermintaanProtokoler
         fields = '__all__'
 
-class PerizinanPublikasiSerializer(serializers.ModelSerializer):
+class JenisPublikasiSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = JenisPublikasi
+        fields = '__all__'
 
+class JenisIzinPublikasiHumasSerializer(serializers.ModelSerializer): # untuk verifikasi perizinan publikasi oleh admin humas
+    jenis_publikasi = JenisPublikasiSerializer(read_only=True)
+    class Meta:
+        model = JenisIzinPublikasi
+        fields = '__all__'  
+
+class JenisIzinPublikasiSerializer(serializers.ModelSerializer): # untuk post perizinan publikasi oleh mahasiswa
+    class Meta:
+        model = JenisIzinPublikasi
+        fields = ('jenis_publikasi','status_perizinan_publikasi','alasan_penolakan')
+    
+    def update(self, perizinan_publikasi, validated_data):
+        JenisIzinPublikasi.objects.create(perizinan_publikasi=perizinan_publikasi, **validated_data)
+        return perizinan_publikasi
+ 
+class PerizinanPublikasiHumasSerializer(serializers.ModelSerializer): # untuk verifikasi perizinan publikasi oleh admin humas
+    jenis_izin_publikasi = JenisIzinPublikasiHumasSerializer(read_only=True,many=True)
     class Meta:
         model = PerizinanPublikasi
         fields = '__all__'
+
+class PerizinanPublikasiSerializer(serializers.ModelSerializer): # untuk post perizinan publikasi oleh mahasiswa
+    class Meta:
+        model = PerizinanPublikasi
+        fields = ('id','tanggal_mulai', 'tanggal_akhir','keterangan', 'file_materi_kegiatan', 'file_flyer_pengumuman','izin_kegiatan')
+  
 
 class PermintaanSouvenirSerializer(serializers.ModelSerializer):
 
@@ -78,13 +104,14 @@ class DetailKegiatanSerializer(serializers.ModelSerializer):
                 'updated_at',
                 'izin_kegiatan'
             )
+            
 
 class IzinKegiatanSerializer(serializers.ModelSerializer):
 
     detail_kegiatan = DetailKegiatanSerializer(read_only=True)
     peminjaman_ruangan = PeminjamanRuanganSerializer(many=True, read_only=True)
     permintaan_protokoler = PermintaanProtokolerSerializer(read_only=True)
-    perizinan_publikasi = PerizinanPublikasiSerializer(read_only=True)
+    perizinan_publikasi = PerizinanPublikasiHumasSerializer(read_only=True)
     permintaan_souvenir = PermintaanSouvenirSerializer(many=True, read_only=True)
 
     class Meta:

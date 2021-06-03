@@ -286,6 +286,7 @@
         </div>
 
         <div style="margin:1% 7%;">
+        
         <div class="table-responsive">
         <table class="table table-sm table-bordered" style="border-radius: 10px 10px 0px 0px;">
           <thead class="thead kuning rounded-top" style="border-radius: 10px 10px 0px 0px;">
@@ -294,14 +295,28 @@
             </tr>
           </thead>
         </table>
-        <div class="fmed font-weight-bold abu3">Publikasi </div>
+        <div class="d-flex">
+          <div>
+            <div class="fmed font-weight-bold abu3">Publikasi </div>
+
+          </div>
+          <template v-if="perizinan.perizinan_publikasi.jenis_izin_publikasi!=null">
+          <template v-for="i in perizinan.perizinan_publikasi.jenis_izin_publikasi" v-bind:key="i.id">
+          <template v-if="i.status_perizinan_publikasi==3">
+          <div class="ml-auto">
+            <a data-toggle="modal" data-target="#popup-perizinan-publikasi">edit</a>
+          </div>
+          </template>
+          </template>
+          </template>
+        </div>
         <table v-if="perizinan.perizinan_publikasi==null" class="table table-sm table-bordered mt-2 fsmall" style="border-radius: 10px 10px 0px 0px;">
             <tr>
-              <td class="text-center abu2">Jenis Publikasi Luar Ruangan</td>
-              <td class="text-center abu2">Jenis Publikasi</td>
-              <td class="text-center abu2">Lokasi</td>
               <td class="text-center abu2">Tanggal Mulai</td>
               <td class="text-center abu2">Tanggal Akhir</td>
+              <td class="text-center abu2">Keterangan</td>
+              <td class="text-center abu2">Jenis Publikasi Luar Ruangan</td>
+              <td class="text-center abu2">Jenis Publikasi</td>              
               <td class="text-center abu2">Status</td>
             </tr>
             <tr>
@@ -315,24 +330,93 @@
         </table>
         <table v-if="perizinan.perizinan_publikasi!=null" class="table table-sm table-bordered mt-2 fsmall" style="border-radius: 10px 10px 0px 0px;">
             <tr>
-              <td class="text-center abu2">Jenis Publikasi Luar Ruangan</td>
-              <td class="text-center abu2">Jenis Publikasi</td>
-              <td class="text-center abu2">Lokasi</td>
               <td class="text-center abu2">Tanggal Mulai</td>
               <td class="text-center abu2">Tanggal Akhir</td>
+              <td class="text-center abu2">Keterangan</td>
+              <td class="text-center abu2">Jenis Publikasi Luar Ruangan</td>
+              <td class="text-center abu2">Jenis Publikasi</td>
               <td class="text-center abu2">Status</td>
             </tr>
             <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td>{{getDateDef(perizinan.perizinan_publikasi.tanggal_mulai)}}</td>
-            <td>{{getDateDef(perizinan.perizinan_publikasi.tanggal_akhir)}}</td>
-            <td class="text-center" v-if="perizinan.perizinan_publikasi.status_perizinan_publikasi==1">Menunggu Persetujuan</td>
-            <td class="text-center" v-if="perizinan.perizinan_publikasi.status_perizinan_publikasi==2">Disetujui</td>
-            <td class="text-center" v-if="perizinan.perizinan_publikasi.status_perizinan_publikasi==3">Ditolak <a href="/ruangan/add">edit</a></td>
-
+            <td :rowspan="perizinan.perizinan_publikasi.jenis_izin_publikasi.length+1" class="align-middle text-center">{{getDateDef(perizinan.perizinan_publikasi.tanggal_mulai)}}</td>
+            <td :rowspan="perizinan.perizinan_publikasi.jenis_izin_publikasi.length+1" class="align-middle text-center">{{getDateDef(perizinan.perizinan_publikasi.tanggal_akhir)}}</td>
+            <td :rowspan="perizinan.perizinan_publikasi.jenis_izin_publikasi.length+1" class="align-middle text-center">{{perizinan.perizinan_publikasi.keterangan}}</td>
             </tr>
+            <template  v-for="pub in perizinan.perizinan_publikasi.jenis_izin_publikasi" v-bind:key="pub.id">
+            <tr>
+            
+            <td v-if="pub.jenis_publikasi.luar_ruangan==true"> {{pub.jenis_publikasi.deskripsi_publikasi}}</td>
+            <td v-if="pub.jenis_publikasi.luar_ruangan==true"> - </td>
+
+            <td v-if="pub.jenis_publikasi.luar_ruangan==false"> - </td>
+            <td v-if="pub.jenis_publikasi.luar_ruangan==false"> {{pub.jenis_publikasi.deskripsi_publikasi}}</td>
+            
+            <td class="text-center" v-if="pub.status_perizinan_publikasi==1">Menunggu Persetujuan</td>
+            <td class="text-center" v-if="pub.status_perizinan_publikasi==2">Disetujui</td>
+            <td class="text-center" v-if="pub.status_perizinan_publikasi==3">Ditolak 
+            <!-- Modal: Popup Edit Permintaan Protokoler -->
+                <div class="modal fade bd-example-modal-lg" id="popup-perizinan-publikasi" tabindex="-1" role="dialog" aria-labelledby="popup-protokoler" aria-hidden="true">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                        <form>
+                            
+                <div class="border-form">      
+                    <div class="form-row">        
+                        <div class="col-12 col-md-6 px-4 py-2">
+                            <label for="inputPublikasiLuarRuangan">Publikasi Luar Ruangan</label>
+                            <span v-for="publikasi in publikasi_luar_ruangan" v-bind:key="publikasi.id">
+                                <input id="input_publikasi" v-model="jenis_publikasi" type="checkbox" :value="publikasi"> <span class="checkbox-label">{{publikasi.deskripsi_publikasi}}</span><br>
+                            </span>
+                        </div>
+                        <div class="col-12 col-md-6  px-4 py-2">
+                            <label for="inputPublikasi">Publikasi</label>
+                            <hr noshade >
+                            <span v-for="publikasi in publikasi" v-bind:key="publikasi.id">
+                                <input id="input_publikasi" v-model="jenis_publikasi" type="checkbox" :value="publikasi"> <span class="checkbox-label">{{publikasi.deskripsi_publikasi}}</span><br>
+                            </span>
+                        </div>                    
+                    </div>            
+                    <div class="form-row">
+                        <div class="col-12 col-md-6  px-4 py-2">
+                            <label for="inputKeterangan">Keterangan <span class="text-keterangan">(Harap isi jenis dan lokasi publikasi disini, jika memilih "Lainnya")</span></label>
+                            <textarea id="input_keterangan" type="text" v-model="keterangan" class="form-control" placeholder="e.g. Baliho di Depan Gedung x ukuran (axb)"></textarea>
+                        </div>   
+                        <div class="col-12 col-md-6  px-4 py-2"> 
+                            <label for="inputMateriKegiatan">Materi Kegiatan / Press Release:<span class="text-keterangan">  (Dapat diunggah dalam format zip)</span> </label>
+                            <input id= "file_materi" type="file" ref="fileMateri" @change="onFileMateriChange" class="form-control-file">
+                            <p v-if="this.file_materi_kegiatan !=null" class="text-right note-field" @Click="deleteFileMateri()">Hapus File</p>
+                            <label for="inputFlyerPengumuman">Flyer Pengumuman / Poster Kegiatan:<span class="text-keterangan">  (jika ada)</span></label>
+                            <input id= "file_flyer" type="file" ref="fileFlyer" @change="onFileFlyerChange" class="form-control-file">
+                            <p v-if="this.file_flyer_pengumuman !=null" class="text-right note-field" @Click="deleteFileFlyer()">Hapus File</p>
+                        </div>                                     
+                    </div>
+                    <div class="form-row">
+                        <div class="col-12 col-md-6  px-4 py-2">
+                            <label for="inputTanggalMulai">Tanggal Mulai<span class="text-danger">*</span></label>
+                            <input id="input_tanggal_mulai" v-model="tanggal_mulai" type="date" class="form-control" >                   
+                        </div>
+                        <div class="col-12 col-md-6  px-4 py-2 ">
+                            <label for="inputTanggalAkhir">Tanggal Akhir<span class="text-danger">*</span></label>
+                            <input id="input_tanggal_akhir" v-model="tanggal_akhir" type="date" class="form-control" >
+                        </div>                        
+                    </div>
+                </div>                       
+                        </form>
+                        <div class="modal-footer">
+                                <div class="text-center">
+                                    <button class="btn btn-outline-secondary" data-dismiss="modal" style="width:80px; height:36px;">Batal</button>
+                                </div>
+                                <div class="text-center">
+                                    <button class="btn btn-success" type="submit" style="width:80px; height:36px;" v-on:click="editPerizinanPublikasi(perizinan.perizinan_publikasi.id, perizinan.id)">Simpan</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </td>
+            </tr>
+            </template>
+            
         </table>
         </div>
         <div class="fmed font-weight-bold abu3">Souvenir </div>
@@ -473,14 +557,14 @@
                 <td>{{perizinan.permintaan_protokoler.deskripsi_kebutuhan}}</td>
                 <td class="text-center" v-if="perizinan.permintaan_protokoler.status_permintaan_protokoler==1">Menunggu Persetujuan</td>
                 <td class="text-center" v-if="perizinan.permintaan_protokoler.status_permintaan_protokoler==2">Disetujui</td>
-                <td class="text-center" v-if="perizinan.permintaan_protokoler.status_permintaan_protokoler==3">Ditolak <button data-toggle="modal" data-target="#popup-permintaan-protokoler" >edit</button></td>
+                <td class="text-center" v-if="perizinan.permintaan_protokoler.status_permintaan_protokoler==3">Ditolak <a data-toggle="modal" data-target="#popup-permintaan-protokoler" >edit</a></td>
                 <!-- Modal: Popup Edit Permintaan Protokoler -->
                 <div class="modal fade" id="popup-permintaan-protokoler" tabindex="-1" role="dialog" aria-labelledby="popup-protokoler" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
                         <form>
                             <div class="modal-body">
-                                <label>Deskripsi Kebutuhan<span style="color:#EB5757;">*</span></label>
+                                <label >Deskripsi Kebutuhan<span style="color:#EB5757;">*</span></label>
                                 <textarea class="form-control" id="textarea-keterangan" rows="6" :value="perizinan.permintaan_protokoler.deskripsi_kebutuhan" @input="deskripsi_kebutuhan = $event.target.value" placeholder="e.g. Waktu terlalu dekat"></textarea>
                             </div>                       
                         </form>
@@ -499,7 +583,7 @@
         </table>
         </div>
         <div class="fmed font-weight-bold abu3">Komentar </div>
-          <template v-if="perizinan.peminjaman_ruangan.length!=0">
+          <template v-if="perizinan.peminjaman_ruangan.length!=null">
 
             <template v-for="pinjam in perizinan.peminjaman_ruangan" v-bind:key="pinjam.id">
                 <template v-if="pinjam.alasan_penolakan!=null" class="d-flex mb-2">
@@ -509,7 +593,7 @@
             </template>
           </template>
           
-            <template v-if="perizinan.permintaan_souvenir.length!=0">
+            <template v-if="perizinan.permintaan_souvenir!=null">
               <template v-for="souvenir in perizinan.permintaan_souvenir" v-bind:key="souvenir.id">
                 <template v-if="souvenir.alasan_penolakan!=null" class="d-flex mb-2">
                     <div class="pt-1">Admin Humas </div>
@@ -517,10 +601,12 @@
                 </template>
               </template>
             </template>
+            <template v-if="perizinan.permintaan_protokoler!=null">
                 <template v-if="perizinan.permintaan_protokoler.alasan_penolakan!=null" class="d-flex mb-2">
                     <div class="pt-1">Admin Humas </div>
                     <div class="label abu2 pl-2 pt-1 komentar align-middle">{{perizinan.permintaan_protokoler.alasan_penolakan}}</div>
                 </template>
+            </template>
         </div>
 
 
@@ -569,7 +655,7 @@
 </template>
 <script>
 import UserService from '../services/user.service';
-import IzinMahasiswaService from '../services/izinMahasiswa.service';
+//import IzinMahasiswaService from '../services/izinMahasiswa.service';
 
 import moment from 'moment';
 import $ from 'jquery';
@@ -595,6 +681,17 @@ export default {
             user: this.$store.state.auth.user.id_user, 
             file_info_kegiatan: null,
             respon_kegiatan: null,
+            
+            // perizinan publikasi
+            jenis_publikasi_data: [],
+            tanggal_mulai: '',
+            tanggal_akhir: '',
+            status_perizinan_publikasi: 1,
+            alasan_penolakan_publikasi: '',
+            keterangan: '',
+            jenis_publikasi: [],
+            file_materi_kegiatan: null,
+            file_flyer_pengumuman: null,
 
 
 
@@ -610,21 +707,22 @@ export default {
              getHour : function (date) {
                  return moment(date, 'YYYY-MM-DDTHH:mm').format('HH:mm');
              },
+            
 
              
             
-            editIzinKegiatan(id) {
+            editIzinKegiatan(id, id_detail) {
               console.log("masuk edit kegiatan")
                 const data_kegiatan = {
                     id: id,
                     nama_kegiatan: this.nama_kegiatan,
                     organisasi: this.organisasi,
                     user: this.user,
-                    status_perizinan_kegiatan :3,
-                    detail_kegiatan: id,
+                    status_perizinan_kegiatan : 1,
+                    detail_kegiatan: id_detail,
                 };
                 console.log(data_kegiatan)
-                    IzinMahasiswaService.putIzinKegiatanHeader(id,data_kegiatan).then(
+                    UserService.putIzinKegiatanHeader(id,data_kegiatan).then(
                         response =>{
                             this.respon_kegiatan = response.data;
                             console.log(response.data);                   
@@ -655,8 +753,8 @@ export default {
                 console.log(formDataDetail)
                 for (var value of formDataDetail.values()) {
                 console.log(value);
-}           
-                IzinMahasiswaService.putIzinKegiatanDetail(id_detail, formDataDetail).then(
+                }           
+                UserService.putIzinKegiatanDetail(id_detail, formDataDetail).then(
                     response =>{
                         console.log(response.data);                                                            
                         $('#ubahModal').modal('show')
@@ -727,6 +825,42 @@ export default {
                   }
 
               );
+            },
+
+            editPerizinanPublikasi(id, id_izin_kegiatan) {
+              if(this.jenis_publikasi.length != 0){
+                    let formDataPublikasi = new FormData()
+                    formDataPublikasi.append("izin_kegiatan",id_izin_kegiatan)
+                    formDataPublikasi.append("tanggal_mulai", this.tanggal_mulai)
+                    formDataPublikasi.append("tanggal_akhir", this.tanggal_akhir)
+                    formDataPublikasi.append("keterangan", this.keterangan)
+                    let list_jenis_publikasi =[];
+                    for(let i=0;i<this.jenis_publikasi.length;i++){
+                        list_jenis_publikasi.push(this.jenis_publikasi[i].id)
+                    }
+                    console.log(list_jenis_publikasi)
+                    formDataPublikasi.append("jenis_publikasi", list_jenis_publikasi)  
+                    if(this.file_materi_kegiatan != null){
+                        formDataPublikasi.append("file_materi_kegiatan",this.file_materi_kegiatan)
+                    }
+                    if(this.file_flyer_pengumuman != null){
+                        formDataPublikasi.append("file_flyer_pengumuman", this.file_flyer_pengumuman)
+                    }
+                    for (var value of formDataPublikasi.values()) {
+                    console.log(value);
+                    }
+                    UserService.putPerizinanPublikasi(id,formDataPublikasi).then( 
+                        response => {
+                            console.log(response.data);
+                            $('#ubahModal').modal('show')
+                        },
+                        error => {
+                            console.log(error.message);
+                            this.error_message = error.message
+                            $('#notification-failed').modal('show')
+                        }                     
+                    )
+                }
             },
 
             editPermintaanProtokoler(id) {
@@ -847,6 +981,19 @@ export default {
         },
 
          },
+    computed: {
+        publikasi_luar_ruangan: function(){
+            return this.jenis_publikasi_data.filter(function(u){
+                return u.luar_ruangan
+            })
+        },
+        publikasi: function(){
+            return this.jenis_publikasi_data.filter(function(u){
+                return !u.luar_ruangan
+            })
+        },
+     
+    },
     created(){
         console.log("masuk detail")
         console.log(this.$route.params.id)
@@ -858,7 +1005,15 @@ export default {
                 this.error_message = (error.response && error.response.data) || error.message || error.toString();
             }
         ),
-        IzinMahasiswaService.getListSouvenir().then(
+        UserService.getJenisPublikasi().then(
+            response =>{
+                this.jenis_publikasi_data = response.data;
+            },
+            error => {
+                this.error_call_api = (error.response && error.response.data) || error.message || error.toString();
+            }
+        ),
+        UserService.getListSouvenir().then(
             response => {
                 this.souvenir_data = response.data;
                 this.souvenir_data_filtered = this.souvenir_data;
@@ -868,7 +1023,7 @@ export default {
                 this.error_call_api = (error.response && error.response.data) || error.message || error.toString();
             }
         ),
-        IzinMahasiswaService.getRuangan().then(
+        UserService.getAllRuangan().then(
             response =>{
                 this.list_ruangan = response.data
             },

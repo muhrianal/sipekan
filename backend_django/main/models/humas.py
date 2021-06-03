@@ -18,17 +18,10 @@ class PermintaanProtokoler(models.Model):
       (2, 'Disetujui'),
       (3, 'Ditolak'),
     )
-    status_permintaan_protokoler = models.PositiveSmallIntegerField(choices=STATUS_CHOICES)
-
+    status_permintaan_protokoler = models.PositiveSmallIntegerField(choices=STATUS_CHOICES, default=1)
 
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(default=timezone.now)
-    STATUS_CHOICES = (
-          (1, 'Menunggu Persetujuan'),
-          (2, 'Disetujui'),
-          (3, 'Ditolak'),
-        )
-    status_permintaan_protokoler = models.PositiveSmallIntegerField(choices=STATUS_CHOICES, default=1)
 
     class Meta:
         app_label = 'main'
@@ -79,7 +72,6 @@ class JenisIzinPublikasi(models.Model):
 
     status_perizinan_publikasi = models.PositiveSmallIntegerField(choices=STATUS_CHOICES)
     alasan_penolakan = models.CharField(max_length=500, default=None, blank=True, null=True)
-    
 
 
 class Souvenir(models.Model):
