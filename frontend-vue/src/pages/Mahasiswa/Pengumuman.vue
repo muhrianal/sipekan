@@ -20,6 +20,15 @@
                                 </div>
                             
                             <br>
+                            <!-- Nanti for loop disini sesui length pengumuman -->
+                            <div class="card w-100">
+                                <div class="card-body">
+                                    <h5 class="card-title">Judul</h5>
+                                    <p class="card-text">isinya Lorem Ipsum apa yak gitu dah</p>
+                                    <a href="#">link download file</a>
+                                </div>
+                            </div>
+                            <br>
                             <div class="card w-100">
                                 <div class="card-body">
                                     <h5 class="card-title">Judul</h5>
@@ -51,7 +60,7 @@
 
                     </div>
                    
-                    <div class="col-12 col-md-4 border">
+                    <div class="col-12 col-md-4 border" id="kegiatanacc">
                         <div>
                             <h6 class="header-page2">Kegiatan Yang Akan Datang</h6>
                         
@@ -65,7 +74,7 @@
                             </span>
                         </div>
                         <br>
-                        <div class="table-responsive">
+                        <div class="table-responsive overflow-auto" id="listkegiatan">
                             <table class="table table-striped table-sm table-bordered">
                             <tbody id="app" class="fsmall mt-2">
                                 <tr v-for="(kegiatan) in kegiatan_disetujui" v-bind:key="kegiatan.id">
@@ -127,7 +136,6 @@ export default {
                         }
                     }
                     this.kegiatan_disetujui.shift();
-                    console.log(this.kegiatan_disetujui);
 
                 },
                 error => {
@@ -165,6 +173,14 @@ export default {
     padding: 20px 0px 20px 20px ;
 }
 
+
+#kegiatanacc{
+    height:500px;
+}
+
+#listkegiatan{
+    height:350px;
+}
 
 .header-page {
     /* padding: 15px 0px 3px 15px; */
