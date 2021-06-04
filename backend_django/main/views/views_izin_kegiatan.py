@@ -1,6 +1,6 @@
 from django.shortcuts import render, HttpResponse
 from django.contrib.auth import authenticate
-
+from django.utils import timezone
 from ..models.profile import Profile
 from django.contrib.auth.models import User
 
@@ -21,13 +21,13 @@ from ..models.humas import PermintaanSouvenir, PermintaanProtokoler, JenisIzinPu
 
 from ..serializers.humas_serializer import SouvenirSerializerSimpliest
 
-from ..serializers.izin_kegiatan_serializer import IzinKegiatanSerializerSimplified, DetailKegiatanSerializer, IzinKegiatanMahasiswaSerializer, IzinKegiatanSimpliest
+from ..serializers.izin_kegiatan_serializer import IzinKegiatanSerializerSimplified, DetailKegiatanSerializer, IzinKegiatanMahasiswaSerializer, IzinKegiatanSimpliest, IzinKegiatanMahasiswaSerializer1
 
 
 from django.http.response import JsonResponse
 
 
-@api_view(['PUT','PATCH'])
+@api_view(['PUT',])
 @permission_classes([permissions.AllowAny,])
 def update_izin_kegiatan_by_id_perizinan(request, id_perizinan):
     try:
@@ -35,35 +35,20 @@ def update_izin_kegiatan_by_id_perizinan(request, id_perizinan):
     except:
         return JsonResponse({'message': 'Izin kegiatan tidak ada'}, status=status.HTTP_404_NOT_FOUND)
 
-    if request.method == 'PATCH':
-
-        izin_data = JSONParser().parse(request) 
-        izin_kegiatan_serialized = IzinKegiatanMahasiswaSerializer(izin_kegiatan, data=izin_data)
-        
-        if izin_kegiatan_serialized.is_valid():
-            izin_kegiatan_serialized.save()
-            return JsonResponse(izin_kegiatan_serialized.data)
-
-        return JsonResponse(izin_kegiatan_serialized.errors, status=status.HTTP_400_BAD_REQUEST)
-
     if request.method == 'PUT':
+        izin_data = JSONParser().parse(request) 
         try:
-            izin_data = JSONParser().parse(request) 
-            print(izin_data)
             izin_kegiatan.status_perizinan_kegiatan = izin_data["izin_kegiatan"]["status_perizinan_kegiatan"]
             if izin_data["izin_kegiatan"]["detail_kegiatan"]["alasan_penolakan"] is not None:
                 izin_kegiatan.detail_kegiatan.alasan_penolakan = izin_data["izin_kegiatan"]["detail_kegiatan"]["alasan_penolakan"] 
+            izin_kegiatan.detail_kegiatan.updated_at = izin_data["izin_kegiatan"]["detail_kegiatan"]["updated_at"]
             izin_kegiatan.save()
-            izin_kegiatan_serialized = IzinKegiatanMahasiswaSerializer(izin_kegiatan)
+            izin_kegiatan_serialized = IzinKegiatanMahasiswaSerializer1(data=izin_kegiatan)
+            if izin_kegiatan_serialized.is_valid():
+                izin_kegiatan_serialized.save()
             return JsonResponse(izin_kegiatan_serialized.data, safe=False)
         except:
-           return JsonResponse(izin_kegiatan.errors, status=status.HTTP_400_BAD_REQUEST)
-
-        # if izin_kegiatan_serialized.is_valid():
-        #     izin_kegiatan_serialized.save()
-        #     return JsonResponse(izin_kegiatan_serialized.data)
-
-        # return JsonResponse(izin_kegiatan_serialized.errors, status=status.HTTP_400_BAD_REQUEST)  
+           return JsonResponse(izin_kegiatan.errors, status=status.HTTP_400_BAD_REQUEST)  
     
     #case for else
     return JsonResponse({'message' : 'invalid API method'}, status=status.HTTP_405_METHOD_NOT_ALLOWED) 

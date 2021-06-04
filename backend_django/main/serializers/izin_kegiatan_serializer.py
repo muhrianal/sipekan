@@ -185,3 +185,11 @@ class IzinKegiatanSimpliest(serializers.ModelSerializer):
     class Meta:
         model = IzinKegiatan
         fields = ('nama_kegiatan', 'status_perizinan_kegiatan', 'detail_kegiatan')
+
+class IzinKegiatanMahasiswaSerializer1(serializers.ModelSerializer):
+    detail_kegiatan = DetailKegiatanMahasiswaSerializer()
+    user = UserSerializer()
+    
+    class Meta:
+        model = IzinKegiatan
+        fields = ('id','nama_kegiatan', 'organisasi', 'user', 'status_perizinan_kegiatan','detail_kegiatan')

@@ -225,10 +225,11 @@ export default {
         putSetuju() {
             
             console.log("test");
+            const date = moment(new Date(), "YYYY-MM-DDTHH:mm").format("YYYY-MM-DDTHH:mm")
             const data_put = {
                 izin_kegiatan: {
-                    status_perizinan_kegiatan: 2,
-                    detail_kegiatan: {alasan_penolakan:''}
+                    "status_perizinan_kegiatan": 2,
+                    "detail_kegiatan": {"alasan_penolakan":'', "updated_at": String(date)}
                 },
             };
             console.log(data_put);
@@ -249,10 +250,11 @@ export default {
         putTolak() {
             $('#popup-penolakan').modal('hide')
             console.log("test");
+            const date = moment(new Date(), "YYYY-MM-DDTHH:mm").format("YYYY-MM-DDTHH:mm")
             const data_put = {
-                izin_kegiatan: {
+                izin_kegiatan: { 
                     status_perizinan_kegiatan: 3,
-                    detail_kegiatan: {alasan_penolakan : this.alasan_penolakan}
+                    detail_kegiatan: {alasan_penolakan : this.alasan_penolakan, updated_at: String(date)}
                 },
             };
             console.log(data_put);
@@ -275,7 +277,7 @@ export default {
         },
         refreshPage(){
             location.reload()
-        }
+        },
     },
 }
 </script>
