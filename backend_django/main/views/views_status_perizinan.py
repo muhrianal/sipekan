@@ -40,6 +40,8 @@ def list_perizinan(request):
     }
     return Response(data=data, status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(['GET', 'PUT'])
+@permission_classes([permissions.AllowAny,])
 def detail_perizinan(request,pk):
     try:
         perizinan = IzinKegiatan.objects.get(pk=pk)
@@ -52,6 +54,13 @@ def detail_perizinan(request,pk):
     data = {
             'message' : 'invalid API call'
         }
+    # elif request.method == 'PUT':
+    #         perizinan_data = JSONParser().parse(request)
+    #         perizinan_serializer = IzinKegiatanSerializer(perizinan, data=perizinan_data)
+    #         if perizinan_serializer.is_valid():
+    #             perizinan_serializer.save()
+    #             return JsonResponse(perizinan_serializer.data)
+    #         return JsonResponse(perizinan_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     return Response(data=data, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET'])

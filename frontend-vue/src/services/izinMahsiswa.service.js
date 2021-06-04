@@ -33,8 +33,6 @@ class IzinMahasiswaService {
     getRuangan(){
         return axios.get(API_URL + 'api/ruangan/');
     }
-
-    
   
 }
 

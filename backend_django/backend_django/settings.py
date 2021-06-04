@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'corsheaders',
+    'django_cas_ng',
 
     #add your app below
     'main',
@@ -148,7 +149,11 @@ STATIC_URL = '/static/'
 CORS_ALLOW_ALL_ORIGINS = False
 CORS_EXPOSE_HEADERS = ["Content-Disposition", "Access-Control-Allow-Origin"]
 
+CORS_ALLOW_CREDENTIALS = True
+
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:8081",
     "http://localhost:8080",
+    "http://192.168.43.145:8080",
+    "http://192.168.43.145:8081",
 ]

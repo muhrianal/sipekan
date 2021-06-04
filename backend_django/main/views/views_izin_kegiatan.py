@@ -75,7 +75,9 @@ def list_izin_kegiatan(request):
         'message' : 'invalid API call'
     }
     return Response(data=data, status=status.HTTP_400_BAD_REQUEST)
-    
+
+@api_view(['GET'])
+@permission_classes([permissions.AllowAny,])  
 def detail_izin_kegiatan(request,pk):
     try:
         izin_kegiatan = IzinKegiatan.objects.get(pk=pk)
@@ -169,3 +171,4 @@ def get_list_souvenir_simple(request):
     
     #case for else
     return JsonResponse({'message' : 'invalid API method'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+

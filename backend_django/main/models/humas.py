@@ -41,6 +41,7 @@ class PerizinanPublikasi(models.Model):
     )
     tanggal_mulai = models.DateField()
     tanggal_akhir = models.DateField()
+
     
     keterangan = models.CharField(max_length=500, default=None, blank=True, null=True)
     file_materi_kegiatan = models.FileField(upload_to='file_materi_kegiatan', blank=True)
@@ -73,8 +74,6 @@ class JenisIzinPublikasi(models.Model):
     status_perizinan_publikasi = models.PositiveSmallIntegerField(choices=STATUS_CHOICES)
     alasan_penolakan = models.CharField(max_length=500, default=None, blank=True, null=True)
 
-
-
 class Souvenir(models.Model):
     nama_souvenir = models.CharField(max_length=255)
     
@@ -99,8 +98,8 @@ class Souvenir(models.Model):
     
     stok = models.IntegerField()
     stok_minimum = models.IntegerField(default=1)
-    tanggal_masuk = models.DateField(default=None,blank=True, null=True)
-    keterangan = models.CharField(max_length=500, default=None,blank=True,null=True)
+    tanggal_masuk = models.DateField(default=None, blank=True, null=True)
+    keterangan = models.CharField(max_length=500, default=None, blank=True, null=True)
 
     class Meta:
         app_label = 'main'

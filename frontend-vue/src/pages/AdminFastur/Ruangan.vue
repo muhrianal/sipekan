@@ -25,12 +25,12 @@
       <tbody id="app" style="font-weight=300;">
         <tr v-for="(ruang, index) in ruangan" v-bind:key="ruang.id">
             <th scope="row" class="text-center" >{{ index+1+"." }} </th>
-            <td>{{ ruang.nama }}</td>
-            <td v-if="ruang.jenis_ruang==1">Ruang Pertemuan</td>
-            <td v-if="ruang.jenis_ruang==2">Ruang Kelas</td>
-            <td v-if="ruang.jenis_ruang==3">Ruang Rapat</td>
-            <td v-if="ruang.jenis_ruang==4">Ruang Selasar</td>
-            <td>{{ ruang.lokasi }}</td>
+            <td class="text-center">{{ ruang.nama }}</td>
+            <td class="text-center" v-if="ruang.jenis_ruang==1">Ruang Pertemuan</td>
+            <td class="text-center" v-if="ruang.jenis_ruang==2">Ruang Kelas</td>
+            <td class="text-center" v-if="ruang.jenis_ruang==3">Ruang Rapat</td>
+            <td class="text-center" v-if="ruang.jenis_ruang==4">Ruang Selasar</td>
+            <td class="text-center">{{ ruang.lokasi }}</td>
             <td class="text-center">{{ ruang.kapasitas }}</td>
             <td><a :href="'/ruangan/'+ruang.id">Detail</a></td>
         </tr>
