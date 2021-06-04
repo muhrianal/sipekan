@@ -23,8 +23,8 @@ import AddSouvenir from '../pages/AdminHumas/AddSouvenir';
 import UbahSouvenir from '../pages/AdminHumas/UbahSouvenir';
 import UbahPermintaanProtokoler from '../pages/Mahasiswa/UbahPermintaanProtokoler';
 import DaftarPerizinanHumas from '../pages/AdminHumas/DaftarPerizinanHumas';
-import DetailPerizinanHumas from '../pages/AdminHumas/DetailPerizinanHumas'
-
+import DetailPerizinanHumas from '../pages/AdminHumas/DetailPerizinanHumas';
+import DetailKegiatan from '../pages/Mahasiswa/DetailKegiatan';
 
 
 const routes = [
@@ -151,6 +151,11 @@ const routes = [
     path:"/perizinan-humas",
     name:"DaftarPerizinanHumas",
     component: DaftarPerizinanHumas,
+  },
+  {
+    path:"/detail-kegiatan/:id",
+    name:"DetailKegiatan",
+    component: DetailKegiatan,
   },
 ];
 

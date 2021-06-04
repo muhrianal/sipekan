@@ -140,6 +140,13 @@
         </tr>
       </tbody>
     </table>
+    <div class="d-flex bd-highlight">
+  <div class="p-2 flex-grow-1 bd-highlight"></div>
+  <div class="p-2 bd-highlight"></div>
+  <div class="p-2 bd-highlight">        <a class="ml-auto" :href="'/detail-kegiatan/' + perizinan.id"> Detail Izin Kegiatan>></a>
+</div>
+</div>
+
     </div>
     </div>
 
