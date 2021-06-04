@@ -96,9 +96,9 @@
                         <label>Sumber Pendanaan</label>
                         <input type="text" class="form-control" :placeholder="izin_kegiatan.detail_kegiatan.sumber_pendanaan" readonly>
                     </div>
-                    <div class="col-12 col-md-6 px-4 py-2">
+                    <div v-if="this.izin_kegiatan.detail_kegiatan.file_info_kegiatan != null" class="col-12 col-md-6 px-4 py-2">
                         <label>Dokumen</label>
-                        <input type="text" class="form-control" :placeholder="izin_kegiatan.detail_kegiatan.file_info_kegiatan" readonly>
+                        <div ><a  :href="'http://localhost:8000'+this.izin_kegiatan.detail_kegiatan.file_info_kegiatan" :download="this.izin_kegiatan.detail_kegiatan.file_info_kegiatan">{{this.izin_kegiatan.detail_kegiatan.file_info_kegiatan}}</a></div>
                     </div>
                 </div>
 
@@ -331,8 +331,5 @@ label {
 }
 input, select{
     border-radius: 10px !important;
-}
-*{
-    font-weight: bold !important;
 }
 </style>

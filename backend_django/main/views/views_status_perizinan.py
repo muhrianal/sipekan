@@ -23,7 +23,7 @@ from ..models.izin_kegiatan import IzinKegiatan
 
 from ..serializers.peminjaman_ruangan_serializer import PeminjamanRuanganSerializer, RuanganSerializer
 
-from..serializers.izin_kegiatan_serializer import IzinKegiatanSerializer, DetailKegiatanSerializer
+from..serializers.izin_kegiatan_serializer import IzinKegiatanSerializer, DetailKegiatanSerializer, IzinKegiatanSerializerDetailed
 from django.http.response import JsonResponse
 
 @api_view(['GET'])
@@ -54,3 +54,16 @@ def detail_perizinan(request,pk):
         }
     return Response(data=data, status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(['GET'])
+@permission_classes([permissions.AllowAny,])
+def list_perizinan_detailed(request):
+    if request.method == 'GET':
+        list_izin_kegiatan = IzinKegiatan.objects.all()
+        izin_kegiatan_serialized = IzinKegiatanSerializerDetailed(list_izin_kegiatan, many=True)
+        return JsonResponse(izin_kegiatan_serialized.data, safe=False)
+
+    #case for else
+    data = {
+        'message' : 'invalid API call'
+    }
+    return Response(data=data, status=status.HTTP_400_BAD_REQUEST)

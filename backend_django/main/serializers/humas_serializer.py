@@ -61,5 +61,8 @@ class PerizinanKegiatanSerializer(serializers.ModelSerializer):
         
         return izin_kegiatan    
 
-    
+class SouvenirSerializerSimpliest(serializers.ModelSerializer):
+    class Meta:
+        model = Souvenir
+        fields = ('stok', 'stok_minimum')
 

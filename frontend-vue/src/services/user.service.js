@@ -70,6 +70,31 @@ class UserService {
     putPeminjamanRuangan(id,data) {
         return axios.get(API_URL + 'api/peminjaman-ruangan/update/'+id+'/',data)
     }
-}
 
+    getWaitingPKM(id,data) {
+        return axios.get(API_URL + 'izin-kegiatan-waiting/',data)
+    }
+
+    getVerifiedPKM(id,data) {
+        return axios.get(API_URL + 'izin-kegiatan-disetujui/',data)
+    }
+    getRuanganDetailed(){
+        return axios.get(API_URL + 'izin-kegiatan-detailed/')
+    }
+    getChartDisetujui(){
+        return axios.get(API_URL + 'chart/kegiatan-disetujui/')
+    }
+    getChartDitolak(){
+        return axios.get(API_URL + 'chart/kegiatan-ditolak/')
+    }
+    getChartMenunggu(){
+        return axios.get(API_URL + 'chart/kegiatan-menunggu/')
+    }
+    getWaitingHumas(){
+        return axios.get(API_URL + 'perizinan-humas-disetujui/')
+    }
+    getStokSouvenir(){
+        return axios.get(API_URL + 'stok-souvenir/')
+    }
+}
 export default new UserService();

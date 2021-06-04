@@ -17,7 +17,11 @@ from ..permissions import AllowOnlyAdminFASTUR, AllowOnlyAdminHUMAS, AllowOnlyAd
 
 from ..models.izin_kegiatan import DetailKegiatan, IzinKegiatan
 
-from ..serializers.izin_kegiatan_serializer import IzinKegiatanSerializerSimplified, DetailKegiatanSerializer, IzinKegiatanMahasiswaSerializer
+from ..models.humas import PermintaanSouvenir, PermintaanProtokoler, JenisIzinPublikasi, Souvenir
+
+from ..serializers.humas_serializer import SouvenirSerializerSimpliest
+
+from ..serializers.izin_kegiatan_serializer import IzinKegiatanSerializerSimplified, DetailKegiatanSerializer, IzinKegiatanMahasiswaSerializer, IzinKegiatanSimpliest
 
 
 from django.http.response import JsonResponse
@@ -54,11 +58,7 @@ def update_izin_kegiatan_by_id_perizinan(request, id_perizinan):
             return JsonResponse(izin_kegiatan_serialized.data, safe=False)
         except:
            return JsonResponse(izin_kegiatan.errors, status=status.HTTP_400_BAD_REQUEST)
-           
-        return JsonResponse(izin_kegiatan.errors, status=status.HTTP_400_BAD_REQUEST)
-        
-        
-        
+
         # if izin_kegiatan_serialized.is_valid():
         #     izin_kegiatan_serialized.save()
         #     return JsonResponse(izin_kegiatan_serialized.data)
@@ -81,7 +81,7 @@ def list_izin_kegiatan(request):
         return JsonResponse( izin_kegiatan_serialized.errors, status=status.HTTP_400_BAD_REQUEST)
 
     if request.method == 'GET':
-        list_izin_kegiatan = IzinKegiatan.objects.filter(user__profile__role = 'MAHASISWA')
+        list_izin_kegiatan = IzinKegiatan.objects.all()
         izin_kegiatan_serialized = IzinKegiatanMahasiswaSerializer(list_izin_kegiatan, many=True)
         return JsonResponse(izin_kegiatan_serialized.data, safe=False)
     
@@ -104,3 +104,83 @@ def detail_izin_kegiatan(request,pk):
             'message' : 'invalid API call'
         }
     return Response(data=data, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET',])
+@permission_classes([permissions.AllowAny,])
+def get_list_perizinan_PKM(request):
+    if request.method == 'GET':
+        list_izin_kegiatan = IzinKegiatan.objects.filter(status_perizinan_kegiatan=1)
+        list_izin_kegiatan_serialized = IzinKegiatanMahasiswaSerializer(list_izin_kegiatan, many=True)
+        return JsonResponse(list_izin_kegiatan_serialized.data, safe=False)
+    
+    #case for else
+    return JsonResponse({'message' : 'invalid API method'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+@api_view(['GET',])
+@permission_classes([permissions.AllowAny,])
+def get_list_perizinan_PKM_Verified(request):
+    if request.method == 'GET':
+        list_izin_kegiatan = IzinKegiatan.objects.filter(status_perizinan_kegiatan=2)
+        list_izin_kegiatan_serialized = IzinKegiatanMahasiswaSerializer(list_izin_kegiatan, many=True)
+        return JsonResponse(list_izin_kegiatan_serialized.data, safe=False)
+    
+    #case for else
+    return JsonResponse({'message' : 'invalid API method'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+@api_view(['GET',])
+@permission_classes([permissions.AllowAny,])
+def get_list_perizinan_PKM_Verified_Simplified(request):
+    if request.method == 'GET':
+        list_izin_kegiatan = IzinKegiatan.objects.filter(status_perizinan_kegiatan=2)
+        list_izin_kegiatan_serialized = IzinKegiatanSimpliest(list_izin_kegiatan, many=True)
+        return JsonResponse(list_izin_kegiatan_serialized.data, safe=False)
+    
+    #case for else
+    return JsonResponse({'message' : 'invalid API method'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+@api_view(['GET',])
+@permission_classes([permissions.AllowAny,])
+def get_list_perizinan_PKM_Denied_Simplified(request):
+    if request.method == 'GET':
+        list_izin_kegiatan = IzinKegiatan.objects.filter(status_perizinan_kegiatan=3)
+        list_izin_kegiatan_serialized = IzinKegiatanSimpliest(list_izin_kegiatan, many=True)
+        return JsonResponse(list_izin_kegiatan_serialized.data, safe=False)
+    
+    #case for else
+    return JsonResponse({'message' : 'invalid API method'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+@api_view(['GET',])
+@permission_classes([permissions.AllowAny,])
+def get_list_perizinan_PKM_Waiting_Simplified(request):
+    if request.method == 'GET':
+        list_izin_kegiatan = IzinKegiatan.objects.filter(status_perizinan_kegiatan=1)
+        list_izin_kegiatan_serialized = IzinKegiatanSimpliest(list_izin_kegiatan, many=True)
+        return JsonResponse(list_izin_kegiatan_serialized.data, safe=False)
+    
+    #case for else
+    return JsonResponse({'message' : 'invalid API method'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+@api_view(['GET',])
+@permission_classes([permissions.AllowAny,])
+def get_list_perizinan_Humas_Waiting_Simplified(request):
+    if request.method == 'GET':
+        list_perizinan_publikasi= JenisIzinPublikasi.objects.filter(status_perizinan_publikasi=1)
+        list_permintaan_souvenir = PermintaanSouvenir.objects.filter(status_permintaan_souvenir=1)
+        list_permintaan_protokoler = PermintaanProtokoler.objects.filter(status_permintaan_protokoler=1)
+        panjang = len(list_perizinan_publikasi) + len(list_permintaan_souvenir) + len(list_permintaan_protokoler)
+        return JsonResponse({'length': panjang}, safe=False)
+    
+    #case for else
+    return JsonResponse({'message' : 'invalid API method'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+@api_view(['GET',])
+@permission_classes([permissions.AllowAny,])
+def get_list_souvenir_simple(request):
+    if request.method == 'GET':
+        list_souvenir = Souvenir.objects.all()
+        list_souvenir_serialized = SouvenirSerializerSimpliest(list_souvenir, many=True)
+
+        return JsonResponse(list_souvenir_serialized.data, safe=False)
+    
+    #case for else
+    return JsonResponse({'message' : 'invalid API method'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)

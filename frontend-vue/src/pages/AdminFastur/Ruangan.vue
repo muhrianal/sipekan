@@ -96,9 +96,6 @@ export default {
 .judul{
     color: #FFD505;
 }
-*{
-    font-weight: bold !important;
-}
 h4{
     margin-bottom:0px;
 }
