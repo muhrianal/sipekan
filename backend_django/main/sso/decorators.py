@@ -12,8 +12,9 @@ def with_sso_ui(force_login=True):
             service_url = get_service_url(request)
             client = get_cas_client(service_url)
             login_url = client.get_login_url()
-
+            
             ticket = request.GET.get("ticket")
+            
             if ticket:
                 sso_profile = authenticate(ticket, client)
 

@@ -11,6 +11,7 @@
                     <div class="col-12 col-md-6">
                         <label for="exampleFormControlSelect1">Ruangan*:</label>
                         <select class="form-control" id="exampleFormControlSelect1" v-model="ruang" @change="cari(ruang)" >
+
                             <option v-for="ruang in ruangan" v-bind:key="ruang.id" :value="ruang.id">{{ruang.nama}}</option>
                         </select>
 
@@ -83,11 +84,12 @@ export default {
         return { showDate: this.thisMonth(1),
             status: "aktif",
             ruangan: [],
-			selectionStart: null,
-			selectionEnd: null,
+			      selectionStart: null,
+			      selectionEnd: null,
             displayPeriodUom: "month",
-			theme: "gcal",
+			      theme: "gcal",
             items: [],
+
             }
         },
 
@@ -177,7 +179,6 @@ export default {
                 return 30;
             }
         },
-       
         cari(ruang){
             UserService.getJadwalPeminjamanRuangan().then (
                 response => {
@@ -240,6 +241,10 @@ export default {
                 }
             )
         },
+
+        daftar_kegiatan(data){
+            console.log(data);
+        }
     },
 	}
 </script>

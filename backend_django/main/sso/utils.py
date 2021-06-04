@@ -59,7 +59,7 @@ def get_additional_info(kd_org):
     return None
 
 
-def get_logout_url(request):
-    service_url = get_service_url(request)
-    client = get_cas_client(service_url)
-    return client.get_logout_url()
+# def get_logout_url(request):
+#     service_url = get_service_url(request)
+#     client = get_cas_client(service_url)
+#     return client.get_logout_url()

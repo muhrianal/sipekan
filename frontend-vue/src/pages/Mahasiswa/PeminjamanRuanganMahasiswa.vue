@@ -7,82 +7,88 @@
         <div class="formulir">
             <form v-on:submit.prevent="submitPost">
                 <div v-for="peminjaman in number_of_peminjaman" v-bind:key="peminjaman">
-                <hr v-if="peminjaman>1" >
-                <div class="text-right">
-                    <button type="button" class="btn btn-outline-danger" id="button-hapus" @click="deleteRow(peminjaman - 1)" v-if="peminjaman > 1">Hapus</button>
-                </div>
-                <div class="form-row">
-                    <div class="col-12 col-md-6 px-4 py-2">
-                        <label for="inputSubkegiatan">Nama Subkegiatan<span class="asterisk">*</span></label>
-                        <input type="text" class="form-control" placeholder="e.g. Administrasi Bisnis - B" v-model="list_peminjaman_ruangan[peminjaman-1].judul_peminjaman" required>
+                    <hr v-if="peminjaman>1" >
+                    <div class="text-right">
+                        <button type="button" class="btn btn-outline-danger" id="button-hapus" @click="deleteRow(peminjaman - 1)" v-if="peminjaman > 1">Hapus</button>
                     </div>
-                    <div class="col-12 col-md-6 px-4 py-2">
-                        <label for="inputJumlahPeserta">Jumlah Peserta<span class="asterisk">*</span></label>
-                        <input type="number" class="form-control" placeholder="e.g. 120" v-model="list_peminjaman_ruangan[peminjaman-1].jumlah_peserta" required>
-                    </div>  
-                </div>
-                <div class="form-row">
-                    <div class="col-12 col-md-6 px-4 py-2">
-                        <label for="waktuMulaiPeminjaman">Waktu mulai<span class="asterisk">*</span></label>
-                        <select class="form-control" id="waktuMulaiPeminjaman" v-model="list_peminjaman_ruangan[peminjaman-1].waktu_mulai" required>
-                            <option selected disabled value="">Pilih...</option>
-                                <option v-for="option in option_waktu" v-bind:key="option" v-bind:value="option.value">{{option.text}}</option>
-                        </select>
+                    <div class="form-row">
+                        <div class="col-12 col-md-6 px-4 py-2">
+                            <label for="inputSubkegiatan">Nama Kegiatan / Subkegiatan<span class="asterisk">*</span></label>
+                            <input type="text" class="form-control" placeholder="e.g. Grand Opening" v-model="list_peminjaman_ruangan[peminjaman-1].judul_peminjaman" required>
+                        </div>
+                        <div class="col-12 col-md-6 px-4 py-2">
+                            <label for="inputJumlahPeserta">Jumlah Peserta<span class="asterisk">*</span></label>
+                            <input type="number" class="form-control" placeholder="e.g. 120" v-model="list_peminjaman_ruangan[peminjaman-1].jumlah_peserta" required>
+                        </div>  
                     </div>
-                    <div class="col-12 col-md-6 px-4 py-2">
-                        <label for="waktuAkhirPeminjaman">Waktu akhir<span class="asterisk">*</span></label>
-                        <select class="form-control" id="waktuAkhirPeminjaman" v-model="list_peminjaman_ruangan[peminjaman-1].waktu_akhir" required>
-                            <option selected disabled value="">Pilih...</option>
-                                <option v-for="option in option_waktu" v-bind:key="option" v-bind:value="option.value">{{option.text}}</option>
+                    <div class="form-row">
+                        <div class="col-12 col-md-6 px-4 py-2">
+                            <label for="ruangan">Ruangan<span class="asterisk">*</span></label>
+                            <select class="form-control" id="daftar-ruangan" v-model="list_peminjaman_ruangan[peminjaman-1].ruangan" required>
+                                <option selected disabled value="">Pilih...</option>
+                                <option v-for="pilihan_ruangan in list_ruangan" v-bind:key="pilihan_ruangan.id" :value="pilihan_ruangan.id">{{pilihan_ruangan.nama}}</option>
+                            </select>
+                            <p class="note-ruangan note-form text-right">Lihat daftar ruangan <span @click="this.toRuanganPage()" class="text-primary note-field">disini</span> </p>
+                        </div>
+                        <div class="col-12 col-md-6 px-4 py-2">
+                            <label for="perulangan">Perulangan<span class="asterisk">*</span></label>
+                            <select class="form-control" id="perulangan" v-model="list_perulangan[peminjaman-1].jenjang" required>
+                                <option selected disabled value="">Pilih...</option>
+                                <option value=1>SEKALI PAKAI</option>
+                                <option value=2>HARIAN</option>
+                                <option value=3>MINGGUAN</option>
+                                <option value=4>BULANAN</option>
                         </select>
-                    </div>  
-                </div>
-                <div class="form-row">
-                    <div class="col-12 col-md-6 px-4 py-2">
-                        <label for="ruangan">Ruangan<span class="asterisk">*</span></label>
-                        <select class="form-control" id="daftar-ruangan" v-model="list_peminjaman_ruangan[peminjaman-1].ruangan" required>
-                            <option selected disabled value="">Pilih...</option>
-                            <option v-for="pilihan_ruangan in list_ruangan" v-bind:key="pilihan_ruangan.id" :value="pilihan_ruangan.id">{{pilihan_ruangan.nama}}</option>
-                        </select>
-                        <p class="note-ruangan note-form text-right">Lihat daftar ruangan <a href="#">disini</a> </p>
-                        <label for="perulangan">Perulangan<span class="asterisk">*</span></label>
-                        <select class="form-control" id="perulangan" v-model="list_perulangan[peminjaman-1].jenjang" required>
-                            <option selected disabled value="">Pilih...</option>
-                            <option value=1>SEKALI PAKAI</option>
-                            <option value=2>HARIAN</option>
-                            <option value=3>MINGGUAN</option>
-                            <option value=4>BULANAN</option>
-                        </select>
-                    </div>
-
-                    <div class="col-12 col-md-6 px-4 py-2">
-                        <label for="keterangan">Keterangan</label>
-                        <textarea class="form-control" id="textarea-keterangan" rows="4" v-model="list_peminjaman_ruangan[peminjaman-1].catatan" placeholder="e.g. Fasilitas yang akan digunakan"></textarea>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="col-12 col-md-6 px-4 py-2">
-                        <label for="tanggalMulaiPelaksanaan">Tanggal Mulai Pelaksanaan<span class="asterisk">*</span></label>
-                        <input type="date" class="form-control" v-model="list_perulangan[peminjaman -1].tanggal_mulai" required>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" v-model="list_peminjaman_ruangan[peminjaman-1].terbuka_untuk_umum" id="checkbox-terbuka-untuk-umum">
-                            <label class="form-check-label" for="flexCheckDefault">
-                                Terbuka untuk umum
-                            </label>
                         </div>
                     </div>
-                    <div class="col-12 col-md-6 px-4 py-2">
-                        <label for="tanggalAkhirPelaksanaan">Tanggal Akhir Pelaksanaan<span class="asterisk">*</span></label>
-                        <input type="date" class="form-control" v-model="list_perulangan[peminjaman -1].tanggal_akhir" required>
-                        <p class="note-form">isi dengan tanggal yang sama dengan tanggal mulai pelaksanaan jika memilih "sekali pakai"</p>
-                    </div>  
-                </div>
+                    <div class="form-row">
+                        <div class="col-12 col-md-6 px-4 py-2">
+                            <label for="tanggalMulaiPelaksanaan">Tanggal Mulai Pelaksanaan<span class="asterisk">*</span></label>
+                            <input type="date" class="form-control" v-model="list_perulangan[peminjaman -1].tanggal_mulai" :min="maxDate" required>                        
+                        </div>
+                        <div class="col-12 col-md-6 px-4 py-2">
+                            <label for="tanggalAkhirPelaksanaan">Tanggal Akhir Pelaksanaan<span class="asterisk">*</span></label>
+                            <input type="date" class="form-control" v-model="list_perulangan[peminjaman -1].tanggal_akhir" :min="maxDate" required>
+                            <p class="note-form">isi dengan tanggal yang sama dengan tanggal mulai pelaksanaan jika memilih "sekali pakai"</p>
+                        </div>  
                     </div>
-                    <div class="text-center">
-                        <button @click="addRow" type="button" class="btn tambah-ruangan btn-outline-secondary">Tambah Ruangan</button>
-                    </div> 
+                    <div class="form-row">
+                        <div class="col-12 col-md-6 px-4 py-2">
+                            <label for="waktuMulaiPeminjaman">Waktu mulai<span class="asterisk">*</span></label>
+                            <select class="form-control" id="waktuMulaiPeminjaman" v-model="list_peminjaman_ruangan[peminjaman-1].waktu_mulai" required>
+                                <option selected disabled value="">Pilih...</option>
+                                    <option v-for="option in option_waktu" v-bind:key="option" v-bind:value="option.value">{{option.text}}</option>
+                            </select>
+                        </div>
+                        <div class="col-12 col-md-6 px-4 py-2">
+                            <label for="waktuAkhirPeminjaman">Waktu akhir<span class="asterisk">*</span></label>
+                            <select class="form-control" id="waktuAkhirPeminjaman" v-model="list_peminjaman_ruangan[peminjaman-1].waktu_akhir" required>
+                                <option selected disabled value="">Pilih...</option>
+                                    <option v-for="option in option_waktu" v-bind:key="option" v-bind:value="option.value">{{option.text}}</option>
+                            </select>
+                        </div>  
+                    </div>
+                    <div class="form-row">
+                        <div class="col-12 col-md-6 px-4 py-2">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" v-model="list_peminjaman_ruangan[peminjaman-1].terbuka_untuk_umum" id="checkbox-terbuka-untuk-umum">
+                                <label class="form-check-label" for="flexCheckDefault">
+                                    Terbuka untuk umum
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-6 px-4 py-2">
+                            <label for="keterangan">Keterangan</label>
+                            <textarea class="form-control" id="textarea-keterangan" rows="4" v-model="list_peminjaman_ruangan[peminjaman-1].catatan" placeholder="e.g. Fasilitas yang akan digunakan"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <button @click="addRow" type="button" class="btn tambah-ruangan btn-outline-secondary">Tambah Ruangan</button>
+                </div> 
                 <div class="text-right">
-                    <button  type="button" class="btn btn-outline-danger rounded" @Click="batalPeminjaman" id="button-batal"> Batal Mengajukan Peminjaman</button>
+                    <button  type="button" class="btn btn-outline-danger rounded" @Click="cancelPeminjaman" id="button-batal"> Batal Mengajukan Peminjaman</button>
                     <input class="btn btn-success btn-simpan" type=submit value="Simpan">
                 </div>
             </form>
@@ -133,8 +139,9 @@
 <script>
 import Perulangan from '../../models/perulangan';
 import PeminjamanRuangan from '../../models/peminjaman_ruangan';
-import IzinMahasiswaService from '../../services/izinMahasiswa.service';
+import UserService from '../../services/user.service';
 import $ from 'jquery';
+// import User from '../../models/user';
 
 export default {
     name: 'PeminjamanRuanganMahasiswa',
@@ -143,6 +150,7 @@ export default {
             list_ruangan: [],
             terbuka_untuk_umum: false,
             option_waktu : [],
+            maxDate:'',
             number_of_peminjaman : 1,
             list_perulangan : [new Perulangan(null, "", "")],
             list_peminjaman_ruangan : [new PeminjamanRuangan("", "", "", "", "", "", false),],
@@ -156,25 +164,23 @@ export default {
             pesan_body:'',
         } 
     },
-    created(){
-        
+    created(){      
         this.id_izin_kegiatan =  this.$route.params.id_izin_kegiatan
         this.kebutuhan = this.$route.params.kebutuhan
-        console.log('the response ' + this.$route.params.id_izin_kegiatan)
-        console.log('kebutuhan '+ this.$route.params.kebutuhan)
-        IzinMahasiswaService.getRuangan().then(
+        UserService.getAllRuangan().then(
             response =>{
-                this.list_ruangan = response.data
+                let list_ruangan_aktif = []
+                response.data.forEach(function(ruangan){
+                    if(ruangan.status == 1){
+                            list_ruangan_aktif.push(ruangan)
+                        }
+                })
+                this.list_ruangan = list_ruangan_aktif
             },
             error => {
                 this.error_call_api = (error.response && error.response.data) || error.message || error.toString();
             }
         )
-    },
-    computed: {
-        getUserId(){
-            return this.$store.state.auth.user.id_user;
-        },
     },
     methods: {
         addRow(){
@@ -191,7 +197,7 @@ export default {
         onCloseModal(id){
             $(id).modal('hide')
         },
-        batalPeminjaman(){
+        cancelPeminjaman(){
             this.pesan_body = "Anda telah membatalkan pengajuan peminjaman ruangan" 
              if(this.kebutuhan.length >1){
                         this.pesan_button = "Ke halaman perizinan humas"
@@ -202,45 +208,70 @@ export default {
                         this.pesan_button = "OK"
                         this.path_selanjutnya = '/'
             }
-             $('#notification-success').modal('show')
+            console.log("masuk")
+            $('#notification-success').modal('show')
+        },
+        toRuanganPage(){
+            window.open("https://sipekan.herokuapp.com/ruangan","_blank")
+        },
+        checkDate(){
+            console.log("masuk")
+            let tanggal_akhir;
+            let tanggal_mulai;
+            let passed = true
+            for (let i = 0; i < this.number_of_peminjaman; i++){
+                tanggal_mulai = new Date(this.list_perulangan[i].tanggal_mulai)
+                tanggal_akhir = new Date(this.list_perulangan[i].tanggal_akhir)
+                if(tanggal_akhir<tanggal_mulai){
+                    this.error_message = "Tanggal yang Anda masukkan salah. Tanggal mulai pelaksanaan harus lebih dulu dari tanggal akhir pelaksanaan"
+                    $('#notification-failed').modal('show')
+                    passed = false
+                    i = this.number_of_peminjaman
+                }else if(this.list_peminjaman_ruangan[i].waktu_akhir < this.list_peminjaman_ruangan[i].waktu_mulai){
+                    this.error_message = "Waktu yang Anda masukkan salah. Waktu mulai pelaksanaan harus lebih dulu dari tanggal akhir pelaksanaan"
+                    $('#notification-failed').modal('show')
+                    passed = false
+                    i = this.number_of_peminjaman
+                }
+            }
+            return passed
+
         },
         submitPost(){
-            // console.log(this.izin_kegiatan)
-            console.log(this.list_peminjaman_ruangan)
-            console.log(this.list_perulangan)
-            let i;
-            for (i = 0; i < this.number_of_peminjaman; i++){
-                this.list_peminjaman_ruangan[i].setPerulangan(this.list_perulangan[i])
-            }
-            const data ={
-                id : this.id_izin_kegiatan,
-                peminjaman_ruangan : this.list_peminjaman_ruangan
-            }
-            // this.izin_kegiatan.setPeminjamanRuangan(this.list_peminjaman_ruangan)
-            // this.izin_kegiatan.setUser(1)
-            console.log(data)
-            IzinMahasiswaService.postPeminjamanRuanganMahasiswa(this.id_izin_kegiatan,data).then(
-                response => {
-                    console.log(response.data);
-                    if(this.kebutuhan.length>0){
-                        this.pesan_button = "Ke halaman perizinan humas"
-                        this.path_selanjutnya = '/buat-perizinan/form-humas'
-                        this.nama_path = 'Form Permohonan Humas Mahasiswa'
-                        this.params_path = {id_izin_kegiatan:this.id_izin_kegiatan, kebutuhan: this.kebutuhan}
-                        this.pesan_body = "Peminjaman ruangan berhasil"
-                    }else{
-                        this.pesan_button = "OK"
-                        this.path_selanjutnya = '/'
-                        this.pesan_body = "Peminjaman ruangan berhasil"
-                    }
-                     $('#notification-success').modal('show')
-                },
-                error => {
-                    console.log(error.message);
-                    this.error_message = error.message
-                    $('#notification-failed').modal('show')
+            if(this.checkDate()){
+                let i;
+                for (i = 0; i < this.number_of_peminjaman; i++){
+                    this.list_peminjaman_ruangan[i].setPerulangan(this.list_perulangan[i])
                 }
-            )
+                const data ={
+                    id : this.id_izin_kegiatan,
+                    peminjaman_ruangan : this.list_peminjaman_ruangan
+                }
+                // this.izin_kegiatan.setUser(1)
+                console.log(data)
+                UserService.postPeminjamanRuanganMahasiswa(this.id_izin_kegiatan,data).then(
+                    response => {
+                        console.log(response.data);
+                        if(this.kebutuhan.length>1){
+                            this.pesan_button = "Ke halaman perizinan humas"
+                            this.path_selanjutnya = '/buat-perizinan/form-humas'
+                            this.nama_path = 'Form Permohonan Humas Mahasiswa'
+                            this.params_path = {id_izin_kegiatan:this.id_izin_kegiatan, kebutuhan: this.kebutuhan}
+                            this.pesan_body = "Peminjaman ruangan berhasil"
+                        }else{
+                            this.pesan_button = "OK"
+                            this.path_selanjutnya = '/perizinan'
+                            this.pesan_body = "Peminjaman ruangan berhasil"
+                        }
+                        $('#notification-success').modal('show')
+                    },
+                    error => {
+                        console.log(error.message);
+                        this.error_message = error.message
+                        $('#notification-failed').modal('show')
+                    }
+                )
+            }
         }
     },
     mounted(){
@@ -269,9 +300,21 @@ export default {
             }
         }
         this.option_waktu = option_waktu_made;
+
+        //create minimum date 
+        var dtToday = new Date();
+        var month = dtToday.getMonth() + 1;
+        var day = dtToday.getDate();
+        var year = dtToday.getFullYear();
+        if(month < 10)
+            month = '0' + month.toString();
+        if(day < 10)
+            day = '0' + day.toString();
+        var maxDate = year + '-' + month + '-' + day;
+        this.maxDate = maxDate
+
         // ngasih boolean flag buat nandain lagi active di halaman ini
         this.$emit('inPeminjamanRuanganUnitKerjaPage', true);
-  
     }
     
 }

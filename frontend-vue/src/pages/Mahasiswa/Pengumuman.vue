@@ -6,6 +6,7 @@
         </div>
         
         <div class="container-fluid">
+
             <form>
                 <div class="form-row">
                     <div class="col-12 col-md-8">
@@ -54,12 +55,14 @@
                                     </a>
                                     </li>
                                 </ul>
+
                             </div>
                         </div>
                         
 
                     </div>
                    
+
                     <div class="col-12 col-md-4 border" id="kegiatanacc">
                         <div>
                             <h6 class="header-page2">Kegiatan Yang Akan Datang</h6>
@@ -83,6 +86,7 @@
                                         <p>{{ kegiatan.organisasi}} </p>
 
                                     </td>
+
                                 </tr>
                             </tbody>
                             </table>
@@ -90,6 +94,7 @@
                         </div>
                     </div>    
                
+
                 <br>
                 <br>
 
@@ -104,6 +109,7 @@
 import UserService from "../../services/user.service";
 import moment from 'moment';
 
+
 export default {
 		name: 'Pengumuman',
         
@@ -112,11 +118,13 @@ export default {
         return {
             banyak_pengumuman: 1,
             kegiatan_disetujui: [[]],
+
             }
         },
 
         created(){
                 UserService.getAllIzinKegiatan().then (
+
                 response => {
                     var tmp = response.data;
                     for (let i = 0; i < tmp.length; i++){
@@ -137,6 +145,7 @@ export default {
                     }
                     this.kegiatan_disetujui.shift();
 
+
                 },
                 error => {
                     this.error_message = (error.response && error.response.data) || error.message || error.toString();
@@ -151,6 +160,7 @@ export default {
 
         },
         
+
 
     }
 </script>
@@ -180,6 +190,7 @@ export default {
 
 #listkegiatan{
     height:350px;
+
 }
 
 .header-page {

@@ -39,6 +39,13 @@
                 <li v-if="isLoggedIn && currentUser.role == 'ADMIN PKM'" v-bind:class="{active : isInHomePage}" >
                     <a class="sidebar-child" href="/izin-kegiatan">Daftar Perizinan</a>
                 </li>
+                <li v-if="isLoggedIn && currentUser.role == 'ADMIN HUMAS'" v-bind:class="{active : isInHomePage}" >
+                    <a class="sidebar-child" href="/perizinan-humas">Daftar Perizinan</a>
+                </li>
+
+                <li v-if="isLoggedIn && currentUser.role == 'ADMIN HUMAS'" v-bind:class="{active : isInHomePage}" >
+                    <a class="sidebar-child" href="/souvenir">Daftar Souvenir</a>
+                </li>
 
                 <li v-bind:class="{active : isInHomePage}" >
                     <a class="sidebar-child" href="/jadwal-tersedia">Jadwal Tersedia</a>

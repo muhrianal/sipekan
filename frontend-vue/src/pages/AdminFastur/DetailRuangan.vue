@@ -162,13 +162,13 @@ export default {
                     }
                 },
     methods: {
-                        // getting a var from child to get to know that it is the active one
-                        isInLoginPageFunc(value){
-                            this.isInLoginPage = value;
-                        },
-                        isInHomePageFunc(value){
-                            this.isInHomePage = value;
-                        },
+        // getting a var from child to get to know that it is the active one
+        isInLoginPageFunc(value){
+            this.isInLoginPage = value;
+        },
+        isInHomePageFunc(value){
+            this.isInHomePage = value;
+        },
         hapusRuangan() {
             UserService.deleteRuangan(this.$route.params.id).then(
                 response => {

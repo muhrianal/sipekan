@@ -2,7 +2,7 @@
     <div v-if="isLoggedIn" class="card card-custom-root mb-3 rounded">
         <div class="card-body card-custom">
             <p style="font-weight: 500 !important; " id="masuk-sebagai">MASUK SEBAGAI:</p>
-            <p style="font-weight: 500 !important;" id="nama-user">{{currentUser.name}}</p>
+            <p style="font-weight: 500 !important; text-transform:" id="nama-user">{{getName}}</p>
             <p style="font-weight: 500 !important;" id="role-user">{{currentUser.role}}</p>
             
             <button type="submit" @click="logOut" class="btn btn-danger" id="button-logout">Logout</button>
@@ -26,6 +26,13 @@ export default {
         },
         currentUser() {
             return this.$store.state.auth.user;
+        },
+        getName(){
+            var name = this.$store.state.auth.user.name;
+            if (name.length > 15){
+                name = name.substring(0, 15) + '..';
+            }
+            return name;
         }
   },
 }
