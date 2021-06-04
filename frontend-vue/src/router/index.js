@@ -18,6 +18,7 @@ import DetailPerizinanRuangan from '../pages/AdminFastur/DetailPerizinanRuangan'
 import PerizinanKegiatanMahasiswa from '../pages/Mahasiswa/PerizinanKegiatanMahasiswa.vue';
 import PermohonanHumas from '../pages/Mahasiswa/PermohonanHumas.vue';
 import PeminjamanRuanganMahasiswa from '../pages/Mahasiswa/PeminjamanRuanganMahasiswa.vue';
+
 import Souvenir from '../pages/AdminHumas/Souvenir';
 import AddSouvenir from '../pages/AdminHumas/AddSouvenir';
 import UbahSouvenir from '../pages/AdminHumas/UbahSouvenir';
@@ -201,7 +202,6 @@ router.beforeEach((to, from, next) =>{
     '/souvenir/add',
     '/perizinan-humas',
     '/pengumuman',
-
 
   ];
 

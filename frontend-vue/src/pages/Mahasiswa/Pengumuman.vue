@@ -5,65 +5,96 @@
             <hr class="line-header">
         </div>
         
-        <div class="formulir">
+        <div class="container-fluid">
+
             <form>
                 <div class="form-row">
                     <div class="col-12 col-md-8">
                         <br>
-                        <div>
-                            <div>
-                                <div class="form-row">
-                                    <div class="search-container">
-                                        <form action="">
-                                        <input type="text" placeholder="Search.." name="search">
-                                        <button type="submit"><i class="fa fa-search"></i></button>
-                                        </form>
-                                    </div>
+                        <div>          
+                                <div class="input-group rounded">
+                                    <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
+                                        aria-describedby="search-addon" />
+                                    <span class="input-group-text border-0" id="search-addon">
+                                        <i class="fas fa-search"></i>
+                                    </span>
+                                </div>
+                            
+                            <br>
+                            <!-- Nanti for loop disini sesui length pengumuman -->
+                            <div class="card w-100">
+                                <div class="card-body">
+                                    <h5 class="card-title">Judul</h5>
+                                    <p class="card-text">isinya Lorem Ipsum apa yak gitu dah</p>
+                                    <a href="#">link download file</a>
                                 </div>
                             </div>
                             <br>
-                            <div>
-                                <textarea />
+                            <div class="card w-100">
+                                <div class="card-body">
+                                    <h5 class="card-title">Judul</h5>
+                                    <p class="card-text">isinya Lorem Ipsum apa yak gitu dah</p>
+                                    <a href="#">link download file</a>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="pagination">               
+                                <ul class="pagination">
+                                    <li class="page-item">
+                                    <a class="page-link" href="#" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                        <span class="sr-only">Previous</span>
+                                    </a>
+                                    </li>
+                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                    <li class="page-item">
+                                    <a class="page-link" href="#" aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                        <span class="sr-only">Next</span>
+                                    </a>
+                                    </li>
+                                </ul>
+
                             </div>
                         </div>
                         
 
                     </div>
                    
-                    <div class="col-12 col-md-4 overflow-auto">
+
+                    <div class="col-12 col-md-4 border" id="kegiatanacc">
                         <div>
                             <h6 class="header-page2">Kegiatan Yang Akan Datang</h6>
-                            <hr class="line-header">
+                        
                         </div>
                         <br>
-                        <div class="search-container">
-                            <form action="">
-                            <input type="text" placeholder="Search.." name="search">
-                            <button type="submit"><i class="fa fa-search"></i></button>
-                            </form>
+                        <div class="input-group rounded">
+                            <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
+                                aria-describedby="search-addon" />
+                            <span class="input-group-text border-0" id="search-addon">
+                                <i class="fas fa-search"></i>
+                            </span>
                         </div>
-                        <div class="table-responsive">
-                            <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                <th scope="col" class="text-center" > Tanggal</th>
-                                <th scope="col" class="text-center">Kegiatan</th>
-                                </tr>
-                            </thead>
-                            <tbody id="app">
+                        <br>
+                        <div class="table-responsive overflow-auto" id="listkegiatan">
+                            <table class="table table-striped table-sm table-bordered">
+                            <tbody id="app" class="fsmall mt-2">
                                 <tr v-for="(kegiatan) in kegiatan_disetujui" v-bind:key="kegiatan.id">
-                                    <th scope="row" class="text-center" >{{ index+1+"." }} </th>
-                                    <td>{{ kegiatan.waktu_mulai }}</td>
-                                    <!-- keterangan waktu gaada di model kegiatan, adanya di detail tapi kayaknya masih belum bisa ditembak API ya? -->
-                                    <td>{{ kegiatan.nama_kegiatan }}</td>
+                                    <td>{{kegiatan.waktu}}</td>
+                                    <td>{{ kegiatan.nama_kegiatan }}
+                                        <p>{{ kegiatan.organisasi}} </p>
+
+                                    </td>
+
                                 </tr>
                             </tbody>
                             </table>
                         </div>
-                    </div>
+                        </div>
+                    </div>    
+               
 
-                    
-                </div>
                 <br>
                 <br>
 
@@ -76,6 +107,8 @@
 
 <script>
 import UserService from "../../services/user.service";
+import moment from 'moment';
+
 
 export default {
 		name: 'Pengumuman',
@@ -83,27 +116,51 @@ export default {
 		data: function() {
 		
         return {
-            kegiatan_disetujui: [],
+            banyak_pengumuman: 1,
+            kegiatan_disetujui: [[]],
+
             }
         },
 
         created(){
-                UserService.getAllPerizinan().then (
+                UserService.getAllIzinKegiatan().then (
+
                 response => {
                     var tmp = response.data;
                     for (let i = 0; i < tmp.length; i++){
                         if (tmp[i].status_perizinan_kegiatan == 2){
-                            this.kegiatan_disetujui.push(tmp[i]);
-                            console.log(tmp[i]);                        
+                            var tahun = tmp[i].detail_kegiatan.waktu_tanggal_mulai.slice(0,4);
+                            var bulan = tmp[i].detail_kegiatan.waktu_tanggal_mulai.slice(5,7);
+                            var tanggal = tmp[i].detail_kegiatan.waktu_tanggal_mulai.slice(8,10);
+
+                            var namaBulan = {"01":"Jan", "02":"Feb", "03":"Mar", "04":"Apr", "05":"May", "06":"Jun", "07":"Jul", "08":"Aug",
+                                            "09":"Sep", "10":"Oct", "11":"Nov", "12":"Dec"};
+                                
+                            
+                            var waktu = tanggal + " " + namaBulan[bulan] + " " + tahun;
+                            var nama_kegiatan = tmp[i].nama_kegiatan;
+                            var organisasi = tmp[i].organisasi;
+                            this.kegiatan_disetujui.push({nama_kegiatan, waktu, organisasi});                       
                         }
                     }
+                    this.kegiatan_disetujui.shift();
+
 
                 },
                 error => {
                     this.error_message = (error.response && error.response.data) || error.message || error.toString();
                 }
             );
-        }
+        },
+
+        method:{
+            getDateDef : function (date) {
+                return moment(date, 'YYYY-MM-DDTHH:mm').format('D MMMM YYYY');
+            },
+
+        },
+        
+
 
     }
 </script>
@@ -123,11 +180,17 @@ export default {
     border-style: solid;
     border-width: 1px;
     border-radius: 5px;
-    padding: 20px 20px 20px 20px ;
+    padding: 20px 0px 20px 20px ;
 }
 
-label {
-    font-size: 14px;
+
+#kegiatanacc{
+    height:500px;
+}
+
+#listkegiatan{
+    height:350px;
+
 }
 
 .header-page {
