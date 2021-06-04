@@ -11,3 +11,6 @@ pythonenv*
 
 #DS_Store
 .DS_Store
+
+*/.idea/misc.xml 
+*/.idea/modules.xml

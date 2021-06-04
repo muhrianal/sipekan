@@ -65,11 +65,10 @@ urlpatterns = [
     path('detail-kegiatan/<int:pk>/', put_izin_kegiatan_header),
     path('izin-kegiatan-detail/<int:pk>/', put_izin_kegiatan_detail),
     path('perulangan/<int:pk>/', perulangan),
-    path('perizinan-publikasi/<int:pk>', put_perizinan_publikasi)
+    path('perizinan-publikasi/<int:pk>', put_perizinan_publikasi),
     path('peminjaman-ruangan/verifikasi-fastur/<int:id_izin_kegiatan>/', get_peminjaman_ruangan_by_id_izin_kegiatan),   
     path('pengumuman/', get_all_pengumuman),
     path('pengumuman/create', post_new_pengumuman),
     path('pengumuman/<int:id_pengumuman>', get_pengumuman_by_id),
     path('pengumuman/edit/<int:id_pengumuman>', put_pengumuman),
-
 ]
