@@ -17,7 +17,7 @@ from ..permissions import AllowOnlyAdminFASTUR, AllowOnlyAdminHUMAS, AllowOnlyAd
 from ..models.humas import PerizinanPublikasi, PermintaanProtokoler, PermintaanSouvenir, JenisPublikasi, Souvenir, JenisIzinPublikasi
 from ..models.izin_kegiatan import IzinKegiatan
 
-from ..serializers.humas_serializer import PermintaanSouvenirHumasSerializer,PerizinanPublikasiSerializer,PermintaanProtokolerSerializer, PerizinanKegiatanSerializer, JenisPublikasiSerializer,SouvenirSerializer,PerizinanPublikasiSerializer,  PerizinKegiatanHumasSerializer,  JenisIzinPublikasiSerializer,JenisIzinPublikasiHumasSerializer
+from ..serializers.humas_serializer import PermintaanSouvenirHumasSerializer,PerizinanPublikasiSerializer,PermintaanProtokolerSerializer, PerizinanKegiatanSerializer, JenisPublikasiSerializer,SouvenirSerializer,PerizinanPublikasiSerializer,  PerizinKegiatanHumasSerializer,  JenisIzinPublikasiSerializer,JenisIzinPublikasiHumasSerializer, PermintaanSouvenirSerializer
 
 from django.utils import timezone
 from django.http.response import JsonResponse
@@ -265,11 +265,11 @@ def detail_permintaan_souvenir(request,pk):
         return JsonResponse({'message': 'Ruangan tidak ada'}, status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'GET':
-        permintaan_souvenir_serialized = PermintaanSouvenirSeriliazer(permintaan_souvenir)
+        permintaan_souvenir_serialized = PermintaanSouvenirSerializer(permintaan_souvenir)
         return JsonResponse(permintaan_souvenir_serialized.data, safe=False)
     elif request.method == 'PUT':
         permintaan_souvenir_data = JSONParser().parse(request)
-        permintaan_souvenir_serializer = PermintaanSouvenirSeriliazer(permintaan_souvenir, data=permintaan_souvenir_data)
+        permintaan_souvenir_serializer = PermintaanSouvenirSerializer(permintaan_souvenir, data=permintaan_souvenir_data)
         if permintaan_souvenir_serializer.is_valid():
             permintaan_souvenir_serializer.save()
             return JsonResponse(permintaan_souvenir_serializer.data)

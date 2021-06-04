@@ -133,6 +133,13 @@ export default {
         return {
             souvenir: "",
             error_messase: "",
+            nama_souvenir: "",
+            region: "",
+            kelas: "",
+            stok: "",
+            stok_minimum: "",
+            tanggal_masuk: "",
+            keterangan: "",
             
         }
     },
@@ -150,6 +157,21 @@ export default {
     mounted(){
         console.log(this.souvenir);
         console.log(this.error_message);
+        UserService.getSouvenir(this.$route.params.id).then(
+                response => {
+                    console.log(response.data);
+                    this.nama_souvenir= response.data.nama_souvenir;
+                    this.region= response.data.region;
+                    this.kelas= response.data.kelas;
+                    this.stok= response.data.stok;
+                    this.stok_minimum= response.data.stok_minimum;
+                    this.tanggal_masuk= response.data.tanggal_masuk;
+                    this.keterangan= response.data.keterangan;
+                },
+                error => {
+                    console.log(error.message);
+                }
+            );
                 
     },
     methods: {
@@ -173,6 +195,7 @@ export default {
                 response => {
                     console.log(response.data);
                     $('#ubahModal').modal('toggle')
+                    
 
                 },
                 error => {

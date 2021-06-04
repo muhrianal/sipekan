@@ -279,7 +279,7 @@
                                     <button class="btn btn-outline-secondary" data-dismiss="modal" style="width:80px; height:36px;">Batal</button>
                                 </div>
                                 <div class="text-center">
-                                    <button class="btn btn-success" type="submit" style="width:80px; height:36px;" v-on:click="editPeminjamanRuangan(list_peminjaman_ruangan[indexPeminjamanRuangan].id);editPerulangan(list_peminjaman_ruangan[indexPeminjamanRuangan].perulangan.id);">Simpan</button>
+                                    <button class="btn btn-success" type="submit" style="width:80px; height:36px;" v-on:click="editPeminjamanRuangan(list_peminjaman_ruangan[indexPeminjamanRuangan].id,indexPeminjamanRuangan);editPerulangan(list_peminjaman_ruangan[indexPeminjamanRuangan].perulangan.id,indexPeminjamanRuangan);">Simpan</button>
                                 </div>
                             </div>
                         </div>
@@ -398,11 +398,11 @@
                     <div class="form-row">
                         <div class="col-12 col-md-6  px-4 py-2">
                             <label for="inputTanggalMulai">Tanggal Mulai<span class="text-danger">*</span></label>
-                            <input id="input_tanggal_mulai" v-model="tanggal_mulai" type="date" class="form-control" >                   
+                            <input id="input_tanggal_mulai" v-model="tanggal_mulai_publikasi" type="date" class="form-control" >                   
                         </div>
                         <div class="col-12 col-md-6  px-4 py-2 ">
                             <label for="inputTanggalAkhir">Tanggal Akhir<span class="text-danger">*</span></label>
-                            <input id="input_tanggal_akhir" v-model="tanggal_akhir" type="date" class="form-control" >
+                            <input id="input_tanggal_akhir" v-model="tanggal_akhir_publikasi" type="date" class="form-control" >
                         </div>                        
                     </div>
                 </div>                       
@@ -533,7 +533,7 @@
                                     <button class="btn btn-outline-secondary" data-dismiss="modal" style="width:80px; height:36px;">Batal</button>
                                 </div>
                                 <div class="text-center">
-                                    <button class="btn btn-success" type="submit" style="width:80px; height:36px;" v-on:click="editPermintaanSouvenir(list_permintaan_souvenir[indexPermintaanSouvenir].id)">Simpan</button>
+                                    <button class="btn btn-success" type="submit" style="width:80px; height:36px;" v-on:click="editPermintaanSouvenir(list_permintaan_souvenir[indexPermintaanSouvenir].id,indexPermintaanSouvenir)">Simpan {{list_permintaan_souvenir[indexPermintaanSouvenir].id}}</button>
                                 </div>
                             </div>
                         </div>
@@ -706,6 +706,7 @@ export default {
             tanggal_akhir_peminjaman:"",
             list_peminjaman_ruangan: [],
             //number_of_peminjaman:"",
+            
 
             //permintaan_protokoler           
             permintaan_protokoler: "",
@@ -713,8 +714,8 @@ export default {
 
             // perizinan publikasi
             jenis_publikasi_data: [],
-            tanggal_mulai: '',
-            tanggal_akhir: '',
+            tanggal_mulai_publikasi: '',
+            tanggal_akhir_publikasi: '',
             status_perizinan_publikasi: 1,
             alasan_penolakan_publikasi: '',
             keterangan: '',            
@@ -734,10 +735,6 @@ export default {
             indexPeminjamanRuangan: null,
             list_permintaan_souvenir:[],
             indexPermintaanSouvenir: null,
-
-
-
-
         }
     },
     methods: {
@@ -817,25 +814,25 @@ export default {
                     }
                 )           
             },
-            editPeminjamanRuangan(id) {
+            editPeminjamanRuangan(id,indexPeminjamanRuangan) {
               console.log("masuk put Perminjaman Ruangan");
 
               const data_put = {
                   id: id,
-                  judul_peminjaman: this.judul_peminjaman,
-                  jumlah_peserta: this.jumlah_peserta,
+                  judul_peminjaman: this.list_peminjaman_ruangan[indexPeminjamanRuangan].judul_peminjaman,
+                  jumlah_peserta: this.list_peminjaman_ruangan[indexPeminjamanRuangan].jumlah_peserta,
                   status_peminjaman_ruangan: 1,
                   alasan_penolakan: null,
-                  waktu_mulai: this.waktu_mulai,
-                  waktu_akhir: this.waktu_akhir,
-                  catatan: this.catatan,                 
-                  ruangan: this.ruangan,
-                  terbuka_untuk_umum: this.terbuka_untuk_umum,
+                  waktu_mulai: this.list_peminjaman_ruangan[indexPeminjamanRuangan].waktu_mulai,
+                  waktu_akhir: this.list_peminjaman_ruangan[indexPeminjamanRuangan].waktu_akhir,
+                  catatan: this.list_peminjaman_ruangan[indexPeminjamanRuangan].catatan,                 
+                  ruangan: this.list_peminjaman_ruangan[indexPeminjamanRuangan].ruangan,
+                  terbuka_untuk_umum: this.list_peminjaman_ruangan[indexPeminjamanRuangan].terbuka_untuk_umum,
                   perulangan: {
                     id: id,
-                    jenjang: this.jenjang,
-                    tanggal_mulai: this.tanggal_mulai,
-                    tanggal_akhir: this.tanggal_akhir
+                    jenjang: this.list_peminjaman_ruangan[indexPeminjamanRuangan].perulangan.jenjang,
+                    tanggal_mulai: this.list_peminjaman_ruangan[indexPeminjamanRuangan].perulangan.tanggal_mulai,
+                    tanggal_akhir: this.list_peminjaman_ruangan[indexPeminjamanRuangan].perulangan.tanggal_akhir
                   }
 
               };
@@ -844,7 +841,7 @@ export default {
                   response => {
                         console.log(response.data);
                         console.log(response.data);                                                            
-                        $('#ubahModal').modal('show')
+                        //$('#ubahModal').modal('show')
 
 
                   },
@@ -857,14 +854,14 @@ export default {
 
               );
             },
-            editPerulangan(id) {
+            editPerulangan(id,indexPeminjamanRuangan) {
               console.log("masuk put Perulangan");
 
               const data_put = {         
                     id: id,
-                    jenjang: this.jenjang,
-                    tanggal_mulai: this.tanggal_mulai,
-                    tanggal_akhir: this.tanggal_akhir
+                    jenjang: this.list_peminjaman_ruangan[indexPeminjamanRuangan].perulangan.jenjang,
+                    tanggal_mulai: this.list_peminjaman_ruangan[indexPeminjamanRuangan].perulangan.tanggal_mulai,
+                    tanggal_akhir: this.list_peminjaman_ruangan[indexPeminjamanRuangan].perulangan.tanggal_akhir
               };
               console.log(data_put);
               UserService.putPerulangan(id, data_put).then(
@@ -886,8 +883,8 @@ export default {
               if(this.jenis_publikasi.length != 0){
                     let formDataPublikasi = new FormData()
                     formDataPublikasi.append("izin_kegiatan",id_izin_kegiatan)
-                    formDataPublikasi.append("tanggal_mulai", this.tanggal_mulai)
-                    formDataPublikasi.append("tanggal_akhir", this.tanggal_akhir)
+                    formDataPublikasi.append("tanggal_mulai", this.tanggal_mulai_publikasi)
+                    formDataPublikasi.append("tanggal_akhir", this.tanggal_akhir_publikasi)
                     formDataPublikasi.append("keterangan", this.keterangan)
                     let list_jenis_publikasi =[];
                     for(let i=0;i<this.jenis_publikasi.length;i++){
@@ -944,20 +941,19 @@ export default {
 
         );
         },
-        editPermintaanSouvenir(id) {
+        editPermintaanSouvenir(id,indexPermintaanSouvenir) {
             console.log("masuk put permintaan_souvenir");
 
             const data_put = {
                 id: id,
                 alasan_penolakan: null,
                 status_permintaan_souvenir: 1,
-                jumlah: this.jumlah,
-                souvenir: this.souvenir,
-                nama_penerima_souvenir:this.nama_penerima_souvenir,
-                kelas_penerima_souvenir: this.kelas_penerima_souvenir,
-                region_penerima_souvenir: this.region_penerima_souvenir,
-                jabatan_penerima_souvenir: this.jabatan_penerima_souvenir,
-                
+                jumlah: this.list_permintaan_souvenir[indexPermintaanSouvenir].jumlah,
+                souvenir: this.list_permintaan_souvenir[indexPermintaanSouvenir].souvenir,
+                nama_penerima_souvenir:this.list_permintaan_souvenir[indexPermintaanSouvenir].nama_penerima_souvenir,
+                kelas_penerima_souvenir: this.list_permintaan_souvenir[indexPermintaanSouvenir].kelas_penerima_souvenir,
+                region_penerima_souvenir: this.list_permintaan_souvenir[indexPermintaanSouvenir].region_penerima_souvenir,
+                jabatan_penerima_souvenir: this.list_permintaan_souvenir[indexPermintaanSouvenir].jabatan_penerima_souvenir,
 
             };
             console.log(data_put);
@@ -969,6 +965,8 @@ export default {
                 },
                 error => {
                     console.log(error.message);
+                    $('#notification-failed').modal('show')
+
                     //window.location.reload();
                 }
 
@@ -1105,40 +1103,15 @@ export default {
                 this.sumber_pendanaan= response.data.detail_kegiatan.sumber_pendanaan;
                 //this.file_info_kegiatan= response.data.detail_kegiatan.file_info_kegiatan;
 
-                let r;
+                //let r;
                 this.list_peminjaman_ruangan = response.data.peminjaman_ruangan;
                 this.list_permintaan_souvenir = response.data.permintaan_souvenir;
                 //this.number_of_peminjaman = response.data.peminjaman_ruangan.length;
-                for(r = 0; r<response.data.peminjaman_ruangan.length; r++){
-                    this.list_peminjaman_ruangan[r]=response.data.peminjaman_ruangan[r];
-                    this.judul_peminjaman = response.data.peminjaman_ruangan[r].judul_peminjaman;
-                    console.log(this.judul_peminjaman)
-                    this.jumlah_peserta = response.data.peminjaman_ruangan[r].jumlah_peserta;
-                    this.waktu_mulai = response.data.peminjaman_ruangan[r].waktu_mulai;
-                    this.waktu_akhir = response.data.peminjaman_ruangan[r].waktu_akhir;
-                    this.catatan = response.data.peminjaman_ruangan[r].catatan;
-                    this.ruangan = response.data.peminjaman_ruangan[r].ruangan;
-                    this.terbuka_untuk_umum = response.data.peminjaman_ruangan[r].terbuka_untuk_umum;
-                    if (response.data.peminjaman_ruangan[r].perulangan!=null) {
-                        this.jenjang = response.data.peminjaman_ruangan[r].perulangan.jenjang;
-                        this.tanggal_mulai_peminjaman = response.data.peminjaman_ruangan[r].perulangan.tanggal_mulai;
-                        this.tanggal_akhir_peminjaman = response.data.peminjaman_ruangan[r].perulangan.tanggal_akhir;
-                    }
-                    console.log(this.list_peminjaman_ruangan)
-                let s;
-                for(s = 0; s<response.data.permintaan_souvenir.length; s++) {
-                    this.jumlah= response.data.permintaan_souvenir[s].jumlah;
-                    this.souvenir= response.data.permintaan_souvenir[s].souvenir;
-                    this.nama_penerima_souvenir= response.data.permintaan_souvenir[s].nama_penerima_souvenir;
-                    this.kelas_penerima_souvenir= response.data.permintaan_souvenir[s].kelas_penerima_souvenir;
-                    this.region_penerima_souvenir= response.data.permintaan_souvenir[s].region_penerima_souvenir;
-                    this.jabatan_penerima_souvenir= response.data.permintaan_souvenir[s].jabatan_penerima_souvenir;
-                    }
-                  this.deskripsi_kebutuhan = response.data.permintaan_protokoler.deskripsi_kebutuhan;
-                  
-
-                  //this.tanggal_mulai
-                }               
+                this.deskripsi_kebutuhan = response.data.perizinan_publikasi.deskripsi_kebutuhan;
+                this.tanggal_mulai_publikasi = response.data.perizinan_publikasi.tanggal_mulai;
+                this.tanggal_akhir_publikasi = response.data.perizinan_publikasi.tanggal_akhir;
+                this.deskripsi_kebutuhan = response.data.permintaan_protokoler.deskripsi_kebutuhan;
+                              
             },
             error => {
                 console.log(error.message);
