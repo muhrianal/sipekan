@@ -17,6 +17,7 @@ from .views.views_peminjaman_ruangan import update_peminjaman_ruangan_by_id_pemi
 from .views.views_humas import get_post_perizinan_humas_by_id_izin_kegiatan,get_list_perizinan_humas, get_jenis_publikasi, get_list_souvenir, post_perizinan_publikasi, update_permintaan_souvenir_by_id_permintaan_souvenir,  update_permintaan_protokoler_by_id_permintaan_protokoler, update_jenis_izin_publikasi_by_id_jenis_izin_publikasi, put_perizinan_publikasi
 from .views.views_izin_kegiatan_mahasiswa import post_izin_kegiatan_detail, post_izin_kegiatan_header
 from .views.views_peminjaman_ruangan import update_peminjaman_ruangan_by_id_peminjaman_ruangan, post_peminjaman_ruangan_unit_kerja, get_list_perizinan_fastur, get_peminjaman_ruangan_by_id_izin_kegiatan
+from .views.views_pengumuman import get_all_pengumuman, post_new_pengumuman, get_pengumuman_by_id, put_pengumuman
 
 urlpatterns = [
     path('login/', login),
@@ -26,7 +27,6 @@ urlpatterns = [
     path('izin-kegiatan/update/<int:id_perizinan>/', update_izin_kegiatan_by_id_perizinan),
     path('izin-kegiatan/', list_izin_kegiatan),
     path('izin-kegiatan/<int:pk>', detail_izin_kegiatan),
-    path('jadwal-tersedia/', list_jadwal),
     path('api/ruangan/', list_ruangan),
     path('api/ruangan/<int:pk>/', detail_ruangan),
     path('api/list-perizinan/', list_perizinan),
@@ -44,6 +44,7 @@ urlpatterns = [
     path('perizinan-kegiatan-detail/',post_izin_kegiatan_detail),
     path('perizinan-humas/jenis-publikasi', get_jenis_publikasi),
     path('perizinan-humas/list-souvenir', get_list_souvenir),
+    path('peminjaman-ruangan/', list_jadwal),
     path('peminjaman-ruangan/update-status/<int:id_peminjaman>/', update_peminjaman_ruangan_by_id_peminjaman_ruangan),
     path('peminjaman-ruangan/unit-kerja/', post_peminjaman_ruangan_unit_kerja),
     path('peminjaman-ruangan/verifikasi-fastur/', get_list_perizinan_fastur),
@@ -57,6 +58,9 @@ urlpatterns = [
     path('izin-kegiatan-detail/<int:pk>/', put_izin_kegiatan_detail),
     path('perulangan/<int:pk>/', perulangan),
     path('perizinan-publikasi/<int:pk>', put_perizinan_publikasi)
-
-
+    path('peminjaman-ruangan/verifikasi-fastur/<int:id_izin_kegiatan>/', get_peminjaman_ruangan_by_id_izin_kegiatan),   
+    path('pengumuman/', get_all_pengumuman),
+    path('pengumuman/create', post_new_pengumuman),
+    path('pengumuman/<int:id_pengumuman>', get_pengumuman_by_id),
+    path('pengumuman/edit/<int:id_pengumuman>', put_pengumuman),
 ]

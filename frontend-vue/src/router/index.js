@@ -26,8 +26,21 @@ import DaftarPerizinanHumas from '../pages/AdminHumas/DaftarPerizinanHumas';
 import DetailPerizinanHumas from '../pages/AdminHumas/DetailPerizinanHumas';
 import DetailKegiatan from '../pages/Mahasiswa/DetailKegiatan';
 
+import BuatPengumuman from '../pages/AdminAll/BuatPengumuman.vue';
+import EditPengumuman from '../pages/AdminAll/EditPengumuman.vue';
+import Pengumuman from '../pages/Mahasiswa/Pengumuman.vue';
 
 const routes = [
+  {
+    path: "/pengumuman/create",
+    name: "BuatPengumuman",
+    component: BuatPengumuman,
+  },
+  {
+    path: "/pengumuman/edit/:id",
+    name: "EditPengumuman",
+    component: EditPengumuman,
+  },
   {
     path: "/perizinan-fastur/:id",
     name: "DetailPerizinanRuangan",
@@ -116,7 +129,6 @@ const routes = [
     component: JadwalTersedia,
   },
   {
-
     path: "/buat-perizinan/form-ruangan-mahasiswa/",
     name: "Form Peminjaman Ruangan Mahasiswa",
     component: PeminjamanRuanganMahasiswa,
@@ -156,6 +168,11 @@ const routes = [
     path:"/detail-kegiatan/:id",
     name:"DetailKegiatan",
     component: DetailKegiatan,
+   },
+  {
+    path: "/pengumuman",
+    name: "Pengumuman",
+    component: Pengumuman,
   },
 ];
 
@@ -183,6 +200,8 @@ router.beforeEach((to, from, next) =>{
     '/souvenir',
     '/souvenir/add',
     '/perizinan-humas',
+    '/pengumuman',
+
 
   ];
 
