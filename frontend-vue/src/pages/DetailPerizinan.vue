@@ -192,7 +192,7 @@
                 </tr>
 
             </template>
-            <!-- INI MODALNYA NAZILA -->
+            <!-- MODALPEMINJAMANRUANGAN -->
             <div v-if="indexPeminjamanRuangan!=null">
 
             <div class="modal fade" id="popup-peminjaman-ruangan" tabindex="-1" role="dialog" aria-labelledby="popup-penolakan" aria-hidden="true" :no-enforce-focus="true">
@@ -447,18 +447,23 @@
               <td class="text-center abu2">Status</td>
 
             </tr>
-            <template v-for="souv in perizinan.permintaan_souvenir" v-bind:key="souv.id">
-            <tr>
-            <td>{{souv.nama_penerima_souvenir}}</td>
-            <td>{{souv.jabatan_penerima_souvenir}}</td>
-            <td>{{souv.kelas_penerima_souvenir}}</td>
-            <td>{{souv.souvenir}}</td>
-            <td>{{souv.jumlah}}</td>
-            <td class="text-center" v-if="souv.status_permintaan_souvenir==1">Menunggu Persetujuan</td>
-            <td class="text-center" v-if="souv.status_permintaan_souvenir==2">Disetujui</td>
-            <td class="text-center" v-if="souv.status_permintaan_souvenir==3">Ditolak <a data-toggle="modal" class="btn tambah" style="padding:1px 3px;font-size:12px;"  data-target="#popup-permintaan-souvenir">edit</a>
+            <template v-for="souv in list_permintaan_souvenir.length" v-bind:key="souv.id">
+                <tr>
+                    <td>{{list_permintaan_souvenir[souv-1].nama_penerima_souvenir}}</td>
+                    <td>{{list_permintaan_souvenir[souv-1].jabatan_penerima_souvenir}}</td>
+                    <td>{{list_permintaan_souvenir[souv-1].kelas_penerima_souvenir}}</td>
+                    <td>{{list_permintaan_souvenir[souv-1].souvenir}}</td>
+                    <td>{{list_permintaan_souvenir[souv-1].jumlah}}</td>
+                    <td class="text-center" v-if="list_permintaan_souvenir[souv-1].status_permintaan_souvenir==1">Menunggu Persetujuan</td>
+                    <td class="text-center" v-if="list_permintaan_souvenir[souv-1].status_permintaan_souvenir==2">Disetujui</td>
+                    <td class="text-center" v-if="list_permintaan_souvenir[souv-1].status_permintaan_souvenir==3">Ditolak <button data-toggle="modal" class="btn tambah" style="padding:1px 3px;font-size:12px;"  data-target="#popup-permintaan-souvenir" @Click="openModalSouvenir(souv-1)">edit</button>
+                    
+                </td>       
+                </tr>
+            </template>
             <!-- Modal: Popup Edit Permintaan Souvenir -->
-            <div class="modal fade" id="popup-permintaan-souvenir" tabindex="-1" role="dialog" aria-labelledby="popup-penolakan" aria-hidden="true">
+            <div v-if="indexPermintaanSouvenir!=null">
+                <div class="modal fade" id="popup-permintaan-souvenir" tabindex="-1" role="dialog" aria-labelledby="popup-penolakan" aria-hidden="true" :no-enforce-focus="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
                         <form>
@@ -473,16 +478,16 @@
                               <div class="form-row">
                                   <div class="col-12 col-md-6  px-4 py-2">
                                       <label for="inputNamaPenerima">Nama Penerima:<span class="text-danger">*</span></label>
-                                      <input pattern="[A-Za-z]" id="input_nama_penerima" type="text" v-bind:value="souv.nama_penerima_souvenir" v-on:input="nama_penerima_souvenir = $event.target.value" class="form-control" placeholder="e.g. Akhmad">
+                                      <input pattern="[A-Za-z]" id="input_nama_penerima" type="text" v-model="list_permintaan_souvenir[indexPermintaanSouvenir].nama_penerima_souvenir" class="form-control" placeholder="e.g. Akhmad">
                                   </div>
                                   <div class="col-12 col-md-6  px-4 py-2">
                                       <label for="inputJabatanPenerima">Jabatan Penerima:<span class="text-danger">*</span></label>
-                                      <input id="input_jabatan_penerima" type="text" v-bind:value="souv.jabatan_penerima_souvenir" v-on:input="jabatan_penerima_souvenir = $event.target.value" class="form-control = $event.target.value" placeholder="e.g. Menteri" >
+                                      <input id="input_jabatan_penerima" type="text" v-model="list_permintaan_souvenir[indexPermintaanSouvenir].jabatan_penerima_souvenir" class="form-control = $event.target.value" placeholder="e.g. Menteri" >
                                   </div>                    
                               </div>
                               <div class="col-12 col-md-6  px-4 py-2">
                                   <label for="inputKelas">Kelas:<span class="text-danger">*</span></label>
-                                  <select id="input_kelas" @change="onKelasChange()"  v-model="kelas_penerima_souvenir" class="form-control">
+                                  <select id="input_kelas" @change="onKelasChange()"  v-model="list_permintaan_souvenir[indexPermintaanSouvenir].kelas_penerima_souvenir" class="form-control">
                                       <option disabled selected value="">Pilih...</option>
                                       <option value="1">1</option>
                                       <option value="2">2</option>
@@ -492,7 +497,7 @@
                               </div>
                               <div class="col-12 col-md-6  px-4 py-2">
                                   <label for="inputRegion">Region:<span class="text-danger">*</span></label>
-                                  <select id="input_region" @change="onRegionChange()" v-model="region_penerima_souvenir"  class="form-control" >
+                                  <select id="input_region" @change="onRegionChange()" v-model="list_permintaan_souvenir[indexPermintaanSouvenir].region_penerima_souvenir"  class="form-control" >
                                       <option disabled selected value="">Pilih...</option>
                                       <option value="1">Dalam Negeri</option>
                                       <option value="2">Luar Negeri</option>
@@ -502,14 +507,14 @@
                             <div class="form-row">
                             <div class="col-12 col-md-6  px-4 py-2">
                                 <label for="inputPilihanSouvenir">Pilihan Souvenir:<span class="text-danger">*</span></label>
-                                <select id="input_souvenir" v-bind:value="souv.souvenir" v-on:input="souvenir = $event.target.value" class="form-control">        
+                                <select id="input_souvenir" v-model="list_permintaan_souvenir[indexPermintaanSouvenir].souvenir" class="form-control">        
                                     <option selected disabled value="">Pilih...</option>
                                     <option v-for="pilihan_souvenir in souvenir_data_filtered" v-bind:key="pilihan_souvenir.id" :value="pilihan_souvenir.id">{{pilihan_souvenir.nama_souvenir}}</option>
                                 </select>
                             </div>
                             <div class="col-12 col-md-6  px-4 py-2">
                                 <label for="inputJumlah">Jumlah:<span class="text-danger">*</span></label>
-                                <input id="input_jumlah" v-bind:value="souv.jumlah" v-on:input="jumlah = $event.target.value" type="number" min="1" class="form-control" placeholder="e.g. 1">
+                                <input id="input_jumlah" v-model="list_permintaan_souvenir[indexPermintaanSouvenir].jumlah" type="number" min="1" class="form-control" placeholder="e.g. 1">
                             </div>                    
                             </div>
                             
@@ -521,17 +526,16 @@
                                     <button class="btn btn-outline-secondary" data-dismiss="modal" style="width:80px; height:36px;">Batal</button>
                                 </div>
                                 <div class="text-center">
-                                    <button class="btn btn-success" type="submit" style="width:80px; height:36px;" v-on:click="editPermintaanSouvenir(souv.id)">Simpan {{souv.id}}</button>
+                                    <button class="btn btn-success" type="submit" style="width:80px; height:36px;" v-on:click="editPermintaanSouvenir(list_permintaan_souvenir[indexPermintaanSouvenir].id)">Simpan</button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </td>       
-            </tr>
-            </template>
+                </div>
         </table>
         </div>
+
         <div class="fmed font-weight-bold abu3">Protokoler </div>
         <div class="table-responsive">
         <table v-if="perizinan.permintaan_protokoler==null" class="table table-sm table-bordered mt-2 fsmall" style="border-radius: 10px 10px 0px 0px;">
@@ -722,6 +726,7 @@ export default {
             respon_kegiatan: null,
             indexPeminjamanRuangan: null,
             list_permintaan_souvenir:[],
+            indexPermintaanSouvenir: null,
 
 
 
@@ -729,7 +734,11 @@ export default {
         }
     },
     methods: {
-            openModal(index){ // INI METHODNYA NAZILA
+            openModalSouvenir(index){
+                this.indexPermintaanSouvenir = index
+                $('#popup-permintaan-souvenir').modal('show')
+            },
+            openModal(index){ 
                 this.indexPeminjamanRuangan = index
                 $('#popup-peminjaman-ruangan').modal('show')
             },
