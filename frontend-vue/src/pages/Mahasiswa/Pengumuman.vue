@@ -67,9 +67,9 @@
                         <br>
                         <div class="table-responsive">
                             <table class="table table-striped table-sm table-bordered">
-                            <tbody id="app" class="fsmall mt-2 ">
+                            <tbody id="app" class="fsmall mt-2">
                                 <tr v-for="(kegiatan) in kegiatan_disetujui" v-bind:key="kegiatan.id">
-                                    <td>{{kegiatan.detail_kegiatan.waktu_tanggal_mulai}}</td>
+                                    <td>{{kegiatan.waktu}}</td>
                                     <td>{{ kegiatan.nama_kegiatan }}
                                         <p>{{ kegiatan.organisasi}} </p>
 
@@ -112,7 +112,18 @@ export default {
                     var tmp = response.data;
                     for (let i = 0; i < tmp.length; i++){
                         if (tmp[i].status_perizinan_kegiatan == 2){
-                            this.kegiatan_disetujui.push(tmp[i]);                       
+                            var tahun = tmp[i].detail_kegiatan.waktu_tanggal_mulai.slice(0,4);
+                            var bulan = tmp[i].detail_kegiatan.waktu_tanggal_mulai.slice(5,7);
+                            var tanggal = tmp[i].detail_kegiatan.waktu_tanggal_mulai.slice(8,10);
+
+                            var namaBulan = {"01":"Jan", "02":"Feb", "03":"Mar", "04":"Apr", "05":"May", "06":"Jun", "07":"Jul", "08":"Aug",
+                                            "09":"Sep", "10":"Oct", "11":"Nov", "12":"Dec"};
+                                
+                            
+                            var waktu = tanggal + " " + namaBulan[bulan] + " " + tahun;
+                            var nama_kegiatan = tmp[i].nama_kegiatan;
+                            var organisasi = tmp[i].organisasi;
+                            this.kegiatan_disetujui.push({nama_kegiatan, waktu, organisasi});                       
                         }
                     }
                     this.kegiatan_disetujui.shift();
@@ -129,6 +140,7 @@ export default {
             getDateDef : function (date) {
                 return moment(date, 'YYYY-MM-DDTHH:mm').format('D MMMM YYYY');
             },
+
         },
         
 

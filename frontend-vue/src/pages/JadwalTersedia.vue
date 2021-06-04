@@ -151,6 +151,32 @@ export default {
             return [date[3], mnths[date[1]], date[2]].join("-");
         },
 
+        cekKabisat(tahun){
+            var kabisat = false;
+            if(parseInt(tahun) % 4 == 0){
+                if(parseInt(tahun) % 100 == 0){
+                    if(parseInt(tahun) % 400 == 0){
+                        kabisat = true;
+                    }
+                }
+                else{
+                    kabisat = true;
+                }
+            }
+            return kabisat;
+        },
+
+        dayInMonth(bulan, tahun){
+            if(this.cekKabisat(parseInt(tahun)) == true && (parseInt(bulan) == 2)){
+                return 29;
+            } else if(this.cekKabisat(parseInt(tahun)) == false && (parseInt(bulan) == 2)){
+                return 28;
+            } else if(parseInt(bulan) == 1 || parseInt(bulan) == 3 || parseInt(bulan) == 5 || parseInt(bulan) == 7 || parseInt(bulan) == 8 || parseInt(bulan) == 10 || parseInt(bulan) == 12) {
+                return 31;
+            } else{
+                return 30;
+            }
+        },
        
         cari(ruang){
             UserService.getJadwalPeminjamanRuangan().then (
@@ -208,7 +234,6 @@ export default {
                             }         
                         } 
                     }
-
                 },
                 error => {
                     this.error_message = (error.response && error.response.data) || error.message || error.toString();
