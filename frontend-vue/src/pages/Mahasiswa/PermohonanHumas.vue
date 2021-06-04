@@ -44,11 +44,11 @@
                     <div class="form-row">
                         <div class="col-12 col-md-6  px-4 py-2">
                             <label for="inputTanggalMulai">Tanggal Mulai<span class="text-danger">*</span></label>
-                            <input id="input_tanggal_mulai" v-model="tanggal_mulai" type="date" class="form-control" >                   
+                            <input id="input_tanggal_mulai" v-model="tanggal_mulai" type="date" class="form-control" :min="maxDate" >                   
                         </div>
                         <div class="col-12 col-md-6  px-4 py-2 ">
                             <label for="inputTanggalAkhir">Tanggal Akhir<span class="text-danger">*</span></label>
-                            <input id="input_tanggal_akhir" v-model="tanggal_akhir" type="date" class="form-control" >
+                            <input id="input_tanggal_akhir" v-model="tanggal_akhir" type="date" class="form-control"  :min="maxDate">
                         </div>                        
                     </div>
                 </div>
@@ -152,9 +152,9 @@
                 </div>
                 <div class="modal-footer">
                     <div class="text-center">                
-                        <button  @click="refreshPage" id="button-modal" type="button" class="text-center btn btn-success">
+                        <a href="/perizinan"> <button id="button-modal" type="button" class="text-center btn btn-success">
                             OK
-                        </button>
+                        </button></a>
                     </div>
                 </div>
                 </div>
@@ -196,6 +196,7 @@ export default {
             protokoler_checked:false,          
             pesan_body: "Pengajuan humas berhasil",  
             error_message: '',
+            maxDate:'',
             
             //izin_kegiatan dan kebutuhan
             id_izin_kegiatan: '',
@@ -240,10 +241,6 @@ export default {
     created(){
         this.id_izin_kegiatan =  this.$route.params.id_izin_kegiatan
         this.kebutuhan = this.$route.params.kebutuhan
-        // console.log(this.id_izin_kegiatan)
-        // console.log(this.kebutuhan)
-        // this.id_izin_kegiatan=96
-        // this.kebutuhan = ["ruangan","humas"]
         UserService.getJenisPublikasi().then(
             response =>{
                 this.jenis_publikasi_data = response.data;
@@ -527,6 +524,19 @@ export default {
                 }
             }
         }
+    },
+    mounted(){
+        //create minimum date 
+        var dtToday = new Date();
+        var month = dtToday.getMonth() + 1;
+        var day = dtToday.getDate();
+        var year = dtToday.getFullYear();
+        if(month < 10)
+            month = '0' + month.toString();
+        if(day < 10)
+            day = '0' + day.toString();
+        var maxDate = year + '-' + month + '-' + day;
+        this.maxDate = maxDate
     }
     
     

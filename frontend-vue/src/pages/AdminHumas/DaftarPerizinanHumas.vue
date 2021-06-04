@@ -65,7 +65,7 @@ export default{
 
         };
     },
-    computed : {
+    computed: {
         resultQuery(){
             if(this.searchQuery){
                 return this.list_perizinan_filtered.filter((item)=>{

@@ -20,19 +20,25 @@
                 <div class="form-row">
                     <div class="col-6 col-md-3 py-2 tanggal-class">
                         <label for="inputTanggalMulai">Tanggal dan Waktu Mulai<span class="text-danger">*</span></label>
-                        <input type=date class=form-control v-model="tanggal_mulai" required>
+                        <input type=date class=form-control v-model="tanggal_mulai" :min="maxDate" required>
                     </div>
                     <div class="col-6 col-md-3  py-3 waktu-class ">
                         <label></label>
-                        <input type=time class=form-control v-model="waktu_mulai" required>
+                        <select class="form-control"  v-model="waktu_mulai" required>
+                            <option selected disabled value="">Pilih...</option>
+                            <option v-for="option in option_waktu" v-bind:key="option" v-bind:value="option.value">{{option.text}}</option>
+                        </select>
                     </div>
                     <div class="col-6 col-md-3 py-2 tanggal-class">
                         <label for="inputTanggalAkhir">Tanggal dan Waktu Akhir<span class="text-danger">*</span></label>
-                        <input type=date class=form-control v-model="tanggal_akhir" required>
+                        <input type=date class=form-control v-model="tanggal_akhir" :min="maxDate" required>
                     </div>  
                     <div class="col-6 col-md-3 py-3 waktu-class">
                         <label></label>
-                        <input type=time class=form-control v-model="waktu_akhir" required>
+                        <select class="form-control"  v-model="waktu_akhir" required>
+                            <option selected disabled value="">Pilih...</option>
+                            <option v-for="option in option_waktu" v-bind:key="option" v-bind:value="option.value">{{option.text}}</option>
+                        </select>
                     </div>
                 </div>
 
@@ -164,6 +170,8 @@ export default{
  
     data(){
         return{
+            option_waktu : [],
+            maxDate:'',
             nama_kegiatan: '',
             organisasi: '',
             user: this.$store.state.auth.user.id_user, 
@@ -273,7 +281,7 @@ export default{
                                 console.log(response.data);
                                 if(this.kebutuhan.length == 0){
                                     this.pesan_button = "OK"
-                                    this.path_selanjutnya = '/'
+                                    this.path_selanjutnya = '/perizinan'
                                 }else if(this.kebutuhan[0] == 'ruangan' || (this.kebutuhan.length > 1 && this.kebutuhan[1] == 'ruangan')){
                                     this.pesan_button = "Ke halaman perizinan ruangan"
                                     this.path_selanjutnya = '/buat-perizinan/form-ruangan-mahasiswa/'
@@ -300,7 +308,49 @@ export default{
                 );
             }            
         }
-    }
+    },
+    mounted(){
+        //create daftar waktu
+        let option_waktu_made = [];
+        let i;
+        for (i = 0; i < 24; i++){
+            if (i < 10 ){
+                option_waktu_made.push({
+                    value: "0"+i + ":00",
+                    text: "0" + i + ":00"
+                });
+                option_waktu_made.push({
+                    value: "0"+ i + ":30",
+                    text: "0" + i + ":30"
+                });
+            } else {
+                option_waktu_made.push({
+                    value: i + ":00",
+                    text:  i + ":00"
+                });
+                option_waktu_made.push({
+                    value:  i + ":30",
+                    text: i + ":30"
+                });
+            }
+        }
+        this.option_waktu = option_waktu_made;
+
+        //create minimum date 
+        var dtToday = new Date();
+        var month = dtToday.getMonth() + 1;
+        var day = dtToday.getDate();
+        var year = dtToday.getFullYear();
+        if(month < 10)
+            month = '0' + month.toString();
+        if(day < 10)
+            day = '0' + day.toString();
+        var maxDate = year + '-' + month + '-' + day;
+        this.maxDate = maxDate
+        
+        // ngasih boolean flag buat nandain lagi active di halaman ini
+        this.$emit('inPeminjamanRuanganMahasiswaPage', true);
+    }    
 }
 </script>
 
