@@ -3,6 +3,8 @@ import App from './App.vue';
 // import { router } from './router';
 // import store from './store';
 import 'bootstrap';
+import 'chart.js';
+import 'vue-chartjs';
 import 'bootstrap/dist/css/bootstrap.min.css';
 // import VeeValidate from 'vee-validate';
 // import { library } from '@fortawesome/fontawesome-svg-core';

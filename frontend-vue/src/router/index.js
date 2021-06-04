@@ -18,6 +18,7 @@ import DetailPerizinanRuangan from '../pages/AdminFastur/DetailPerizinanRuangan'
 import PerizinanKegiatanMahasiswa from '../pages/Mahasiswa/PerizinanKegiatanMahasiswa.vue';
 import PermohonanHumas from '../pages/Mahasiswa/PermohonanHumas.vue';
 import PeminjamanRuanganMahasiswa from '../pages/Mahasiswa/PeminjamanRuanganMahasiswa.vue';
+import Dashboard from '../pages/AdminAll/Dashboard.vue';
 
 import Souvenir from '../pages/AdminHumas/Souvenir';
 import AddSouvenir from '../pages/AdminHumas/AddSouvenir';
@@ -136,6 +137,12 @@ const routes = [
     props: true
   },
   {
+
+    path: "/dashboard/",
+    name: "Dashboard",
+    component: Dashboard,
+  },
+  {  
     path: "/souvenir",
     name: "Souvenir",
     component: Souvenir
@@ -198,11 +205,12 @@ router.beforeEach((to, from, next) =>{
     '/buat-perizinan/form-ruangan/',
     '/jadwal-tersedia',
     "/perizinan-fastur",
+    "/dashboard",
+
     '/souvenir',
     '/souvenir/add',
     '/perizinan-humas',
     '/pengumuman',
-
   ];
 
   const authRequired = !publicPages.includes(to.path);

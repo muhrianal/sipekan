@@ -3,13 +3,13 @@ from .views.auth import login, test_api_unrestricted
 from .views.auth_sso import login_with_sso
 
 from .views.views_peminjaman_ruangan import list_peminjaman_ruangan
-from .views.views_izin_kegiatan import list_izin_kegiatan, update_izin_kegiatan_by_id_perizinan, detail_izin_kegiatan, detail_kegiatan, izin_kegiatan_detail
+from .views.views_izin_kegiatan import list_izin_kegiatan, update_izin_kegiatan_by_id_perizinan, detail_izin_kegiatan, get_list_perizinan_PKM, get_list_perizinan_PKM_Verified, get_list_perizinan_PKM_Waiting_Simplified, get_list_perizinan_PKM_Verified_Simplified, get_list_perizinan_PKM_Denied_Simplified, get_list_perizinan_Humas_Waiting_Simplified, get_list_souvenir_simple
 
 from .views.views_peminjaman_ruangan import list_jadwal
 from .views.views_ruangan import list_ruangan
 from .views.views_peminjaman_ruangan import list_ruangan
 from .views.views_peminjaman_ruangan import detail_ruangan
-from .views.views_status_perizinan import list_perizinan, detail_perizinan
+from .views.views_status_perizinan import list_perizinan, detail_perizinan, list_perizinan_detailed
 from .views.views_peminjaman_ruangan import post_peminjaman_ruangan_mahasiswa
 from .views.views_humas import get_post_perizinan_humas_by_id_izin_kegiatan, get_jenis_publikasi, get_list_souvenir, post_perizinan_publikasi, post_souvenir, detail_souvenir, detail_permintaan_protokoler, detail_permintaan_souvenir
 from .views.views_izin_kegiatan_mahasiswa import  post_izin_kegiatan_detail, post_izin_kegiatan_header, put_izin_kegiatan_header, put_izin_kegiatan_detail
@@ -49,6 +49,14 @@ urlpatterns = [
     path('peminjaman-ruangan/unit-kerja/', post_peminjaman_ruangan_unit_kerja),
     path('peminjaman-ruangan/verifikasi-fastur/', get_list_perizinan_fastur),
     path('peminjaman-ruangan/verifikasi-fastur/<int:id_izin_kegiatan>/', get_peminjaman_ruangan_by_id_izin_kegiatan),
+    path('izin-kegiatan-waiting/', get_list_perizinan_PKM),  
+    path('izin-kegiatan-disetujui/', get_list_perizinan_PKM_Verified),
+    path('izin-kegiatan-detailed/', list_perizinan_detailed),
+    path('chart/kegiatan-disetujui/', get_list_perizinan_PKM_Verified_Simplified),
+    path('chart/kegiatan-ditolak/', get_list_perizinan_PKM_Denied_Simplified),
+    path('chart/kegiatan-menunggu/', get_list_perizinan_PKM_Waiting_Simplified),
+    path('perizinan-humas-disetujui/', get_list_perizinan_Humas_Waiting_Simplified),
+    path('stok-souvenir/', get_list_souvenir_simple),
     path('souvenir/', post_souvenir),
     path('souvenir/<int:pk>/', detail_souvenir),
     path('permintaan-protokoler/<int:pk>/', detail_permintaan_protokoler),
@@ -63,4 +71,5 @@ urlpatterns = [
     path('pengumuman/create', post_new_pengumuman),
     path('pengumuman/<int:id_pengumuman>', get_pengumuman_by_id),
     path('pengumuman/edit/<int:id_pengumuman>', put_pengumuman),
+
 ]

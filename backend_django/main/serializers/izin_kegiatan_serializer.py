@@ -5,6 +5,8 @@ from django.contrib.auth.models import User
 from ..models.izin_kegiatan import IzinKegiatan
 from django.contrib.auth.models import User
 from rest_framework import serializers
+from ..models.peminjaman_ruangan import Ruangan
+
 
 from ..models.profile import Profile
 from ..models.izin_kegiatan import IzinKegiatan
@@ -13,6 +15,11 @@ from ..models.peminjaman_ruangan import PeminjamanRuangan, Perulangan
 from ..models.humas import PermintaanProtokoler, PerizinanPublikasi, PermintaanSouvenir, JenisPublikasi, JenisIzinPublikasi
 
 #Nama kelas dibawah ini di rename, yang terkati dengan kelas ini harus diperbarui
+class RuanganSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Ruangan
+        fields = ['id', 'nama']
 class IzinKegiatanSerializerSimplified(serializers.ModelSerializer):
 
     class Meta:
@@ -212,9 +219,10 @@ class ProfileSerializer(serializers.ModelSerializer):
 
 class UserSerializer(serializers.ModelSerializer):
     profile = ProfileSerializer()
+
     class Meta:
         model = User
-        fields = '__all__'
+        fields = ['id', 'username', 'profile']
 
 class IzinKegiatanMahasiswaSerializer(serializers.ModelSerializer):
     detail_kegiatan = DetailKegiatanMahasiswaSerializer()
@@ -229,3 +237,57 @@ class IzinKegiatanMahasiswaSerializer(serializers.ModelSerializer):
         izin_kegiatan = IzinKegiatan.objects.create(**validated_data)
         DetailKegiatan.objects.create(izin_kegiatan = izin_kegiatan, **detail_kegiatan_data)
         return izin_kegiatan
+
+class PeminjamanRuanganSerializerDetailed(serializers.ModelSerializer):
+    ruangan = RuanganSerializer()
+
+    class Meta:
+        model = PeminjamanRuangan
+        fields = (
+            "id",
+            "judul_peminjaman",
+            "jumlah_peserta",
+            "status_peminjaman_ruangan",
+            "alasan_penolakan",
+            "waktu_mulai",
+            "waktu_akhir",
+            "catatan",
+            "created_at",
+            "updated_at",
+            "ruangan",
+            "terbuka_untuk_umum",
+            "perulangan",
+        )
+
+class IzinKegiatanSerializerDetailed(serializers.ModelSerializer):
+
+    peminjaman_ruangan = PeminjamanRuanganSerializerDetailed(many=True, read_only=True)
+    permintaan_protokoler = PermintaanProtokolerSerializer(read_only=True)
+    perizinan_publikasi = PerizinanPublikasiSerializer(read_only=True)
+    permintaan_souvenir = PermintaanSouvenirSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = IzinKegiatan
+        fields = ('id','nama_kegiatan', 'organisasi', 'user', 'status_perizinan_kegiatan','detail_kegiatan','peminjaman_ruangan','permintaan_protokoler','perizinan_publikasi','permintaan_souvenir')
+
+class DetailKegiatanSimpliest(serializers.ModelSerializer):
+    
+    class Meta:    
+        model = DetailKegiatan
+        fields =( 
+            'waktu_tanggal_mulai', 
+        )
+
+class IzinKegiatanSimpliest(serializers.ModelSerializer):
+    detail_kegiatan = DetailKegiatanSimpliest()
+    class Meta:
+        model = IzinKegiatan
+        fields = ('nama_kegiatan', 'status_perizinan_kegiatan', 'detail_kegiatan')
+
+class IzinKegiatanMahasiswaSerializer1(serializers.ModelSerializer):
+    detail_kegiatan = DetailKegiatanMahasiswaSerializer()
+    user = UserSerializer()
+    
+    class Meta:
+        model = IzinKegiatan
+        fields = ('id','nama_kegiatan', 'organisasi', 'user', 'status_perizinan_kegiatan','detail_kegiatan')

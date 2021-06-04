@@ -81,6 +81,11 @@ class PerizinanKegiatanSerializer(serializers.ModelSerializer): # untuk post per
         
         return izin_kegiatan    
 
+class SouvenirSerializerSimpliest(serializers.ModelSerializer):
+    class Meta:
+        model = Souvenir
+        fields = ('stok', 'stok_minimum')
+
 class PerizinKegiatanHumasSerializer(serializers.ModelSerializer): # untuk list izin kegiatan (publikasi, protokoler, souvenir) oleh admin humas
     user = UserSerializer()
     perizinan_publikasi = PerizinanPublikasiHumasSerializer(required=False)
@@ -90,8 +95,4 @@ class PerizinKegiatanHumasSerializer(serializers.ModelSerializer): # untuk list 
     class Meta:
         model = IzinKegiatan
         fields = ('id','nama_kegiatan', 'organisasi', 'status_perizinan_kegiatan', 'user','perizinan_publikasi','permintaan_souvenir', 'permintaan_protokoler')
-
-
-
-    
 

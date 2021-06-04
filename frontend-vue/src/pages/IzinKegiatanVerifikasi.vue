@@ -96,9 +96,9 @@
                         <label>Sumber Pendanaan</label>
                         <input type="text" class="form-control" :placeholder="izin_kegiatan.detail_kegiatan.sumber_pendanaan" readonly>
                     </div>
-                    <div class="col-12 col-md-6 px-4 py-2">
+                    <div v-if="this.izin_kegiatan.detail_kegiatan.file_info_kegiatan != null" class="col-12 col-md-6 px-4 py-2">
                         <label>Dokumen</label>
-                        <input type="text" class="form-control" :placeholder="izin_kegiatan.detail_kegiatan.file_info_kegiatan" readonly>
+                        <div ><a  :href="'http://localhost:8000'+this.izin_kegiatan.detail_kegiatan.file_info_kegiatan" :download="this.izin_kegiatan.detail_kegiatan.file_info_kegiatan">{{this.izin_kegiatan.detail_kegiatan.file_info_kegiatan}}</a></div>
                     </div>
                 </div>
 
@@ -225,10 +225,11 @@ export default {
         putSetuju() {
             
             console.log("test");
+            const date = moment(new Date(), "YYYY-MM-DDTHH:mm").format("YYYY-MM-DDTHH:mm")
             const data_put = {
                 izin_kegiatan: {
-                    status_perizinan_kegiatan: 2,
-                    detail_kegiatan: {alasan_penolakan:''}
+                    "status_perizinan_kegiatan": 2,
+                    "detail_kegiatan": {"alasan_penolakan":'', "updated_at": String(date)}
                 },
             };
             console.log(data_put);
@@ -249,10 +250,11 @@ export default {
         putTolak() {
             $('#popup-penolakan').modal('hide')
             console.log("test");
+            const date = moment(new Date(), "YYYY-MM-DDTHH:mm").format("YYYY-MM-DDTHH:mm")
             const data_put = {
-                izin_kegiatan: {
+                izin_kegiatan: { 
                     status_perizinan_kegiatan: 3,
-                    detail_kegiatan: {alasan_penolakan : this.alasan_penolakan}
+                    detail_kegiatan: {alasan_penolakan : this.alasan_penolakan, updated_at: String(date)}
                 },
             };
             console.log(data_put);
@@ -275,7 +277,7 @@ export default {
         },
         refreshPage(){
             location.reload()
-        }
+        },
     },
 }
 </script>
@@ -331,8 +333,5 @@ label {
 }
 input, select{
     border-radius: 10px !important;
-}
-*{
-    font-weight: bold !important;
 }
 </style>

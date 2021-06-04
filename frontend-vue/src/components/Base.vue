@@ -29,7 +29,7 @@
 
 
                 <li v-if="isLoggedIn && (currentUser.role == 'ADMIN PKM' || currentUser.role == 'ADMIN FASTUR' || currentUser.role == 'ADMIN HUMAS')" v-bind:class="{active : isInHomePage}" >
-                    <a class="sidebar-child" href="/">Dashboard</a>
+                    <a class="sidebar-child" href="/dashboard">Dashboard</a>
                 </li>
 
                 <li v-if="isLoggedIn && currentUser.role == 'ADMIN FASTUR'" v-bind:class="{active : isInHomePage}" >
