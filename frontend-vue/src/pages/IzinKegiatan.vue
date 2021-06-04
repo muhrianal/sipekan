@@ -58,7 +58,7 @@
                     <th scope="row" class="text-left"><span class="ml-3">{{izin_kegiatan.nama_kegiatan}}</span></th>
                     <td>{{getDateDef(izin_kegiatan.detail_kegiatan.waktu_tanggal_mulai)}}</td>
                     <td>{{izin_kegiatan.organisasi}}</td>
-                    <td>{{izin_kegiatan.user.username}}</td>
+                    <td>{{izin_kegiatan.user.profile.role}}</td>
                     <td v-if="izin_kegiatan.status_perizinan_kegiatan==1" class="text-center"><span class="badge badge-pill badge-secondary">Menunggu<br>Persetujuan</span></td>
                     <td v-if="izin_kegiatan.status_perizinan_kegiatan==2" class="text-center"><span class="badge badge-pill badge-success">Disetujui</span></td>
                     <td v-if="izin_kegiatan.status_perizinan_kegiatan==3" class="text-center"><span class="badge badge-pill badge-danger">Ditolak</span></td>

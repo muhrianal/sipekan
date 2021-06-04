@@ -121,9 +121,10 @@ class ProfileSerializer(serializers.ModelSerializer):
 
 class UserSerializer(serializers.ModelSerializer):
     profile = ProfileSerializer()
+
     class Meta:
         model = User
-        fields = '__all__'
+        fields = ['id', 'username', 'profile']
 
 class IzinKegiatanMahasiswaSerializer(serializers.ModelSerializer):
     detail_kegiatan = DetailKegiatanMahasiswaSerializer()
