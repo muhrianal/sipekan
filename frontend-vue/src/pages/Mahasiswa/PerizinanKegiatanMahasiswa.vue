@@ -20,19 +20,25 @@
                 <div class="form-row">
                     <div class="col-6 col-md-3 py-2 tanggal-class">
                         <label for="inputTanggalMulai">Tanggal dan Waktu Mulai<span class="text-danger">*</span></label>
-                        <input type=date class=form-control v-model="tanggal_mulai">
+                        <input type=date class=form-control v-model="tanggal_mulai" :min="maxDate" required>
                     </div>
                     <div class="col-6 col-md-3  py-3 waktu-class ">
                         <label></label>
-                        <input type=time class=form-control v-model="waktu_mulai">
+                        <select class="form-control"  v-model="waktu_mulai" required>
+                            <option selected disabled value="">Pilih...</option>
+                            <option v-for="option in option_waktu" v-bind:key="option" v-bind:value="option.value">{{option.text}}</option>
+                        </select>
                     </div>
                     <div class="col-6 col-md-3 py-2 tanggal-class">
                         <label for="inputTanggalAkhir">Tanggal dan Waktu Akhir<span class="text-danger">*</span></label>
-                        <input type=date class=form-control v-model="tanggal_akhir">
+                        <input type=date class=form-control v-model="tanggal_akhir" :min="maxDate" required>
                     </div>  
                     <div class="col-6 col-md-3 py-3 waktu-class">
                         <label></label>
-                        <input type=time class=form-control v-model="waktu_akhir">
+                        <select class="form-control"  v-model="waktu_akhir" required>
+                            <option selected disabled value="">Pilih...</option>
+                            <option v-for="option in option_waktu" v-bind:key="option" v-bind:value="option.value">{{option.text}}</option>
+                        </select>
                     </div>
                 </div>
 
@@ -46,7 +52,7 @@
                  <div class="form-row">
                     <div class="col-12 col-md-6  px-4 py-2">
                         <label for="inputKetuaOrganisasi">Nama Ketua Organisasi<span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" placeholder="e.g. Yobelio" required v-model="nama_ketua_organisasi">
+                        <input type="text" pattern="^(?![\s.]+$)[a-zA-Z\s.]*$" class="form-control" placeholder="e.g. Yobelio" required v-model="nama_ketua_organisasi">
                     </div>
                     <div class="col-12 col-md-6  px-4 py-2">
                         <label for="inputNpmKetuaOrganisasi">NPM Ketua Organisasi<span class="text-danger">*</span>:</label>
@@ -57,7 +63,7 @@
                 <div class="form-row">
                     <div class="col-12 col-md-6  px-4 py-2">
                         <label for="inputPicKegiatan">Nama PIC Kegiatan<span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" placeholder="e.g. Akhmad" required v-model="nama_pic"> 
+                        <input type="text" pattern="^(?![\s.]+$)[a-zA-Z\s.]*$" class="form-control" placeholder="e.g. Akhmad" required v-model="nama_pic"> 
                     </div>
                     <div class="col-12 col-md-6  px-4 py-2">
                         <label for="inputNpmPic">NPM PIC<span class="text-danger">*</span>:</label>
@@ -164,6 +170,8 @@ export default{
  
     data(){
         return{
+            option_waktu : [],
+            maxDate:'',
             nama_kegiatan: '',
             organisasi: '',
             user: this.$store.state.auth.user.id_user, 
@@ -195,18 +203,8 @@ export default{
     methods: {
        
         mounted(){
-        console.log(this.user);
-        console.log(this.error_message);
-        },
-        tanggalCheck(){
-            console.log(this.tanggal_mulai)
-            console.log(this.tanggal_mulai+'T'+this.waktu_mulai)
-        },
-        waktuCheck(){
-            console.log(this.waktu_mulai)
-        },
-        tanggalAkhirCheck(){
-            console.log(this.waktu_tanggal_akhir)
+            console.log(this.user);
+            console.log(this.error_message);
         },
         onFileChange(){
             this.file_info_kegiatan = this.$refs.file.files[0];
@@ -218,6 +216,35 @@ export default{
         onCloseModal(id){
             $(id).modal('hide')
         },
+        checkEmail(){
+            let passed;
+            let email = this.email_pic
+            if(this.email_pic!=''){
+                if ((/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/.test(email))){
+                    console.log("masuk not passed")
+                    passed = true
+                    
+                }else{
+                    passed = false
+                    this.error_message = "Email tidak valid"
+                    $('#notification-failed').modal('show')
+                }
+                return passed
+            }
+        },
+        checkDate(){
+            let tanggal_akhir = new Date(this.tanggal_akhir+'T'+this.waktu_akhir)
+            let tanggal_mulai = new Date(this.tanggal_mulai+'T'+this.waktu_mulai)
+            let passed = true
+            console.log(tanggal_akhir)
+            console.log(tanggal_mulai)
+            if(tanggal_akhir<tanggal_mulai){
+                this.error_message = "Tanggal atau waktu yang Anda masukkan salah. Tanggal dan waktu mulai kegiatan harus lebih dulu dari tanggal dan waktu akhir kegiatan"
+                $('#notification-failed').modal('show')
+                passed = false
+            }
+            return passed
+        },
         postIzinKegiatan(){
             const data_kegiatan = {
                 nama_kegiatan: this.nama_kegiatan,
@@ -226,6 +253,7 @@ export default{
                 status_perizinan_kegiatan :this.status_perizinan_kegiatan,
             }
             console.log(this.kebutuhan)
+            if(this.checkDate() && this.checkEmail()){
                 UserService.postIzinKegiatanHeader(data_kegiatan).then(
                     response =>{
                         this.respon_kegiatan = response.data;            
@@ -236,7 +264,6 @@ export default{
                         let waktu_tanggal_akhir = this.tanggal_akhir + 'T' + this.waktu_akhir
                         formDataDetail.append("waktu_tanggal_akhir",waktu_tanggal_akhir)
                         formDataDetail.append("email_pic",this.email_pic)
-                        console.log(this.email_pic)
                         formDataDetail.append("nama_pic",this.nama_pic)
                         formDataDetail.append("hp_pic",this.hp_pic)
                         formDataDetail.append("npm_pic",this.npm_pic)
@@ -254,7 +281,7 @@ export default{
                                 console.log(response.data);
                                 if(this.kebutuhan.length == 0){
                                     this.pesan_button = "OK"
-                                    this.path_selanjutnya = '/'
+                                    this.path_selanjutnya = '/perizinan'
                                 }else if(this.kebutuhan[0] == 'ruangan' || (this.kebutuhan.length > 1 && this.kebutuhan[1] == 'ruangan')){
                                     this.pesan_button = "Ke halaman perizinan ruangan"
                                     this.path_selanjutnya = '/buat-perizinan/form-ruangan-mahasiswa/'
@@ -278,9 +305,52 @@ export default{
                 error =>{
                     console.log(error.message);
                 }
-                );            
+                );
+            }            
         }
-    }
+    },
+    mounted(){
+        //create daftar waktu
+        let option_waktu_made = [];
+        let i;
+        for (i = 0; i < 24; i++){
+            if (i < 10 ){
+                option_waktu_made.push({
+                    value: "0"+i + ":00",
+                    text: "0" + i + ":00"
+                });
+                option_waktu_made.push({
+                    value: "0"+ i + ":30",
+                    text: "0" + i + ":30"
+                });
+            } else {
+                option_waktu_made.push({
+                    value: i + ":00",
+                    text:  i + ":00"
+                });
+                option_waktu_made.push({
+                    value:  i + ":30",
+                    text: i + ":30"
+                });
+            }
+        }
+        this.option_waktu = option_waktu_made;
+
+        //create minimum date 
+        var dtToday = new Date();
+        var month = dtToday.getMonth() + 1;
+        var day = dtToday.getDate();
+        var year = dtToday.getFullYear();
+        if(month < 10)
+            month = '0' + month.toString();
+        if(day < 10)
+            day = '0' + day.toString();
+        var maxDate = year + '-' + month + '-' + day;
+        this.maxDate = maxDate
+        
+        // ngasih boolean flag buat nandain lagi active di halaman ini
+        this.$emit('inPeminjamanRuanganMahasiswaPage', true);
+    }    
 }
 </script>
 

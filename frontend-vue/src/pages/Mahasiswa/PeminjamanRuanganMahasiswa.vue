@@ -13,8 +13,8 @@
                     </div>
                     <div class="form-row">
                         <div class="col-12 col-md-6 px-4 py-2">
-                            <label for="inputSubkegiatan">Nama Subkegiatan<span class="asterisk">*</span></label>
-                            <input type="text" class="form-control" placeholder="e.g. Administrasi Bisnis - B" v-model="list_peminjaman_ruangan[peminjaman-1].judul_peminjaman" required>
+                            <label for="inputSubkegiatan">Nama Kegiatan / Subkegiatan<span class="asterisk">*</span></label>
+                            <input type="text" class="form-control" placeholder="e.g. Grand Opening" v-model="list_peminjaman_ruangan[peminjaman-1].judul_peminjaman" required>
                         </div>
                         <div class="col-12 col-md-6 px-4 py-2">
                             <label for="inputJumlahPeserta">Jumlah Peserta<span class="asterisk">*</span></label>
@@ -38,17 +38,17 @@
                                 <option value=2>HARIAN</option>
                                 <option value=3>MINGGUAN</option>
                                 <option value=4>BULANAN</option>
-                            </select>
+                        </select>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="col-12 col-md-6 px-4 py-2">
                             <label for="tanggalMulaiPelaksanaan">Tanggal Mulai Pelaksanaan<span class="asterisk">*</span></label>
-                            <input type="date" class="form-control" v-model="list_perulangan[peminjaman -1].tanggal_mulai" required>                        
+                            <input type="date" class="form-control" v-model="list_perulangan[peminjaman -1].tanggal_mulai" :min="maxDate" required>                        
                         </div>
                         <div class="col-12 col-md-6 px-4 py-2">
                             <label for="tanggalAkhirPelaksanaan">Tanggal Akhir Pelaksanaan<span class="asterisk">*</span></label>
-                            <input type="date" class="form-control" v-model="list_perulangan[peminjaman -1].tanggal_akhir" required>
+                            <input type="date" class="form-control" v-model="list_perulangan[peminjaman -1].tanggal_akhir" :min="maxDate" required>
                             <p class="note-form">isi dengan tanggal yang sama dengan tanggal mulai pelaksanaan jika memilih "sekali pakai"</p>
                         </div>  
                     </div>
@@ -150,6 +150,7 @@ export default {
             list_ruangan: [],
             terbuka_untuk_umum: false,
             option_waktu : [],
+            maxDate:'',
             number_of_peminjaman : 1,
             list_perulangan : [new Perulangan(null, "", "")],
             list_peminjaman_ruangan : [new PeminjamanRuangan("", "", "", "", "", "", false),],
@@ -163,26 +164,23 @@ export default {
             pesan_body:'',
         } 
     },
-    created(){
-        
+    created(){      
         this.id_izin_kegiatan =  this.$route.params.id_izin_kegiatan
         this.kebutuhan = this.$route.params.kebutuhan
-        console.log('the response ' + this.$route.params.id_izin_kegiatan)
-        console.log('kebutuhan '+ this.$route.params.kebutuhan)
         UserService.getAllRuangan().then(
             response =>{
-                console.log(response.data)
-                this.list_ruangan = response.data
+                let list_ruangan_aktif = []
+                response.data.forEach(function(ruangan){
+                    if(ruangan.status == 1){
+                            list_ruangan_aktif.push(ruangan)
+                        }
+                })
+                this.list_ruangan = list_ruangan_aktif
             },
             error => {
                 this.error_call_api = (error.response && error.response.data) || error.message || error.toString();
             }
         )
-    },
-    computed: {
-        getUserId(){
-            return this.$store.state.auth.user.id_user;
-        },
     },
     methods: {
         addRow(){
@@ -214,43 +212,66 @@ export default {
             $('#notification-success').modal('show')
         },
         toRuanganPage(){
-            window.open("http://localhost:8081/ruangan","_blank")
+            window.open("https://sipekan.herokuapp.com/ruangan","_blank")
+        },
+        checkDate(){
+            console.log("masuk")
+            let tanggal_akhir;
+            let tanggal_mulai;
+            let passed = true
+            for (let i = 0; i < this.number_of_peminjaman; i++){
+                tanggal_mulai = new Date(this.list_perulangan[i].tanggal_mulai)
+                tanggal_akhir = new Date(this.list_perulangan[i].tanggal_akhir)
+                if(tanggal_akhir<tanggal_mulai){
+                    this.error_message = "Tanggal yang Anda masukkan salah. Tanggal mulai pelaksanaan harus lebih dulu dari tanggal akhir pelaksanaan"
+                    $('#notification-failed').modal('show')
+                    passed = false
+                    i = this.number_of_peminjaman
+                }else if(this.list_peminjaman_ruangan[i].waktu_akhir < this.list_peminjaman_ruangan[i].waktu_mulai){
+                    this.error_message = "Waktu yang Anda masukkan salah. Waktu mulai pelaksanaan harus lebih dulu dari tanggal akhir pelaksanaan"
+                    $('#notification-failed').modal('show')
+                    passed = false
+                    i = this.number_of_peminjaman
+                }
+            }
+            return passed
+
         },
         submitPost(){
-            console.log(this.list_peminjaman_ruangan)
-            console.log(this.list_perulangan)
-            let i;
-            for (i = 0; i < this.number_of_peminjaman; i++){
-                this.list_peminjaman_ruangan[i].setPerulangan(this.list_perulangan[i])
-            }
-            const data ={
-                id : this.id_izin_kegiatan,
-                peminjaman_ruangan : this.list_peminjaman_ruangan
-            }
-            // this.izin_kegiatan.setUser(1)
-            console.log(data)
-            UserService.postPeminjamanRuanganMahasiswa(this.id_izin_kegiatan,data).then(
-                response => {
-                    console.log(response.data);
-                    if(this.kebutuhan.length>0){
-                        this.pesan_button = "Ke halaman perizinan humas"
-                        this.path_selanjutnya = '/buat-perizinan/form-humas'
-                        this.nama_path = 'Form Permohonan Humas Mahasiswa'
-                        this.params_path = {id_izin_kegiatan:this.id_izin_kegiatan, kebutuhan: this.kebutuhan}
-                        this.pesan_body = "Peminjaman ruangan berhasil"
-                    }else{
-                        this.pesan_button = "OK"
-                        this.path_selanjutnya = '/'
-                        this.pesan_body = "Peminjaman ruangan berhasil"
-                    }
-                     $('#notification-success').modal('show')
-                },
-                error => {
-                    console.log(error.message);
-                    this.error_message = error.message
-                    $('#notification-failed').modal('show')
+            if(this.checkDate()){
+                let i;
+                for (i = 0; i < this.number_of_peminjaman; i++){
+                    this.list_peminjaman_ruangan[i].setPerulangan(this.list_perulangan[i])
                 }
-            )
+                const data ={
+                    id : this.id_izin_kegiatan,
+                    peminjaman_ruangan : this.list_peminjaman_ruangan
+                }
+                // this.izin_kegiatan.setUser(1)
+                console.log(data)
+                UserService.postPeminjamanRuanganMahasiswa(this.id_izin_kegiatan,data).then(
+                    response => {
+                        console.log(response.data);
+                        if(this.kebutuhan.length>1){
+                            this.pesan_button = "Ke halaman perizinan humas"
+                            this.path_selanjutnya = '/buat-perizinan/form-humas'
+                            this.nama_path = 'Form Permohonan Humas Mahasiswa'
+                            this.params_path = {id_izin_kegiatan:this.id_izin_kegiatan, kebutuhan: this.kebutuhan}
+                            this.pesan_body = "Peminjaman ruangan berhasil"
+                        }else{
+                            this.pesan_button = "OK"
+                            this.path_selanjutnya = '/perizinan'
+                            this.pesan_body = "Peminjaman ruangan berhasil"
+                        }
+                        $('#notification-success').modal('show')
+                    },
+                    error => {
+                        console.log(error.message);
+                        this.error_message = error.message
+                        $('#notification-failed').modal('show')
+                    }
+                )
+            }
         }
     },
     mounted(){
@@ -279,9 +300,21 @@ export default {
             }
         }
         this.option_waktu = option_waktu_made;
+
+        //create minimum date 
+        var dtToday = new Date();
+        var month = dtToday.getMonth() + 1;
+        var day = dtToday.getDate();
+        var year = dtToday.getFullYear();
+        if(month < 10)
+            month = '0' + month.toString();
+        if(day < 10)
+            day = '0' + day.toString();
+        var maxDate = year + '-' + month + '-' + day;
+        this.maxDate = maxDate
+
         // ngasih boolean flag buat nandain lagi active di halaman ini
         this.$emit('inPeminjamanRuanganUnitKerjaPage', true);
-  
     }
     
 }

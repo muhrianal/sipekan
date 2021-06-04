@@ -1,4 +1,12 @@
+
 <template>
+    <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+            <b-icon icon="exclamation-triangle"></b-icon>
+
+        <li class="breadcrumb-item"><a class="kembali-text" href="/perizinan-humas">Kembali</a></li>
+    </ol>
+    </nav>
     <div class="root-class">
         <div class="header">
             <h3 class="header-page" style="font-weight: bold;">Verfikasi Perizinan Kegiatan</h3>
@@ -25,11 +33,11 @@
             <div class="form-row">
                 <div class="col-12 col-md-6  px-4 py-2">
                     <label for="inputTanggalMulai">Tanggal Mulai</label>
-                    <input class="form-control readonly-form" :placeholder="this.perizinan_publikasi.tanggal_mulai" readonly >
+                    <input class="form-control readonly-form" :placeholder="getDateOnly(this.perizinan_publikasi.tanggal_mulai)" readonly >
                 </div>
                 <div class="col-12 col-md-6  px-4 py-2 ">
                     <label for="inputTanggalAkhir">Tanggal Akhir</label>
-                    <input class="form-control readonly-form" :placeholder="this.perizinan_publikasi.tanggal_akhir" readonly >
+                    <input class="form-control readonly-form" :placeholder="getDateOnly(this.perizinan_publikasi.tanggal_akhir)" readonly >
                 </div>                                        
             </div>
             <div class="form-row">
@@ -42,7 +50,7 @@
                     <div ><a  :href="'http://localhost:8000'+this.perizinan_publikasi.file_flyer_pengumuman" :download="this.perizinan_publikasi.file_flyer_pengumuman">{{this.perizinan_publikasi.file_flyer_pengumuman}}</a></div>
                 </div> 
             </div>
-            <div v-if="this.perizinan_publikasi.keterangan != null" class="form-row">
+            <div v-if="this.perizinan_publikasi.keterangan != ''" class="form-row">
                 <div  class="col-12 col-md-6  px-4 py-2">
                     <label  for="inputMateriKegiatan">Keterangan: </label>
                     <textarea class="form-control readonly-form" :placeholder="this.perizinan_publikasi.keterangan" readonly></textarea>
@@ -50,12 +58,12 @@
             </div>
             <div class="form-row px-4 py-2 ">
                 <label id="label-tabel-publikasi">Jenis Izin Publikasi Diajukan:</label>
-                <table class="table table-striped">
+                <table class="table table-hover  table-responsive-sm">
                     <thead>
                     <tr>
-                        <th scope="col"><label> Deskripsi </label></th>
-                        <th scope="col"><label> Jenis </label></th>
-                        <th scope="col"><label> Status</label></th>
+                        <th  scope="col"><label id="header-tabel-publikasi"> Deskripsi </label></th>
+                        <th scope="col"><label  id="header-tabel-publikasi"> Jenis </label></th>
+                        <th scope="col"><label  id="header-tabel-publikasi"> Status</label></th>
                         <th scope="col"></th>
                         <th scope="col"></th>
                     </tr>
@@ -63,13 +71,13 @@
                 <tbody>
                     <template v-for="jenis_izin in this.list_jenis_izin_publikasi" v-bind:key="jenis_izin" >
                         <tr class="tabel-publikasi">
-                            <td >
+                            <td id="body-tabel-publikasi" >
                                 {{jenis_izin.jenis_publikasi.deskripsi_publikasi}}
                                 <span class="text-keterangan" v-if="jenis_izin.jenis_publikasi.deskripsi_publikasi == 'Lainnya'"><br>(Lihat deskripsi pada field keterangan diatas)</span>
                             </td>
                             <td>
-                                <span v-if="jenis_izin.jenis_publikasi.luar_ruangan">Luar Ruangan</span>
-                                <span v-if="!jenis_izin.jenis_publikasi.luar_ruangan">Online</span>
+                                <span id="body-tabel-publikasi" v-if="jenis_izin.jenis_publikasi.luar_ruangan">Luar Ruangan</span>
+                                <span id="body-tabel-publikasi" v-if="!jenis_izin.jenis_publikasi.luar_ruangan">Online</span>
                             </td>
                             <td>
                                 <span v-if="jenis_izin.status_perizinan_publikasi==1">Menunggu Persetujuan</span>
@@ -93,7 +101,7 @@
         <div class="formulir m-3">    
             <form>
                 <div class="form-row">
-                    <div class="col-6 col-md-6">
+                    <div class="col-6 col-md-6  px-4">
                         <label v-if="permintaan.status_permintaan_souvenir==1" class="status">Status Sekarang: <span class="status-span" style="color: #828282;">Menunggu Persetujuan</span></label>
                         <label v-if="permintaan.status_permintaan_souvenir==2" class="status">Status Sekarang: <span class="status-span" style="color: #27AE60;">Disetujui</span></label>
                         <label v-if="permintaan.status_permintaan_souvenir==3" class="status">Status Sekarang: <span class="status-span" style="color: #EB5757;">Ditolak</span></label>
@@ -271,9 +279,10 @@ import UserService from '../../services/user.service';
 import moment from 'moment';
 import $ from 'jquery';
 
+
 export default {
     name: 'DetailPerizinanHumas',
-    
+
     data(){
         return{
             id_izin_kegiatan: null,
@@ -463,10 +472,16 @@ export default {
     background-color:#EB5757!important;
 }
 .tabel-publikasi{
-    font-size:11pt;
+    font-size:10pt;
 }
 #label-tabel-publikasi{
     margin-bottom: 5px;
+}
+#header-tabel-publikasi{
+    color:black
+}
+#body-tabel-publikasi{
+    color:rgb(46, 46, 46)
 }
 /* ::placeholder {
     color:  #5f5f5f;
@@ -474,5 +489,21 @@ export default {
 
 .readonly-form::placeholder {
     color: #5f5f5f !important;
+}
+.breadcrumb{
+    margin: 0px 0px 15px 0px;
+    /* padding: 15px 0px 15px 5px; */
+    /* background-color: initial; */
+    font-size: medium;
+    background-color: white;
+    border-color: #BDBDBD;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 5px;
+    padding: 10px 10px 10px 10px ;
+}
+.kembali-text{
+    color:gray  !important;
+    padding-left: 5px;
 }
 </style>

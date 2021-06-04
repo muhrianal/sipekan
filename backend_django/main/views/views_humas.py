@@ -12,7 +12,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authtoken.models import Token
 
-from ..permissions import AllowOnlyAdminFASTUR, AllowOnlyAdminHUMAS, AllowOnlyAdminPKM
+from ..permissions import AllowOnlyAdminFASTUR, AllowOnlyAdminHUMAS, AllowOnlyAdminPKM, AllowOnlyMahasiswa
 
 from ..models.humas import PerizinanPublikasi, PermintaanProtokoler, PermintaanSouvenir, JenisPublikasi, Souvenir, JenisIzinPublikasi
 from ..models.izin_kegiatan import IzinKegiatan
@@ -25,7 +25,7 @@ from rest_framework.decorators import parser_classes
 from rest_framework.parsers import MultiPartParser, FormParser
 
 @api_view(['GET'])
-@permission_classes([permissions.AllowAny,]) #nanti diganti jadi admin humas
+@permission_classes([permissions.AllowAny,]) #admin humas
 def get_list_perizinan_humas(request): 
     if request.method == 'GET': # get list seluruh izin kegiatan (humas)
         list_izin_kegiatan = IzinKegiatan.objects.filter(status_perizinan_kegiatan=2)
@@ -36,12 +36,11 @@ def get_list_perizinan_humas(request):
     return JsonResponse({'message' : 'invalid API method'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
 @api_view(['GET', 'POST'])
-@permission_classes([permissions.AllowAny,])
+@permission_classes([permissions.AllowAny,]) #mahasiswa dan admin humas
 def get_post_perizinan_humas_by_id_izin_kegiatan(request,id_izin_kegiatan):
     try: 
         izin_kegiatan =IzinKegiatan.objects.get(pk=id_izin_kegiatan)
     except:
-        print("masuk 404")
         return JsonResponse({'message': 'Izin kegiatan tidak ada'}, status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'POST':
@@ -60,7 +59,7 @@ def get_post_perizinan_humas_by_id_izin_kegiatan(request,id_izin_kegiatan):
     return JsonResponse({'message' : 'invalid API method'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
 @api_view(['PUT',])
-@permission_classes([permissions.AllowAny,]) #nanti diganti jadi admin humas
+@permission_classes([permissions.AllowAny,]) #admin humas 
 def update_permintaan_souvenir_by_id_permintaan_souvenir(request, id_permintaan):
     try:
         permintaan_souvenir =PermintaanSouvenir.objects.get(pk=id_permintaan)
@@ -71,6 +70,7 @@ def update_permintaan_souvenir_by_id_permintaan_souvenir(request, id_permintaan)
         peminjaman_data = JSONParser().parse(request) 
         try:
             permintaan_souvenir.status_permintaan_souvenir = peminjaman_data['status_permintaan_souvenir']
+            permintaan_souvenir.updated_at = timezone.now()
             if peminjaman_data['alasan_penolakan'] is not None:
                permintaan_souvenir.alasan_penolakan = peminjaman_data['alasan_penolakan']
             permintaan_souvenir.save()
@@ -83,7 +83,7 @@ def update_permintaan_souvenir_by_id_permintaan_souvenir(request, id_permintaan)
     return JsonResponse({'message' : 'invalid API method'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
 @api_view(['PUT',])
-@permission_classes([permissions.AllowAny,]) #nanti diganti jadi admin humas
+@permission_classes([permissions.AllowAny,]) #admin humas
 def update_permintaan_protokoler_by_id_permintaan_protokoler(request, id_permintaan):
     try:
         permintaan_protokoler = PermintaanProtokoler.objects.get(pk=id_permintaan)
@@ -94,6 +94,7 @@ def update_permintaan_protokoler_by_id_permintaan_protokoler(request, id_permint
         peminjaman_data = JSONParser().parse(request) 
         try:
             permintaan_protokoler.status_permintaan_protokoler = peminjaman_data['status_permintaan_protokoler']
+            permintaan_protokoler.updated_at = timezone.now()
             if peminjaman_data['alasan_penolakan'] is not None:
                permintaan_protokoler.alasan_penolakan = peminjaman_data['alasan_penolakan']
             permintaan_protokoler.save()
@@ -136,7 +137,7 @@ def update_jenis_izin_publikasi_by_id_jenis_izin_publikasi(request, id_jenis_izi
     return JsonResponse({'message' : 'invalid API method'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
 @api_view(['POST'])
-@permission_classes([permissions.AllowAny,]) 
+@permission_classes([permissions.AllowAny,]) #mahasiswa
 @parser_classes([MultiPartParser, FormParser])
 def post_perizinan_publikasi(request):
     if request.method == 'POST': # post perizinan_publikasi
@@ -167,7 +168,7 @@ def post_perizinan_publikasi(request):
     return JsonResponse({'message' : 'invalid API method'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
 @api_view(['GET'])
-@permission_classes([permissions.AllowAny,]) #nanti diganti jadi mahasiswa dan unit kerja
+@permission_classes([permissions.AllowAny,]) #mahasiswa dan admin humas
 def get_jenis_publikasi(request):
     if request.method == 'GET':
         list_jenis_publikasi = JenisPublikasi.objects.all()
@@ -178,7 +179,7 @@ def get_jenis_publikasi(request):
     return JsonResponse({'message' : 'invalid API method'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
 @api_view(['GET'])
-@permission_classes([permissions.AllowAny,]) #nanti diganti jadi mahasiswa dan unit kerja
+@permission_classes([permissions.AllowAny,]) # mahasiswa dan admin humas
 def get_list_souvenir(request):
     if request.method == 'GET':
         list_souvenir = Souvenir.objects.all()
